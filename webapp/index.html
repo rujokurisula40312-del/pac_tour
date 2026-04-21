@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ffffff">
+    <title>Поиск круизов</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <link rel="stylesheet" href="https://widget.gocruise.ru/css/app.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="page">
+        <header class="page__header">
+            <h1 class="page__title">🚢 Поиск круизов</h1>
+            <p class="page__subtitle">Выберите направление, даты и оператора — и мы подберём подходящий круиз.</p>
+        </header>
+
+        <section class="widget-wrap">
+            <div id="ces-app"></div>
+        </section>
+    </main>
+
+    <div class="manager-bar" id="manager-bar" hidden>
+        <button type="button" id="manager-btn" class="manager-btn">
+            ✉️ Написать менеджеру
+        </button>
+    </div>
+
+    <script>
+        var cesSettings = {
+            currencies: ["RUB", "USD", "EUR"],
+            defaultVendor: "MSC",
+            showResults: true
+        };
+    </script>
+    <script src="https://widget.gocruise.ru/js/app.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
