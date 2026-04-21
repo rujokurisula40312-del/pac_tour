@@ -11,6 +11,7 @@ from aiogram.types import (
     Message,
     WebAppInfo,
 )
+from aiohttp import web
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -18,6 +19,7 @@ load_dotenv()
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 WEBAPP_URL = os.environ["WEBAPP_URL"]
 MANAGER_USERNAME = os.getenv("MANAGER_USERNAME", "your_manager").lstrip("@")
+PORT = int(os.environ.get("PORT", "0"))
 
 logging.basicConfig(level=logging.INFO)
 
@@ -94,9 +96,29 @@ async def on_webapp_data(message: Message) -> None:
     await message.answer(text, reply_markup=manager_kb())
 
 
+async def healthcheck(_request: web.Request) -> web.Response:
+    return web.Response(text="OK")
+
+
+async def run_http_server(port: int) -> None:
+    app = web.Application()
+    app.router.add_get("/", healthcheck)
+    app.router.add_get("/health", healthcheck)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+    logging.info("HTTP healthcheck listening on 0.0.0.0:%s", port)
+    while True:
+        await asyncio.sleep(3600)
+
+
 async def main() -> None:
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot)
+    tasks = [asyncio.create_task(dp.start_polling(bot))]
+    if PORT:
+        tasks.append(asyncio.create_task(run_http_server(PORT)))
+    await asyncio.gather(*tasks)
 
 
 if __name__ == "__main__":

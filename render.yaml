@@ -1,11 +1,12 @@
 services:
-  - type: worker
+  - type: web
     name: pac-tour-bot
     env: python
     plan: free
     branch: claude/add-cruise-widget-eIiXl
     buildCommand: pip install -r requirements.txt
     startCommand: python bot.py
+    healthCheckPath: /health
     envVars:
       - key: BOT_TOKEN
         sync: false
