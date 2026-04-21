@@ -24,6 +24,15 @@ print(
     "| MANAGER_USERNAME present:", "MANAGER_USERNAME" in os.environ,
     flush=True,
 )
+print(
+    "[ENV-DEBUG] RAILWAY_ENVIRONMENT_NAME =",
+    os.environ.get("RAILWAY_ENVIRONMENT_NAME"),
+    "| RAILWAY_SERVICE_NAME =",
+    os.environ.get("RAILWAY_SERVICE_NAME"),
+    "| RAILWAY_PROJECT_NAME =",
+    os.environ.get("RAILWAY_PROJECT_NAME"),
+    flush=True,
+)
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 WEBAPP_URL = os.environ["WEBAPP_URL"]
