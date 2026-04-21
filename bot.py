@@ -16,6 +16,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+_env_names = sorted(k for k in os.environ if not k.startswith("_"))
+print("[ENV-DEBUG] visible env var names:", _env_names, flush=True)
+print(
+    "[ENV-DEBUG] BOT_TOKEN present:", "BOT_TOKEN" in os.environ,
+    "| WEBAPP_URL present:", "WEBAPP_URL" in os.environ,
+    "| MANAGER_USERNAME present:", "MANAGER_USERNAME" in os.environ,
+    flush=True,
+)
+
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 WEBAPP_URL = os.environ["WEBAPP_URL"]
 MANAGER_USERNAME = os.getenv("MANAGER_USERNAME", "your_manager").lstrip("@")
