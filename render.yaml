@@ -1,0 +1,15 @@
+services:
+  - type: worker
+    name: pac-tour-bot
+    env: python
+    plan: free
+    branch: claude/add-cruise-widget-eIiXl
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: WEBAPP_URL
+        value: https://rujokurisula40312-del.github.io/pac_tour/
+      - key: MANAGER_USERNAME
+        sync: false
