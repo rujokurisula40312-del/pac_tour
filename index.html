@@ -6,138 +6,187 @@
 <title>Круиз со мной — Pro Travel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 :root{
-  --bg:#0B1220;
-  --bg-2:#0F1830;
-  --card:#172032;
-  --card-2:#1E2A44;
-  --line:#2A3547;
-  --text:#FFFFFF;
-  --muted:#94A3B8;
-  --accent:#F5A65B;
-  --accent-2:#F28A3B;
-  --ok:#4ADE80;
-  --danger:#F87171;
+  --bg:#0A1628;
+  --bg-2:#0F1D33;
+  --card:#152540;
+  --card-2:#1B2E4E;
+  --line:rgba(212,166,75,.18);
+  --line-2:rgba(212,166,75,.32);
+  --gold:#D4A64B;
+  --gold-2:#E8C173;
+  --gold-3:#B4873A;
+  --cream:#F5F1E8;
+  --muted:#8B9BB4;
+  --muted-2:#6A7A93;
+  --danger:#E88671;
 }
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0;height:100%;background:var(--bg);color:var(--text);font-family:'Manrope',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
-body{background:radial-gradient(1200px 700px at 90% -10%,rgba(245,166,91,.12),transparent 60%),radial-gradient(900px 600px at -20% 110%,rgba(59,130,246,.10),transparent 60%),var(--bg)}
-#app{max-width:520px;margin:0 auto;min-height:100vh;position:relative;padding:20px 18px 32px;display:flex;flex-direction:column}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--cream);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;min-height:100%;overscroll-behavior:none}
+body{
+  background:
+    radial-gradient(600px 400px at 100% 0%,rgba(212,166,75,.06),transparent 70%),
+    radial-gradient(500px 400px at 0% 100%,rgba(212,166,75,.04),transparent 70%),
+    var(--bg);
+  background-attachment:fixed;
+}
+#app{max-width:520px;margin:0 auto;min-height:100vh;position:relative;padding:26px 22px 42px;display:flex;flex-direction:column}
+.serif{font-family:'Playfair Display',serif;font-weight:500;letter-spacing:-.01em}
+.eyebrow{font-size:11px;letter-spacing:.34em;color:var(--gold);text-transform:uppercase;font-weight:500}
+.italic{font-style:italic}
+
 .screen{display:none;flex:1;flex-direction:column;animation:fade .35s ease}
 .screen.active{display:flex}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-/* header + progress */
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
-.brand{font-weight:700;font-size:14px;letter-spacing:.02em;color:var(--muted);display:flex;align-items:center;gap:8px}
-.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
-.progress{flex:1;height:6px;background:var(--card);border-radius:99px;overflow:hidden;max-width:180px}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:99px;transition:width .35s ease}
-.back-btn{background:none;border:none;color:var(--muted);font-size:15px;cursor:pointer;padding:8px 4px}
-.back-btn:disabled{opacity:0}
+/* header */
+.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.hd-brand{font-family:'Playfair Display',serif;font-size:13px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;font-weight:400;font-style:italic}
+.hd-side{display:flex;align-items:center;gap:14px}
+.hd-back{background:none;border:none;color:var(--muted);font-size:11px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:6px 0;cursor:pointer;font-family:'Inter',sans-serif}
+.hd-back:disabled{opacity:0;pointer-events:none}
+.hd-count{color:var(--gold);font-family:'Playfair Display',serif;font-style:italic;font-size:15px;font-weight:400}
+.hd-count small{color:var(--muted);margin:0 4px;font-style:normal}
+
+/* progress line */
+.progress{height:1px;background:var(--line);position:relative;margin-bottom:34px}
+.progress-fill{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--gold),var(--gold-2));transition:width .4s ease}
 
 /* welcome */
-.welcome{text-align:center;padding-top:20px}
-.welcome-emoji{font-size:64px;margin-bottom:16px;filter:drop-shadow(0 8px 24px rgba(245,166,91,.3))}
-.welcome h1{font-size:32px;line-height:1.1;font-weight:800;margin:0 0 12px;letter-spacing:-.02em}
-.welcome h1 span{background:linear-gradient(120deg,var(--accent),#FDCB8A);-webkit-background-clip:text;background-clip:text;color:transparent}
-.welcome p{color:var(--muted);font-size:16px;line-height:1.5;margin:0 0 32px;padding:0 8px}
-.welcome-bullets{display:flex;flex-direction:column;gap:12px;margin-bottom:36px;text-align:left}
-.welcome-bullet{background:var(--card);border:1px solid var(--line);padding:14px 16px;border-radius:14px;display:flex;align-items:center;gap:12px;font-size:15px}
-.welcome-bullet-emoji{font-size:22px}
+.welcome{text-align:left;padding-top:12px;flex:1;display:flex;flex-direction:column}
+.welcome .eyebrow{margin-bottom:20px}
+.welcome-orn{font-family:'Playfair Display',serif;font-style:italic;color:var(--gold);opacity:.6;font-size:36px;line-height:1;margin-bottom:18px}
+.welcome-head{font-family:'Playfair Display',serif;font-size:44px;line-height:1.05;letter-spacing:-.025em;font-weight:500;margin-bottom:20px;color:var(--cream)}
+.welcome-head em{font-style:italic;color:var(--gold-2)}
+.welcome-lead{color:var(--muted);font-size:14px;line-height:1.65;max-width:400px;font-weight:300;margin-bottom:36px}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--line-2),transparent);margin:16px 0 30px}
+.welcome-list{display:flex;flex-direction:column;gap:22px;margin-bottom:44px}
+.wl-item{display:flex;gap:18px;align-items:flex-start}
+.wl-num{font-family:'Playfair Display',serif;font-style:italic;color:var(--gold);font-size:28px;line-height:1;letter-spacing:-.02em;min-width:36px;font-weight:400}
+.wl-text{flex:1;color:var(--cream);font-size:14px;line-height:1.5;font-weight:400}
+.wl-text b{display:block;font-family:'Playfair Display',serif;font-size:17px;font-weight:500;margin-bottom:4px;letter-spacing:-.01em}
+.wl-text span{color:var(--muted);font-weight:300;font-size:13px}
 
-/* quiz question */
-.qtitle{font-size:24px;font-weight:700;line-height:1.25;margin:8px 0 8px;letter-spacing:-.01em}
-.qhint{color:var(--muted);font-size:14px;margin:0 0 22px}
-.qhint b{color:var(--accent)}
-.options{display:flex;flex-direction:column;gap:10px;flex:1}
-.option{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .18s ease;text-align:left;font-family:inherit;color:var(--text);font-size:16px;font-weight:500;width:100%}
-.option:active{transform:scale(.98)}
-.option:hover{border-color:#3A4A66}
-.option.selected{background:linear-gradient(180deg,rgba(245,166,91,.15),rgba(245,166,91,.05));border-color:var(--accent);box-shadow:0 4px 20px rgba(245,166,91,.2)}
-.option-emoji{font-size:24px;flex-shrink:0}
+/* question */
+.q-eyebrow{margin-bottom:16px}
+.qtitle{font-family:'Playfair Display',serif;font-size:32px;line-height:1.12;letter-spacing:-.02em;font-weight:500;margin-bottom:12px}
+.qtitle em{font-style:italic;color:var(--gold-2)}
+.qhint{color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:28px;font-weight:300}
+.qhint b{color:var(--gold);font-weight:500}
+.options{display:flex;flex-direction:column;gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);flex:1}
+.option{background:var(--bg);border:none;padding:18px 4px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:background .15s ease;text-align:left;font-family:'Inter',sans-serif;color:var(--cream);font-size:15px;font-weight:400;width:100%}
+.option:active{background:var(--card)}
+.option.selected{background:linear-gradient(90deg,rgba(212,166,75,.08),transparent)}
+.option-num{font-family:'Playfair Display',serif;font-style:italic;color:var(--muted-2);font-size:14px;font-weight:400;min-width:24px;letter-spacing:.02em}
+.option.selected .option-num{color:var(--gold)}
 .option-text{flex:1}
-.option-text small{display:block;color:var(--muted);font-size:13px;font-weight:400;margin-top:2px}
-.option-check{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.option.selected .option-check{background:var(--accent);border-color:var(--accent)}
-.option.selected .option-check::after{content:"✓";color:#0B1220;font-weight:800;font-size:14px}
+.option-text small{display:block;color:var(--muted);font-size:12px;font-weight:300;margin-top:3px;font-style:italic;font-family:'Playfair Display',serif}
+.option-check{width:20px;height:20px;border:1px solid var(--line-2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .18s ease;border-radius:50%}
+.option.selected .option-check{background:var(--gold);border-color:var(--gold)}
+.option.selected .option-check::after{content:"";width:6px;height:6px;background:var(--bg);border-radius:50%}
 
-/* buttons row */
-.actions{display:flex;gap:10px;margin-top:22px;padding-top:12px}
-.btn{flex:1;padding:16px;border-radius:14px;border:none;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:all .18s ease;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn:active{transform:scale(.97)}
-.btn-primary{background:linear-gradient(180deg,var(--accent),var(--accent-2));color:#0B1220;box-shadow:0 6px 24px rgba(245,166,91,.35)}
-.btn-primary:disabled{opacity:.4;box-shadow:none;cursor:not-allowed}
-.btn-ghost{background:var(--card);color:var(--muted);flex:0 0 auto;padding:16px 20px}
-.btn-full{width:100%}
+/* actions */
+.actions{display:flex;gap:14px;margin-top:28px;padding-top:20px;border-top:1px solid var(--line)}
+.btn{padding:16px 0;background:none;border:none;font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;font-weight:500;transition:all .18s ease}
+.btn-primary{flex:1;color:var(--gold);border-bottom:1px solid var(--gold);padding:12px 0}
+.btn-primary:disabled{color:var(--muted-2);border-color:var(--muted-2);cursor:not-allowed;opacity:.5}
+.btn-primary::after{content:" →"}
+.btn-ghost{color:var(--muted);flex:0 0 auto}
+.btn-full{width:100%;text-align:center}
 
 /* loading */
-.loading{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:40px 20px}
-.spinner{width:56px;height:56px;border-radius:50%;border:3px solid rgba(245,166,91,.2);border-top-color:var(--accent);animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{color:var(--muted);text-align:center;font-size:15px;line-height:1.5}
-.loading-text b{color:var(--text);display:block;font-size:18px;margin-bottom:6px;font-weight:700}
+.loading{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;padding:40px 20px;text-align:center}
+.loading-orn{font-family:'Playfair Display',serif;font-style:italic;color:var(--gold);font-size:80px;line-height:1;opacity:.5;animation:breathe 2.2s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.3;transform:scale(.95)}50%{opacity:.7;transform:scale(1.02)}}
+.loading b{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;letter-spacing:-.01em;color:var(--cream);display:block;margin-bottom:8px}
+.loading-sub{color:var(--muted);font-size:13px;font-weight:300;line-height:1.5}
 
 /* results */
-.results-head{margin-bottom:18px}
-.results-head h2{font-size:22px;font-weight:700;margin:0 0 6px}
-.results-head p{color:var(--muted);font-size:14px;margin:0}
-.cards{display:flex;flex-direction:column;gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;transition:all .2s ease}
-.card:active{transform:scale(.99)}
-.card-img{width:100%;height:160px;background:var(--card-2) center/cover no-repeat;position:relative}
-.card-img-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,18,32,0),rgba(11,18,32,.85));padding:12px;display:flex;align-items:flex-end}
-.card-badge{background:rgba(245,166,91,.9);color:#0B1220;font-weight:700;font-size:12px;padding:5px 10px;border-radius:99px;display:inline-block}
-.card-body{padding:16px}
-.card-title{font-size:17px;font-weight:700;line-height:1.3;margin:0 0 6px}
-.card-ship{color:var(--muted);font-size:13px;margin:0 0 12px}
-.card-meta{display:flex;gap:16px;color:var(--muted);font-size:13px;margin-bottom:12px}
-.card-meta-item{display:flex;align-items:center;gap:6px}
-.card-price{display:flex;align-items:baseline;justify-content:space-between;padding-top:12px;border-top:1px solid var(--line)}
-.card-price-label{color:var(--muted);font-size:13px}
-.card-price-amount{font-size:20px;font-weight:800;color:var(--accent)}
+.results-head{margin-bottom:12px}
+.results-eyebrow{margin-bottom:14px}
+.results-head h2{font-family:'Playfair Display',serif;font-size:32px;line-height:1.08;letter-spacing:-.02em;font-weight:500;margin-bottom:12px}
+.results-head h2 em{font-style:italic;color:var(--gold-2)}
+.results-head p{color:var(--muted);font-size:13px;line-height:1.6;font-weight:300;max-width:400px}
+.results-divider{height:1px;background:linear-gradient(90deg,transparent,var(--line-2),transparent);margin:22px 0 30px}
+.cards{display:flex;flex-direction:column}
 
-.empty{text-align:center;padding:40px 20px}
-.empty-emoji{font-size:56px;margin-bottom:16px}
-.empty h3{font-size:18px;margin:0 0 8px}
-.empty p{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 20px}
+/* card */
+.card{cursor:pointer;padding-bottom:36px;margin-bottom:36px;border-bottom:1px solid var(--line);transition:opacity .15s ease}
+.card:last-child{border-bottom:none;margin-bottom:0}
+.card:active{opacity:.7}
+.card-hero{position:relative;height:220px;overflow:hidden;margin-bottom:22px;background:var(--card)}
+.card-hero img{width:100%;height:100%;object-fit:cover;filter:brightness(.9) contrast(1.02)}
+.card-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(10,22,40,.85));pointer-events:none}
+.hero-badge{position:absolute;top:16px;left:16px;background:rgba(10,22,40,.75);backdrop-filter:blur(10px);color:var(--gold);font-size:10px;letter-spacing:.24em;padding:8px 14px;text-transform:uppercase;font-family:'Playfair Display',serif;font-style:italic;border:1px solid var(--line);z-index:2;font-weight:400}
+.hero-num{position:absolute;top:16px;right:20px;color:var(--gold-2);font-family:'Playfair Display',serif;font-style:italic;font-size:56px;line-height:1;font-weight:400;opacity:.55;letter-spacing:-.03em;z-index:2}
+.card-cat{font-size:10px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-bottom:10px;font-weight:500}
+.card-title{font-family:'Playfair Display',serif;font-size:24px;line-height:1.15;font-weight:500;margin-bottom:8px;letter-spacing:-.01em}
+.card-ship{font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:14px;margin-bottom:20px;font-weight:400}
+.meta{display:flex;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:22px}
+.meta-item{flex:1;padding:14px 4px;text-align:center;border-right:1px solid var(--line)}
+.meta-item:last-child{border-right:none}
+.meta-label{font-size:9px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;font-weight:500}
+.meta-value{font-family:'Playfair Display',serif;font-size:15px;color:var(--cream);letter-spacing:-.01em}
+.price-row{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.price-side{}
+.price-label{font-size:10px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;font-weight:500}
+.price{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);letter-spacing:-.02em;font-weight:500;line-height:1}
+.price small{font-size:13px;color:var(--muted);font-style:italic;margin-left:6px;font-family:'Inter',sans-serif;font-weight:300;letter-spacing:0}
+.card-cta{color:var(--gold);font-size:10px;letter-spacing:.28em;text-transform:uppercase;padding:14px 0;border-bottom:1px solid var(--gold);font-weight:500}
+.card-cta::after{content:" →"}
 
-/* cruise detail modal */
-.modal{position:fixed;inset:0;background:rgba(11,18,32,.85);backdrop-filter:blur(6px);z-index:100;display:none;align-items:flex-end;justify-content:center}
+/* empty */
+.empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center}
+.empty-orn{font-family:'Playfair Display',serif;font-style:italic;color:var(--gold);font-size:64px;opacity:.5;margin-bottom:24px;line-height:1}
+.empty h3{font-family:'Playfair Display',serif;font-size:24px;font-weight:500;letter-spacing:-.01em;margin-bottom:14px;line-height:1.2}
+.empty h3 em{font-style:italic;color:var(--gold-2)}
+.empty p{color:var(--muted);font-size:14px;line-height:1.6;font-weight:300;max-width:380px;margin-bottom:36px}
+
+/* sent */
+.sent{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center}
+.sent-orn{font-family:'Playfair Display',serif;font-style:italic;color:var(--gold);font-size:88px;line-height:1;opacity:.7;margin-bottom:28px;letter-spacing:-.03em}
+.sent .eyebrow{margin-bottom:16px}
+.sent h2{font-family:'Playfair Display',serif;font-size:34px;font-weight:500;letter-spacing:-.02em;margin-bottom:16px;line-height:1.1}
+.sent h2 em{font-style:italic;color:var(--gold-2)}
+.sent p{color:var(--muted);font-size:14px;line-height:1.6;font-weight:300;max-width:400px;margin-bottom:44px}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(10,22,40,.88);backdrop-filter:blur(8px);z-index:100;display:none;align-items:flex-end;justify-content:center}
 .modal.active{display:flex}
-.modal-body{background:var(--bg-2);width:100%;max-width:520px;max-height:92vh;border-radius:22px 22px 0 0;overflow-y:auto;animation:slideup .3s ease}
+.modal-body{background:var(--bg-2);width:100%;max-width:520px;max-height:94vh;overflow-y:auto;border-top:1px solid var(--gold);animation:slideup .35s ease}
 @keyframes slideup{from{transform:translateY(100%)}to{transform:none}}
-.modal-close{position:sticky;top:0;background:linear-gradient(180deg,var(--bg-2),transparent);padding:14px 18px 8px;display:flex;justify-content:flex-end;z-index:2}
-.modal-close-btn{background:var(--card);border:none;color:var(--text);width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.modal-content{padding:0 20px 24px}
-.modal-map{width:100%;height:200px;background:var(--card-2) center/cover no-repeat;border-radius:16px;margin-bottom:20px}
-.modal-title{font-size:24px;font-weight:800;line-height:1.2;margin:0 0 6px}
-.modal-subtitle{color:var(--muted);font-size:14px;margin:0 0 18px}
-.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
-.info-cell{background:var(--card);border-radius:12px;padding:12px 14px}
-.info-cell-label{color:var(--muted);font-size:12px;margin-bottom:4px}
-.info-cell-value{font-size:15px;font-weight:600}
-.section{margin-bottom:22px}
-.section h4{font-size:15px;font-weight:700;margin:0 0 10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-size:12px}
-.includes-list{display:flex;flex-direction:column;gap:8px}
-.includes-item{color:var(--text);font-size:14px;line-height:1.4;padding-left:22px;position:relative}
-.includes-item::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
-.price-block{background:linear-gradient(140deg,rgba(245,166,91,.12),rgba(245,166,91,.02));border:1px solid rgba(245,166,91,.3);border-radius:16px;padding:18px;margin-bottom:22px}
-.price-block-label{color:var(--muted);font-size:13px;margin-bottom:4px}
-.price-block-amount{font-size:32px;font-weight:800;color:var(--accent);line-height:1;margin-bottom:6px}
-.price-block-hint{color:var(--muted);font-size:12px}
+.modal-close{position:sticky;top:0;background:linear-gradient(180deg,var(--bg-2) 60%,transparent);padding:16px 22px 12px;display:flex;justify-content:space-between;align-items:center;z-index:2}
+.modal-close .eyebrow{font-size:10px}
+.modal-close-btn{background:none;border:1px solid var(--line);color:var(--gold);width:34px;height:34px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;letter-spacing:0}
+.modal-content{padding:0 22px 32px}
+.modal-map{width:100%;height:220px;background:var(--card) center/cover no-repeat;margin-bottom:24px;border:1px solid var(--line)}
+.modal-cat{font-size:10px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-bottom:10px;font-weight:500}
+.modal-title{font-family:'Playfair Display',serif;font-size:32px;line-height:1.1;font-weight:500;letter-spacing:-.02em;margin-bottom:8px}
+.modal-subtitle{font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:14px;margin-bottom:28px;font-weight:400}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:28px}
+.info-cell{background:var(--bg-2);padding:16px 4px;text-align:center}
+.info-cell-label{color:var(--muted);font-size:9px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:6px;font-weight:500}
+.info-cell-value{font-family:'Playfair Display',serif;font-size:16px;letter-spacing:-.01em;color:var(--cream)}
+.section{margin-bottom:26px}
+.section-title{font-size:10px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-bottom:14px;font-weight:500;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.includes-list{display:flex;flex-direction:column;gap:10px}
+.includes-item{color:var(--cream);font-size:13px;line-height:1.5;padding-left:20px;position:relative;font-weight:300}
+.includes-item::before{content:"—";position:absolute;left:0;color:var(--gold);font-family:'Playfair Display',serif;font-style:italic}
+.price-block{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;margin-bottom:28px;text-align:center}
+.price-block .eyebrow{margin-bottom:10px;font-size:10px}
+.price-block-amount{font-family:'Playfair Display',serif;font-size:44px;color:var(--gold);letter-spacing:-.02em;line-height:1;font-weight:500;margin-bottom:8px}
+.price-block-amount small{font-size:16px;color:var(--muted);font-style:italic;margin-left:6px;font-family:'Inter',sans-serif;font-weight:300;letter-spacing:0}
+.price-block-hint{color:var(--muted);font-size:11px;font-style:italic;font-family:'Playfair Display',serif}
 
-/* success/sent */
-.sent{text-align:center;padding:60px 20px}
-.sent-emoji{font-size:80px;margin-bottom:20px}
-.sent h2{font-size:26px;margin:0 0 12px;font-weight:800}
-.sent p{color:var(--muted);font-size:15px;line-height:1.5;margin:0 0 28px}
+/* pill (option) */
+.option-actions{margin-top:22px}
+.option-actions .btn{padding:16px 0}
 
 /* utility */
-.pill{display:inline-block;background:var(--card);color:var(--muted);font-size:12px;padding:4px 10px;border-radius:99px;margin-right:6px;margin-bottom:6px}
+.center{text-align:center}
 </style>
 </head>
 <body>
@@ -145,193 +194,207 @@ body{background:radial-gradient(1200px 700px at 90% -10%,rgba(245,166,91,.12),tr
 
 <!-- Welcome -->
 <div class="screen active" id="s-welcome">
-  <div class="top">
-    <div class="brand"><span class="brand-dot"></span>Pro Travel · Тверь</div>
+  <div class="hd">
+    <div class="hd-brand">Pro Travel · Тверь</div>
   </div>
   <div class="welcome">
-    <div class="welcome-emoji">🚢</div>
-    <h1>Найду <span>твой круиз</span> за 2 минуты</h1>
-    <p>Ответь на 7 вопросов — покажу 3 круиза под тебя из живой базы MSC и Explora.</p>
-    <div class="welcome-bullets">
-      <div class="welcome-bullet"><span class="welcome-bullet-emoji">🎯</span><div>Учту бюджет, страхи и с кем едешь</div></div>
-      <div class="welcome-bullet"><span class="welcome-bullet-emoji">📅</span><div>Актуальные даты и цены, не из головы</div></div>
-      <div class="welcome-bullet"><span class="welcome-bullet-emoji">💬</span><div>Понравится — пишу лично, подберу каюту</div></div>
+    <div class="eyebrow">Индивидуальный подбор</div>
+    <div class="welcome-orn">✧</div>
+    <h1 class="welcome-head">Найду <em>твой круиз</em><br>за две минуты</h1>
+    <p class="welcome-lead">Семь вопросов — и я подберу три варианта из живой базы MSC и Explora, под твой бюджет, страхи и характер путешествия.</p>
+    <div class="divider"></div>
+    <div class="welcome-list">
+      <div class="wl-item">
+        <div class="wl-num" style="font-style:italic">I</div>
+        <div class="wl-text"><b>Живая база</b><span>Актуальные даты и цены MSC/Explora, не из головы.</span></div>
+      </div>
+      <div class="wl-item">
+        <div class="wl-num" style="font-style:italic">II</div>
+        <div class="wl-text"><b>Личный подход</b><span>Учту с кем едешь, чего боишься, что важно избежать.</span></div>
+      </div>
+      <div class="wl-item">
+        <div class="wl-num" style="font-style:italic">III</div>
+        <div class="wl-text"><b>Ответ лично</b><span>Понравится — свяжусь с тобой сама и подберу каюту.</span></div>
+      </div>
     </div>
-    <button class="btn btn-primary btn-full" onclick="Quiz.start()">Погнали →</button>
+    <button class="btn btn-primary btn-full" onclick="Quiz.start()">Начать подбор</button>
   </div>
 </div>
 
 <!-- Quiz -->
 <div class="screen" id="s-quiz">
-  <div class="top">
-    <button class="back-btn" id="back-btn" onclick="Quiz.back()">← Назад</button>
-    <div class="progress"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-    <div style="width:60px;text-align:right;color:var(--muted);font-size:13px" id="q-counter">1 / 7</div>
+  <div class="hd">
+    <button class="hd-back" id="back-btn" onclick="Quiz.back()">← Назад</button>
+    <div class="hd-count"><span id="q-cur">I</span><small>·</small><span id="q-total">VII</span></div>
   </div>
+  <div class="progress"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="q-eyebrow eyebrow" id="q-eyebrow">Вопрос I</div>
   <h2 class="qtitle" id="q-title"></h2>
   <p class="qhint" id="q-hint"></p>
   <div class="options" id="q-options"></div>
   <div class="actions">
     <button class="btn btn-ghost" id="skip-btn" onclick="Quiz.skip()" style="display:none">Пропустить</button>
-    <button class="btn btn-primary" id="next-btn" onclick="Quiz.next()" disabled>Дальше →</button>
+    <button class="btn btn-primary" id="next-btn" onclick="Quiz.next()" disabled>Дальше</button>
   </div>
 </div>
 
 <!-- Loading -->
 <div class="screen" id="s-loading">
   <div class="loading">
-    <div class="spinner"></div>
-    <div class="loading-text">
-      <b id="loading-title">Ищу подходящие круизы...</b>
-      <span id="loading-sub">смотрю живую базу MSC + Explora</span>
+    <div class="loading-orn">✧</div>
+    <div>
+      <b id="loading-title">Подбираю варианты</b>
+      <div class="loading-sub" id="loading-sub">смотрю живую базу MSC и Explora</div>
     </div>
   </div>
 </div>
 
 <!-- Results -->
 <div class="screen" id="s-results">
-  <div class="top">
-    <button class="back-btn" onclick="Quiz.restart()">← Пройти заново</button>
-    <div class="brand"><span class="brand-dot"></span>Pro Travel</div>
+  <div class="hd">
+    <button class="hd-back" onclick="Quiz.restart()">← Заново</button>
+    <div class="hd-brand">Подборка</div>
   </div>
   <div class="results-head">
-    <h2 id="results-title">Вот 3 варианта под тебя</h2>
+    <div class="results-eyebrow eyebrow">Отобрано для тебя</div>
+    <h2 id="results-title">Три круиза,<br>подобранные <em>лично</em></h2>
     <p id="results-sub"></p>
   </div>
+  <div class="results-divider"></div>
   <div class="cards" id="results-list"></div>
 </div>
 
-<!-- Empty results -->
+<!-- Empty -->
 <div class="screen" id="s-empty">
-  <div class="top">
-    <button class="back-btn" onclick="Quiz.restart()">← Пройти заново</button>
-    <div class="brand"><span class="brand-dot"></span>Pro Travel</div>
+  <div class="hd">
+    <button class="hd-back" onclick="Quiz.restart()">← Заново</button>
+    <div class="hd-brand">Pro Travel</div>
   </div>
   <div class="empty">
-    <div class="empty-emoji">🤔</div>
-    <h3>По твоим фильтрам ничего не нашла</h3>
-    <p>Давай я подберу вручную — напиши мне в личку, что искала. Я знаю больше, чем видит виджет.</p>
-    <button class="btn btn-primary btn-full" onclick="sendManualLead()">Написать Насте</button>
+    <div class="empty-orn">✧</div>
+    <div class="eyebrow" style="margin-bottom:14px">Ничего не подошло</div>
+    <h3>По твоим фильтрам<br><em>ничего не нашла</em></h3>
+    <p>Дай я подберу вручную — напиши мне в личку, что искала. Я знаю больше, чем видит виджет.</p>
+    <button class="btn btn-primary" onclick="sendManualLead()">Написать Насте</button>
   </div>
 </div>
 
 <!-- Sent -->
 <div class="screen" id="s-sent">
   <div class="sent">
-    <div class="sent-emoji">✨</div>
-    <h2>Заявка ушла Насте</h2>
-    <p>Свяжусь с тобой в течение дня — покажу актуальные каюты, цены и оформлю бронирование. Спасибо, что доверяешь!</p>
-    <button class="btn btn-primary btn-full" onclick="Quiz.restart()">Подобрать ещё круиз</button>
+    <div class="sent-orn">✧</div>
+    <div class="eyebrow">Заявка получена</div>
+    <h2>Свяжусь <em>лично</em><br>в течение дня</h2>
+    <p>Подберу актуальные каюты и цены, покажу тебе варианты и оформлю бронирование. Спасибо за доверие.</p>
+    <button class="btn btn-primary" onclick="Quiz.restart()">Подобрать ещё круиз</button>
   </div>
 </div>
 
 </div>
 
 <!-- Modal -->
-<div class="modal" id="modal">
-  <div class="modal-body" id="modal-body"></div>
-</div>
+<div class="modal" id="modal"><div class="modal-body" id="modal-body"></div></div>
 
 <script>
 // ============ CONFIG ============
 const CFG = {
   API: 'https://widget.gocruise.ru/proxy',
-  EUR_TO_RUB: 100, // approx, used only for budget filter display
-  BOT_USER: 'Malinkina_Anastasiia', // fallback tg link
-  BOT_APP: 'TravelAndBusinessBot',
+  EUR_TO_RUB: 100,
+  BOT_USER: 'Malinkina_Nastya',
 };
 
-// Regions grouped by user-facing direction (curated from PAC regions.list)
 const DIRECTIONS = {
-  'med': {label:'Средиземка (Италия, Испания, Греция)', regions:[3,25,35,47,62,64,86,87,88,92,134]},
-  'north': {label:'Северная Европа (Норвегия, фьорды)', regions:[14,18,43,50,52,58,59,63,69,74]},
-  'east': {label:'Восток (Дубай, Азия)', regions:[4,9,29,48,49,57,72,78,79,81]},
-  'carib': {label:'Карибы, Америка', regions:[7,26,34,36,39,44,89,93,95,100]},
-  'any': {label:'Всё равно, покажи что есть', regions:[]},
+  'med': {label:'Средиземноморье', hint:'Италия, Испания, Греция', regions:[3,25,35,47,62,64,86,87,88,92,134]},
+  'north': {label:'Северная Европа', hint:'Норвегия, фьорды', regions:[14,18,43,50,52,58,59,63,69,74]},
+  'east': {label:'Восток', hint:'Дубай, Азия', regions:[4,9,29,48,49,57,72,78,79,81]},
+  'carib': {label:'Америка и Карибы', hint:'', regions:[7,26,34,36,39,44,89,93,95,100]},
+  'any': {label:'Не важно', hint:'покажи всё интересное', regions:[]},
 };
 
 const DATE_RANGES = {
-  'soon': {label:'В ближайший месяц', months:[0,1]},
-  '1-3': {label:'Через 1-3 месяца', months:[1,3]},
-  '3-6': {label:'Через 3-6 месяцев', months:[3,6]},
-  'later': {label:'Позже, планирую заранее', months:[6,18]},
+  'soon': {label:'Ближайший месяц', months:[0,1]},
+  '1-3': {label:'Через 1–3 месяца', months:[1,3]},
+  '3-6': {label:'Через 3–6 месяцев', months:[3,6]},
+  'later': {label:'Планирую заранее', months:[6,18]},
 };
 
 const BUDGET = {
-  'lo': {label:'До 150 000 ₽ / чел', maxEur:1500},
-  'mid': {label:'150 000 - 300 000 ₽', maxEur:3000},
-  'hi': {label:'300 000 - 500 000 ₽', maxEur:5000},
-  'lux': {label:'От 500 000 ₽ / чел', maxEur:99999},
+  'lo': {label:'До 150 000 ₽', hint:'на человека', maxEur:1500},
+  'mid': {label:'150 000 — 300 000 ₽', hint:'на человека', maxEur:3000},
+  'hi': {label:'300 000 — 500 000 ₽', hint:'на человека', maxEur:5000},
+  'lux': {label:'От 500 000 ₽', hint:'бюджет неограничен', maxEur:99999},
 };
+
+const ROMAN = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
 
 // ============ QUESTIONS ============
 const QUESTIONS = [
   {
     key:'company',
-    title:'С кем едешь?',
-    hint:'От этого зависит тип каюты и услуги на борту',
+    title:'С кем <em>едешь</em>?',
+    hint:'От этого зависит тип каюты и услуги на борту.',
     type:'single',
     options:[
-      {v:'solo', emoji:'🙋‍♀️', label:'Одна / один'},
-      {v:'pair', emoji:'💑', label:'С парой'},
-      {v:'family', emoji:'👨‍👩‍👧', label:'Семья с детьми', hint:'подскажу лайнеры для детей'},
-      {v:'friends', emoji:'👯', label:'С компанией друзей'},
+      {v:'solo', label:'Одна / один'},
+      {v:'pair', label:'С парой'},
+      {v:'family', label:'Семья с детьми', hint:'подскажу лайнеры для детей'},
+      {v:'friends', label:'С компанией друзей'},
     ],
   },
   {
     key:'when',
-    title:'Когда планируешь?',
-    hint:'Актуальные круизы под твои даты',
+    title:'Когда <em>планируешь</em>?',
+    hint:'Актуальные круизы под твои даты.',
     type:'single',
-    options:Object.entries(DATE_RANGES).map(([v,d])=>({v, emoji:'📅', label:d.label})),
+    options:Object.entries(DATE_RANGES).map(([v,d])=>({v, label:d.label})),
   },
   {
     key:'budget',
-    title:'Какой бюджет на человека?',
-    hint:'Указывай честно — я найду то, что реально подходит',
+    title:'Какой <em>бюджет</em>?',
+    hint:'Указывай честно — найду то, что реально подходит.',
     type:'single',
-    options:Object.entries(BUDGET).map(([v,d])=>({v, emoji:'💰', label:d.label})),
+    options:Object.entries(BUDGET).map(([v,d])=>({v, label:d.label, hint:d.hint})),
   },
   {
     key:'direction',
-    title:'Куда тянет?',
-    hint:'Можно "всё равно" — сама выберу самое интересное',
+    title:'Куда <em>тянет</em>?',
+    hint:'Можно «не важно» — сама выберу самое интересное.',
     type:'single',
-    options:Object.entries(DIRECTIONS).map(([v,d])=>({v, emoji:'🌍', label:d.label})),
+    options:Object.entries(DIRECTIONS).map(([v,d])=>({v, label:d.label, hint:d.hint})),
   },
   {
     key:'first',
-    title:'Первый круиз в жизни?',
-    hint:'Если первый — покажу спокойные маршруты для старта',
+    title:'Первый <em>круиз</em> в жизни?',
+    hint:'Если первый — покажу спокойные маршруты для старта.',
     type:'single',
     options:[
-      {v:'yes', emoji:'🌟', label:'Да, первый'},
-      {v:'no', emoji:'✈️', label:'Нет, ходил(а) раньше'},
+      {v:'yes', label:'Да, первый'},
+      {v:'no', label:'Нет, ходил(а) раньше'},
     ],
   },
   {
     key:'avoid',
-    title:'Что важно избежать?',
-    hint:'Можно выбрать <b>несколько</b> или ничего',
+    title:'Что важно <em>избежать</em>?',
+    hint:'Можно выбрать <b>несколько</b> или ничего.',
     type:'multi',
     options:[
-      {v:'seasick', emoji:'🌊', label:'Качку', hint:'спокойные моря, большие лайнеры'},
-      {v:'longflight', emoji:'✈️', label:'Долгий перелёт', hint:'вылет из ЕС/России'},
-      {v:'transfers', emoji:'🔀', label:'Пересадки'},
-      {v:'visa', emoji:'📋', label:'Возню с визой'},
+      {v:'seasick', label:'Качку', hint:'спокойные моря, большие лайнеры'},
+      {v:'longflight', label:'Долгий перелёт', hint:'вылет из ЕС/России'},
+      {v:'transfers', label:'Пересадки'},
+      {v:'visa', label:'Возню с визой'},
     ],
     skippable:true,
   },
   {
     key:'visa',
-    title:'Виза',
-    hint:'Опционально — можно пропустить',
+    title:'<em>Виза</em>',
+    hint:'Опционально — можно пропустить.',
     type:'single',
     options:[
-      {v:'schengen', emoji:'✅', label:'Есть Шенген'},
-      {v:'other', emoji:'📘', label:'Есть другая виза'},
-      {v:'none', emoji:'❌', label:'Нет визы'},
-      {v:'ready', emoji:'📝', label:'Готова оформить'},
+      {v:'schengen', label:'Есть Шенген'},
+      {v:'other', label:'Есть другая виза'},
+      {v:'none', label:'Нет визы'},
+      {v:'ready', label:'Готова оформить'},
     ],
     skippable:true,
   },
@@ -339,7 +402,7 @@ const QUESTIONS = [
 
 // ============ STATE ============
 const state = {
-  answers:{}, // key -> value(s)
+  answers:{},
   qIdx:0,
   cruises:[],
   ships:{},
@@ -348,7 +411,7 @@ const state = {
   selectedCruise:null,
 };
 
-// ============ QUIZ ENGINE ============
+// ============ QUIZ ============
 const Quiz = {
   start(){
     state.qIdx = 0;
@@ -358,22 +421,24 @@ const Quiz = {
   },
   render(){
     const q = QUESTIONS[state.qIdx];
-    document.getElementById('q-title').textContent = q.title;
+    document.getElementById('q-title').innerHTML = q.title;
     document.getElementById('q-hint').innerHTML = q.hint;
+    document.getElementById('q-eyebrow').textContent = `Вопрос ${ROMAN[state.qIdx]}`;
+    document.getElementById('q-cur').textContent = ROMAN[state.qIdx];
+    document.getElementById('q-total').textContent = ROMAN[QUESTIONS.length-1];
     document.getElementById('progress-fill').style.width = ((state.qIdx+1)/QUESTIONS.length*100)+'%';
-    document.getElementById('q-counter').textContent = `${state.qIdx+1} / ${QUESTIONS.length}`;
     document.getElementById('back-btn').disabled = state.qIdx===0;
     document.getElementById('skip-btn').style.display = q.skippable ? '' : 'none';
 
     const cur = state.answers[q.key];
     const container = document.getElementById('q-options');
     container.innerHTML = '';
-    q.options.forEach(o=>{
+    q.options.forEach((o,i)=>{
       const isSel = q.type==='multi' ? (cur||[]).includes(o.v) : cur===o.v;
       const btn = document.createElement('button');
       btn.className = 'option'+(isSel?' selected':'');
       btn.innerHTML = `
-        <span class="option-emoji">${o.emoji}</span>
+        <span class="option-num">${String(i+1).padStart(2,'0')}</span>
         <span class="option-text">${o.label}${o.hint?`<small>${o.hint}</small>`:''}</span>
         <span class="option-check"></span>
       `;
@@ -381,6 +446,7 @@ const Quiz = {
       container.appendChild(btn);
     });
     document.getElementById('next-btn').disabled = !this.canNext();
+    document.getElementById('next-btn').textContent = state.qIdx === QUESTIONS.length-1 ? 'Показать подборку' : 'Дальше';
   },
   pick(v){
     const q = QUESTIONS[state.qIdx];
@@ -401,34 +467,21 @@ const Quiz = {
   },
   next(){
     if(!this.canNext()) return;
-    if(state.qIdx < QUESTIONS.length-1){
-      state.qIdx++;
-      this.render();
-    } else {
-      Quiz.search();
-    }
+    if(state.qIdx < QUESTIONS.length-1){ state.qIdx++; this.render(); }
+    else Quiz.search();
   },
   skip(){
-    if(state.qIdx < QUESTIONS.length-1){
-      state.qIdx++;
-      this.render();
-    } else {
-      Quiz.search();
-    }
+    if(state.qIdx < QUESTIONS.length-1){ state.qIdx++; this.render(); }
+    else Quiz.search();
   },
-  back(){
-    if(state.qIdx>0){ state.qIdx--; this.render(); }
-  },
+  back(){ if(state.qIdx>0){ state.qIdx--; this.render(); } },
   async search(){
     swap('s-loading');
     try {
       await Search.run();
       if(state.cruises.length===0) swap('s-empty');
       else { swap('s-results'); Results.render(); }
-    } catch(e){
-      console.error(e);
-      swap('s-empty');
-    }
+    } catch(e){ console.error(e); swap('s-empty'); }
   },
   restart(){
     state.qIdx = 0; state.answers = {}; state.cruises = []; state.selectedCruise = null;
@@ -467,20 +520,17 @@ const Search = {
   async run(){
     if(Object.keys(state.ships).length===0) await API.loadDicts();
     const {dateFrom, dateTill} = this.dateRange();
-    // fetch both vendors
     const [msc, exj] = await Promise.all([
       API.call('cruises.find', {dateFrom, dateTill, vendors:'MSC'}).catch(()=>[]),
       API.call('cruises.find', {dateFrom, dateTill, vendors:'EXJ'}).catch(()=>[]),
     ]);
     let all = [...(msc||[]), ...(exj||[])];
-    // dedupe by grouping (same cruise different fares)
     const seen = new Set();
     all = all.filter(c=>{
       const k = c.grouping || c.id;
       if(seen.has(k)) return false;
       seen.add(k); return true;
     });
-    // score and filter
     all = all.map(c=>({...c, score:this.score(c)})).filter(c=>c.score>-100);
     all.sort((a,b)=>b.score-a.score);
     state.cruises = all.slice(0, 3);
@@ -497,48 +547,34 @@ const Search = {
   score(c){
     let s = 0;
     const a = state.answers;
-    // direction match
     if(a.direction && a.direction!=='any'){
       const targetRegs = DIRECTIONS[a.direction].regions;
       const has = (c.regions||[]).some(r=>targetRegs.includes(r));
-      if(has) s += 50;
-      else s -= 200; // strong exclusion
+      if(has) s += 50; else s -= 200;
     }
-    // budget
     const price = this.getPriceRub(c);
     if(price && a.budget){
       const max = BUDGET[a.budget].maxEur * CFG.EUR_TO_RUB;
-      const perPax = price;
-      if(perPax <= max) s += 30;
-      else if(perPax <= max*1.2) s += 5; // slight tolerance
+      if(price <= max) s += 30;
+      else if(price <= max*1.2) s += 5;
       else s -= 150;
     }
-    // seasick: prefer large ships (ship class not exposed, so prefer non-EXJ Explora=small luxury, MSC=big)
     if((a.avoid||[]).includes('seasick')){
       if(c.vendor==='MSC') s += 8;
-      // prefer summer months (calmer)
       const m = new Date(c.date).getMonth()+1;
       if(m>=5 && m<=9) s += 5;
     }
-    // visa concerns
     if((a.avoid||[]).includes('visa') || a.visa==='none'){
-      // Emirates/Turkey/Asia friendlier
       const easy = [4,17,29,48,49,57,72,78,79];
       const has = (c.regions||[]).some(r=>easy.includes(r));
       if(has) s += 20;
     }
-    // first cruise: 7 nights sweet spot
     if(a.first==='yes'){
       if(c.nights>=6 && c.nights<=8) s += 15;
       if(c.nights>14) s -= 10;
     }
-    // long flight avoidance: prefer flight-included or EU ports
-    if((a.avoid||[]).includes('longflight')){
-      if(c.flight) s += 10;
-    }
-    // slight bonus for having a map (nicer card)
+    if((a.avoid||[]).includes('longflight') && c.flight) s += 10;
     if(c.map) s += 2;
-    // recency (sooner is more relevant if soon)
     if(a.when==='soon'){
       const days = (new Date(c.date) - new Date())/(1000*60*60*24);
       if(days<60) s += 10;
@@ -548,13 +584,11 @@ const Search = {
   getPriceRub(c){
     const fares = c.priceInfo?.fares || [];
     if(!fares.length) return null;
-    // find cheapest fare with grossPriceAmount
     const prices = fares.map(f=>f.grossPriceAmount).filter(p=>p>0);
     if(!prices.length) return null;
     const paxNum = fares[0].paxNum || 2;
     const totalEur = Math.min(...prices);
-    const perPaxEur = totalEur / paxNum;
-    return perPaxEur * CFG.EUR_TO_RUB;
+    return (totalEur / paxNum) * CFG.EUR_TO_RUB;
   },
 };
 
@@ -563,49 +597,58 @@ const Results = {
   render(){
     const list = document.getElementById('results-list');
     list.innerHTML = '';
-    state.cruises.forEach(c=>{
+    state.cruises.forEach((c,i)=>{
       const ship = state.ships[c.ships?.[0]];
       const portFrom = state.cities[c.departurePort]?.title || '';
       const portTo = state.cities[c.destinationPort]?.title || '';
       const price = Search.getPriceRub(c);
-      const priceStr = price ? this.formatPrice(price) : 'от запроса';
+      const priceStr = price ? this.formatPrice(price) : 'по запросу';
       const img = c.map || c.mapVendor || '';
       const dateStr = this.formatDate(c.date);
+      const vendorLabel = c.vendor==='MSC' ? 'MSC Cruises' : 'Explora Journeys';
+      const cat = this.deriveCategory(c);
       const el = document.createElement('div');
       el.className = 'card';
       el.onclick = ()=>Modal.open(c);
+      const port3 = (portFrom || '').slice(0,3).toUpperCase();
       el.innerHTML = `
-        <div class="card-img" style="background-image:url('${img}')">
-          <div class="card-img-overlay">
-            <span class="card-badge">${c.vendor==='MSC'?'MSC':'Explora'}</span>
-          </div>
+        <div class="card-hero">
+          <div class="hero-badge">${vendorLabel}</div>
+          <div class="hero-num">${ROMAN[i]}</div>
+          ${img?`<img src="${img}" alt="">`:''}
         </div>
-        <div class="card-body">
-          <h3 class="card-title">${c.title}</h3>
-          <p class="card-ship">${ship?.title || ''}</p>
-          <div class="card-meta">
-            <span class="card-meta-item">📅 ${dateStr}</span>
-            <span class="card-meta-item">🌙 ${c.nights} ночей</span>
+        <div class="card-cat">${cat}</div>
+        <h3 class="card-title">${c.title}</h3>
+        <div class="card-ship">${ship?.title || vendorLabel}${portTo && portTo!==portFrom?` · ${portFrom} → ${portTo}`:''}</div>
+        <div class="meta">
+          <div class="meta-item"><div class="meta-label">Дата</div><div class="meta-value">${dateStr}</div></div>
+          <div class="meta-item"><div class="meta-label">Ночей</div><div class="meta-value">${c.nights}</div></div>
+          <div class="meta-item"><div class="meta-label">Порт</div><div class="meta-value">${port3 || '—'}</div></div>
+        </div>
+        <div class="price-row">
+          <div class="price-side">
+            <div class="price-label">от</div>
+            <div class="price">${priceStr}</div>
           </div>
-          <div class="card-meta" style="margin-bottom:0">
-            <span class="card-meta-item" style="flex:1">📍 ${portFrom}${portTo && portTo!==portFrom?' → '+portTo:''}</span>
-          </div>
-          <div class="card-price">
-            <span class="card-price-label">от</span>
-            <span class="card-price-amount">${priceStr}</span>
-          </div>
+          <div class="card-cta">Смотреть</div>
         </div>
       `;
       list.appendChild(el);
     });
-    // subtitle with reasoning
-    const dir = state.answers.direction && state.answers.direction!=='any' ? DIRECTIONS[state.answers.direction].label.split(' (')[0] : 'разные направления';
+    const dir = state.answers.direction && state.answers.direction!=='any' ? DIRECTIONS[state.answers.direction].label : 'разные направления';
     const when = state.answers.when ? DATE_RANGES[state.answers.when].label.toLowerCase() : '';
-    document.getElementById('results-sub').textContent = `${dir}, ${when}. Тапни на карточку — покажу детали.`;
+    document.getElementById('results-sub').textContent = `${dir}, ${when}. Тапни на карточку — покажу подробности.`;
+  },
+  deriveCategory(c){
+    const a = state.answers;
+    if(c.vendor==='EXJ') return 'Люкс';
+    if((a.avoid||[]).includes('visa') || a.visa==='none') return 'Без визы';
+    if(a.first==='yes') return 'Классика';
+    return 'Классика';
   },
   formatPrice(rub){
-    if(rub>=1000000) return `${(rub/1000000).toFixed(1)} млн ₽`;
-    return `${Math.round(rub/1000)} 000 ₽`;
+    if(rub>=1000000) return `${(rub/1000000).toFixed(1)} млн`;
+    return `${Math.round(rub/1000)}K`;
   },
   formatDate(iso){
     const d = new Date(iso);
@@ -625,37 +668,43 @@ const Modal = {
     const priceStr = price ? Results.formatPrice(price) : 'по запросу';
     const img = c.map || c.mapVendor || '';
     const includes = (c.priceInfo?.priceIncludes || []).slice(0,5);
+    const cat = Results.deriveCategory(c);
+    const vendorLabel = c.vendor==='MSC' ? 'MSC Cruises' : 'Explora Journeys';
     const body = document.getElementById('modal-body');
     body.innerHTML = `
-      <div class="modal-close"><button class="modal-close-btn" onclick="Modal.close()">✕</button></div>
+      <div class="modal-close">
+        <div class="eyebrow">Детали круиза</div>
+        <button class="modal-close-btn" onclick="Modal.close()">✕</button>
+      </div>
       <div class="modal-content">
         ${img?`<div class="modal-map" style="background-image:url('${img}')"></div>`:''}
+        <div class="modal-cat">${cat} · ${vendorLabel}</div>
         <h2 class="modal-title">${c.title}</h2>
-        <p class="modal-subtitle">${ship?.title || ''} · ${c.vendor==='MSC'?'MSC Cruises':'Explora Journeys'}</p>
-
-        <div class="price-block">
-          <div class="price-block-label">Стоимость от</div>
-          <div class="price-block-amount">${priceStr}</div>
-          <div class="price-block-hint">на человека при 2-местном размещении, курс приблизительный</div>
-        </div>
+        <div class="modal-subtitle">${ship?.title || vendorLabel}${portTo && portTo!==portFrom?` · ${portFrom} → ${portTo}`:''}</div>
 
         <div class="info-grid">
-          <div class="info-cell"><div class="info-cell-label">Дата старта</div><div class="info-cell-value">${Results.formatDate(c.date)} ${new Date(c.date).getFullYear()}</div></div>
+          <div class="info-cell"><div class="info-cell-label">Отправление</div><div class="info-cell-value">${Results.formatDate(c.date)} ${new Date(c.date).getFullYear()}</div></div>
           <div class="info-cell"><div class="info-cell-label">Длительность</div><div class="info-cell-value">${c.nights} ночей</div></div>
           <div class="info-cell"><div class="info-cell-label">Порт вылета</div><div class="info-cell-value">${portFrom}</div></div>
           <div class="info-cell"><div class="info-cell-label">Порт прихода</div><div class="info-cell-value">${portTo}</div></div>
         </div>
 
+        <div class="price-block">
+          <div class="eyebrow">Стоимость от</div>
+          <div class="price-block-amount">${priceStr}<small>₽ / чел</small></div>
+          <div class="price-block-hint">на человека при 2-местном размещении</div>
+        </div>
+
         ${includes.length?`
         <div class="section">
-          <h4>Что включено</h4>
+          <div class="section-title">Что включено</div>
           <div class="includes-list">
             ${includes.map(i=>`<div class="includes-item">${stripHtml(i)}</div>`).join('')}
           </div>
         </div>`:''}
 
-        <button class="btn btn-primary btn-full" onclick="sendLead()">Хочу этот круиз →</button>
-        <button class="btn" style="width:100%;background:transparent;color:var(--muted);margin-top:8px;padding:12px" onclick="Modal.close()">Закрыть</button>
+        <button class="btn btn-primary btn-full" onclick="sendLead()" style="margin-top:12px">Хочу этот круиз</button>
+        <button class="btn btn-ghost btn-full" style="margin-top:8px" onclick="Modal.close()">Закрыть</button>
       </div>
     `;
     document.getElementById('modal').classList.add('active');
@@ -663,7 +712,7 @@ const Modal = {
   close(){ document.getElementById('modal').classList.remove('active'); },
 };
 
-// ============ LEAD SUBMISSION ============
+// ============ LEAD ============
 function summarizeAnswers(){
   const a = state.answers;
   const parts = [];
@@ -697,14 +746,12 @@ function sendLead(){
   };
   const tg = window.Telegram?.WebApp;
   if(tg && tg.initData){
-    // Real mini-app context — send to bot
     tg.sendData(JSON.stringify(payload));
     tg.close();
   } else {
-    // Fallback: open tg chat with prefilled message
     const text = `Хочу этот круиз:\n\n🚢 ${c.title}\n📅 ${c.date}, ${c.nights} ночей\n\n${summarizeAnswers()}`;
     window.open(`https://t.me/${CFG.BOT_USER}?text=${encodeURIComponent(text)}`, '_blank');
-    swap('s-sent');
+    Modal.close(); swap('s-sent');
   }
 }
 
@@ -732,8 +779,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const tg = window.Telegram?.WebApp;
   if(tg){
     tg.expand();
-    tg.setHeaderColor('#0B1220');
-    tg.setBackgroundColor('#0B1220');
+    tg.setHeaderColor('#0A1628');
+    tg.setBackgroundColor('#0A1628');
     tg.ready();
   }
 });
