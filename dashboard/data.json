@@ -1,6 +1,6 @@
 {
-  "as_of": "02 July 2026, 21:31 МСК",
-  "as_of_iso": "2026-07-02T21:31:54.180093+03:00",
+  "as_of": "02 July 2026, 21:32 МСК",
+  "as_of_iso": "2026-07-02T21:32:27.000672+03:00",
   "today_str": "2 июля",
   "month": {
     "name": "июль 2026",
@@ -17,9 +17,9 @@
     "payments_count": 2,
     "delta_pct": -95,
     "bank_comm": 420,
-    "ie_overhead": 0,
+    "ie_overhead": 19051,
     "operator_pay": 55137,
-    "other_exp": 19051,
+    "other_exp": 0,
     "top_operator": {
       "name": "Ла Вояж",
       "amount": 60000
