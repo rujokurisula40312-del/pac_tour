@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Мокап C · Sunset</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-1:#0F3D5C;
+  --bg-2:#256477;
+  --aqua:#6FDCE3;
+  --aqua-2:#4BBCC2;
+  --coral:#FF7F5A;
+  --coral-2:#FFA783;
+  --sand:#FCE8C4;
+  --card:rgba(255,255,255,.08);
+  --card-2:rgba(255,255,255,.14);
+  --line:rgba(255,255,255,.14);
+  --text:#FFFFFF;
+  --muted:rgba(255,255,255,.72);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{color:var(--text);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;min-height:100%}
+body{
+  background:
+    radial-gradient(700px 500px at 10% 10%,rgba(111,220,227,.4),transparent 60%),
+    radial-gradient(600px 500px at 100% 90%,rgba(255,127,90,.35),transparent 60%),
+    linear-gradient(160deg,#0F3D5C 0%, #1E5878 45%, #F5A65B 100%);
+  background-attachment:fixed;
+  min-height:100%;
+}
+
+/* animated waves at top */
+.wave-bg{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.wave-bg svg{position:absolute;bottom:-2px;width:200%;height:120px;opacity:.15;animation:wave 22s linear infinite}
+@keyframes wave{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+#app{max-width:520px;margin:0 auto;padding:22px 18px 60px;position:relative;z-index:1}
+
+/* header */
+.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}
+.hd-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px;letter-spacing:.02em}
+.hd-emoji{font-size:22px}
+.hd-back{background:var(--card-2);backdrop-filter:blur(20px);border:1px solid var(--line);color:var(--text);font-size:13px;text-decoration:none;padding:8px 14px;border-radius:99px;font-weight:600}
+
+/* intro */
+.pill{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(120deg,var(--coral),var(--coral-2));padding:8px 16px;border-radius:99px;font-size:12px;font-weight:700;margin-bottom:18px;box-shadow:0 8px 24px rgba(255,127,90,.35)}
+.pill::before{content:"✨"}
+.headline{font-size:38px;line-height:1.05;letter-spacing:-.02em;font-weight:800;margin-bottom:14px}
+.headline span{background:linear-gradient(120deg,var(--aqua),#B5F3EA);-webkit-background-clip:text;background-clip:text;color:transparent}
+.headline em{font-style:normal;background:linear-gradient(120deg,var(--coral-2),var(--sand));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);font-size:15px;line-height:1.55;max-width:400px;margin-bottom:32px}
+
+/* card */
+.card{background:var(--card);backdrop-filter:blur(24px);border:1px solid var(--line);border-radius:28px;overflow:hidden;margin-bottom:18px;box-shadow:0 20px 60px rgba(0,0,0,.25);transition:transform .25s ease}
+.card:active{transform:scale(.98)}
+.card-hero{position:relative;height:200px;overflow:hidden}
+.card-hero img{width:100%;height:100%;object-fit:cover}
+.card-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(15,61,92,.65));pointer-events:none}
+.hero-badge{position:absolute;top:14px;left:14px;background:rgba(15,61,92,.7);backdrop-filter:blur(12px);color:var(--aqua);font-size:11px;padding:6px 12px;border-radius:99px;font-weight:700;border:1px solid rgba(111,220,227,.35);letter-spacing:.02em}
+.hero-fav{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;background:linear-gradient(120deg,var(--coral),var(--coral-2));display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;box-shadow:0 6px 18px rgba(255,127,90,.4)}
+.hero-tag-bottom{position:absolute;bottom:14px;left:14px;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;z-index:2}
+.hero-tag-bottom span{background:rgba(255,255,255,.2);backdrop-filter:blur(8px);padding:4px 10px;border-radius:99px}
+
+.card-body{padding:20px 22px 22px}
+.card-title{font-size:22px;line-height:1.2;font-weight:800;letter-spacing:-.01em;margin-bottom:6px}
+.card-ship{color:var(--muted);font-size:14px;margin-bottom:16px;font-weight:500}
+.meta{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.meta-chip{background:var(--card-2);border:1px solid var(--line);padding:6px 12px;border-radius:99px;font-size:12px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
+.price-row{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--line)}
+.price-label{font-size:11px;color:var(--muted);margin-bottom:2px;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.price{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1;background:linear-gradient(120deg,var(--aqua),#F5F1E8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.price small{font-size:13px;color:var(--muted);font-weight:500;margin-left:4px;-webkit-text-fill-color:var(--muted)}
+.cta{background:linear-gradient(120deg,var(--coral),var(--coral-2));color:#fff;border:none;font-family:'Manrope',sans-serif;font-size:14px;font-weight:800;padding:13px 22px;border-radius:99px;cursor:pointer;box-shadow:0 8px 22px rgba(255,127,90,.4);transition:transform .15s ease}
+.cta:active{transform:scale(.95)}
+.cta::after{content:" →"}
+
+/* sig */
+.sig{margin-top:36px;padding:22px;background:var(--card);backdrop-filter:blur(24px);border:1px solid var(--line);border-radius:24px;text-align:center}
+.sig-emoji{font-size:28px;margin-bottom:8px}
+.sig-text{font-size:14px;color:var(--muted);line-height:1.45}
+.sig-text b{color:var(--text);display:block;margin-bottom:4px;font-weight:800;font-size:15px}
+</style>
+</head>
+<body>
+<div class="wave-bg">
+  <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+    <path d="M0,60 C300,120 600,0 900,60 C1050,90 1150,90 1200,60 L1200,120 L0,120 Z" fill="#6FDCE3"/>
+  </svg>
+</div>
+<div id="app">
+  <div class="hd">
+    <div class="hd-brand"><span class="hd-emoji">🌊</span>Pro Travel · Тверь</div>
+    <a class="hd-back" href="#">← Заново</a>
+  </div>
+
+  <div class="pill">Персональная подборка</div>
+  <h1 class="headline">Твой круиз <span>уже</span> <em>где-то ждёт</em></h1>
+  <p class="lead">Три варианта под твой профиль: пара, Средиземка, от 300 000 ₽ на человека. Открывай карточки — там детали и «Хочу этот».</p>
+
+  <!-- card 1 -->
+  <div class="card">
+    <div class="card-hero">
+      <div class="hero-badge">✦ Explora Journeys</div>
+      <div class="hero-fav">♡</div>
+      <div class="hero-tag-bottom"><span>Люкс</span></div>
+      <img src="https://images.unsplash.com/photo-1580541631950-7282082b53fe?w=900&auto=format&fit=crop&q=80" alt="">
+    </div>
+    <div class="card-body">
+      <h2 class="card-title">Riviera Grand Tour</h2>
+      <div class="card-ship">Explora I · Барселона → Ницца → Рим</div>
+      <div class="meta">
+        <span class="meta-chip">📅 14 сен</span>
+        <span class="meta-chip">🌙 7 ночей</span>
+        <span class="meta-chip">📍 BCN</span>
+      </div>
+      <div class="price-row">
+        <div>
+          <div class="price-label">от</div>
+          <div class="price">780K<small>₽/чел</small></div>
+        </div>
+        <button class="cta">Хочу</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- card 2 -->
+  <div class="card">
+    <div class="card-hero">
+      <div class="hero-badge">✦ MSC Cruises</div>
+      <div class="hero-fav">♡</div>
+      <div class="hero-tag-bottom"><span>Классика</span></div>
+      <img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=900&auto=format&fit=crop&q=80" alt="">
+    </div>
+    <div class="card-body">
+      <h2 class="card-title">Классика Средиземноморья</h2>
+      <div class="card-ship">MSC Fantasia · Генуя → Марсель → Мальта</div>
+      <div class="meta">
+        <span class="meta-chip">📅 3 окт</span>
+        <span class="meta-chip">🌙 7 ночей</span>
+        <span class="meta-chip">📍 Генуя</span>
+      </div>
+      <div class="price-row">
+        <div>
+          <div class="price-label">от</div>
+          <div class="price">350K<small>₽/чел</small></div>
+        </div>
+        <button class="cta">Хочу</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- card 3 -->
+  <div class="card">
+    <div class="card-hero">
+      <div class="hero-badge">✦ MSC Cruises</div>
+      <div class="hero-fav">♡</div>
+      <div class="hero-tag-bottom"><span>Без визы</span></div>
+      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900&auto=format&fit=crop&q=80" alt="">
+    </div>
+    <div class="card-body">
+      <h2 class="card-title">Эмираты и Оман</h2>
+      <div class="card-ship">MSC Bellissima · Дубай → Абу-Даби → Маскат</div>
+      <div class="meta">
+        <span class="meta-chip">📅 21 ноя</span>
+        <span class="meta-chip">🌙 7 ночей</span>
+        <span class="meta-chip">📍 Дубай</span>
+      </div>
+      <div class="price-row">
+        <div>
+          <div class="price-label">от</div>
+          <div class="price">180K<small>₽/чел</small></div>
+        </div>
+        <button class="cta">Хочу</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sig">
+    <div class="sig-emoji">🌊</div>
+    <div class="sig-text">
+      <b>Понравится — свяжусь</b>
+      Настя подберёт каюту лично, покажет актуальные цены и оформит бронирование.
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Мокап B · Minimal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5EFE6;
+  --bg-2:#EDE5D6;
+  --card:#FFFFFF;
+  --line:rgba(42,38,32,.08);
+  --coal:#2A2620;
+  --coal-2:#5A5449;
+  --clay:#C56A48;
+  --clay-2:#A85736;
+  --sand:#D9CBB4;
+  --muted:#8A8377;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--coal);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;min-height:100%}
+#app{max-width:520px;margin:0 auto;padding:28px 22px 60px}
+.serif{font-family:'Fraunces',serif}
+
+/* header */
+.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px}
+.hd-brand{font-family:'Fraunces',serif;font-size:18px;color:var(--coal);font-weight:600;letter-spacing:-.01em}
+.hd-brand em{font-style:italic;color:var(--clay);font-weight:400}
+.hd-back{color:var(--coal-2);font-size:13px;text-decoration:none;padding:6px 12px;border:1px solid var(--line);border-radius:99px}
+
+/* intro */
+.intro-tag{display:inline-flex;align-items:center;gap:6px;background:var(--bg-2);padding:6px 12px;border-radius:99px;font-size:12px;color:var(--clay);margin-bottom:20px;font-weight:500}
+.intro-tag::before{content:"";width:6px;height:6px;background:var(--clay);border-radius:50%}
+.headline{font-family:'Fraunces',serif;font-size:42px;line-height:1.02;letter-spacing:-.03em;font-weight:600;margin-bottom:14px;color:var(--coal)}
+.headline em{font-style:italic;color:var(--clay);font-weight:400}
+.lead{color:var(--coal-2);font-size:15px;line-height:1.6;max-width:400px;margin-bottom:38px;font-weight:400}
+.lead b{color:var(--coal);font-weight:600}
+
+/* card */
+.card{background:var(--card);border-radius:22px;overflow:hidden;margin-bottom:20px;box-shadow:0 2px 24px rgba(42,38,32,.05);transition:transform .2s ease}
+.card:active{transform:scale(.99)}
+.card-hero{position:relative;height:230px;overflow:hidden}
+.card-hero img{width:100%;height:100%;object-fit:cover}
+.hero-tag{position:absolute;top:14px;left:14px;background:rgba(255,255,255,.94);color:var(--coal);font-size:11px;padding:7px 12px;border-radius:99px;font-weight:600;letter-spacing:.02em;backdrop-filter:blur(8px)}
+.hero-fav{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.94);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;backdrop-filter:blur(8px);color:var(--clay)}
+.card-body{padding:20px 22px 22px}
+.card-cat{font-size:12px;color:var(--muted);margin-bottom:8px;letter-spacing:.01em}
+.card-cat b{color:var(--clay);font-weight:600}
+.card-title{font-family:'Fraunces',serif;font-size:24px;line-height:1.15;font-weight:600;letter-spacing:-.02em;margin-bottom:8px}
+.card-ship{font-family:'Fraunces',serif;font-style:italic;color:var(--coal-2);font-size:14px;font-weight:400;margin-bottom:18px}
+.meta{display:flex;gap:16px;color:var(--coal-2);font-size:13px;margin-bottom:20px}
+.meta-item{display:flex;align-items:center;gap:6px}
+.meta-emoji{font-size:14px}
+.price-row{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px dashed var(--line)}
+.price-side{}
+.price-label{font-size:12px;color:var(--muted);margin-bottom:2px}
+.price{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--coal);letter-spacing:-.02em;line-height:1}
+.price small{font-size:13px;color:var(--coal-2);font-family:'Inter',sans-serif;font-weight:400;margin-left:4px}
+.cta{background:var(--coal);color:var(--bg);border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:12px 20px;border-radius:99px;cursor:pointer;letter-spacing:.01em}
+.cta:after{content:" →"}
+
+/* signature */
+.sig{margin-top:44px;padding:24px;background:var(--bg-2);border-radius:22px;display:flex;align-items:center;gap:14px}
+.sig-photo{width:52px;height:52px;border-radius:50%;background:var(--sand) center/cover no-repeat;background-image:url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80');flex-shrink:0}
+.sig-text{font-size:14px;color:var(--coal-2);line-height:1.4}
+.sig-text b{color:var(--coal);font-family:'Fraunces',serif;font-size:16px;font-weight:600;display:block;margin-bottom:2px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="hd">
+    <div class="hd-brand">Pro <em>Travel</em></div>
+    <a class="hd-back" href="#">← заново</a>
+  </div>
+
+  <div class="intro-tag">3 варианта под тебя</div>
+  <h1 class="headline">Собрала<br>то, что <em>подойдёт</em></h1>
+  <p class="lead">Пара, Средиземка, от 300 000 ₽. <b>Тапни на карточку — покажу детали.</b></p>
+
+  <!-- card 1 -->
+  <div class="card">
+    <div class="card-hero">
+      <div class="hero-tag">Explora Journeys</div>
+      <div class="hero-fav">♡</div>
+      <img src="https://images.unsplash.com/photo-1580541631950-7282082b53fe?w=900&auto=format&fit=crop&q=80" alt="">
+    </div>
+    <div class="card-body">
+      <div class="card-cat"><b>Люкс</b> · Средиземноморье</div>
+      <h2 class="card-title">Riviera Grand Tour</h2>
+      <div class="card-ship">Explora I · Барселона → Ницца → Рим</div>
+      <div class="meta">
+        <span class="meta-item"><span class="meta-emoji">📅</span>14 сен</span>
+        <span class="meta-item"><span class="meta-emoji">🌙</span>7 ночей</span>
+        <span class="meta-item"><span class="meta-emoji">📍</span>Барселона</span>
+      </div>
+      <div class="price-row">
+        <div class="price-side">
+          <div class="price-label">от</div>
+          <div class="price">780 000<small>₽/чел</small></div>
+        </div>
+        <button class="cta">Хочу</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- card 2 -->
+  <div class="card">
+    <div class="card-hero">
+      <div class="hero-tag">MSC Cruises</div>
+      <div class="hero-fav">♡</div>
+      <img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=900&auto=format&fit=crop&q=80" alt="">
+    </div>
+    <div class="card-body">
+      <div class="card-cat"><b>Классика</b> · Средиземное море</div>
+      <h2 class="card-title">Классика Средиземноморья</h2>
+      <div class="card-ship">MSC Fantasia · Генуя → Марсель → Мальта</div>
+      <div class="meta">
+        <span class="meta-item"><span class="meta-emoji">📅</span>3 окт</span>
+        <span class="meta-item"><span class="meta-emoji">🌙</span>7 ночей</span>
+        <span class="meta-item"><span class="meta-emoji">📍</span>Генуя</span>
+      </div>
+      <div class="price-row">
+        <div class="price-side">
+          <div class="price-label">от</div>
+          <div class="price">350 000<small>₽/чел</small></div>
+        </div>
+        <button class="cta">Хочу</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- card 3 -->
+  <div class="card">
+    <div class="card-hero">
+      <div class="hero-tag">MSC Cruises</div>
+      <div class="hero-fav">♡</div>
+      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900&auto=format&fit=crop&q=80" alt="">
+    </div>
+    <div class="card-body">
+      <div class="card-cat"><b>Без визы</b> · Персидский залив</div>
+      <h2 class="card-title">Эмираты и Оман</h2>
+      <div class="card-ship">MSC Bellissima · Дубай → Абу-Даби → Маскат</div>
+      <div class="meta">
+        <span class="meta-item"><span class="meta-emoji">📅</span>21 ноя</span>
+        <span class="meta-item"><span class="meta-emoji">🌙</span>7 ночей</span>
+        <span class="meta-item"><span class="meta-emoji">📍</span>Дубай</span>
+      </div>
+      <div class="price-row">
+        <div class="price-side">
+          <div class="price-label">от</div>
+          <div class="price">180 000<small>₽/чел</small></div>
+        </div>
+        <button class="cta">Хочу</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sig">
+    <div class="sig-photo"></div>
+    <div class="sig-text">
+      <b>Настя, ProTravel</b>
+      Понравится — свяжусь лично и подберу каюту.
+    </div>
+  </div>
+</div>
+</body>
+</html>

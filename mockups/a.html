@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Мокап A · Luxury</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A1628;
+  --bg-2:#0F1D33;
+  --card:#152540;
+  --line:rgba(212,166,75,.18);
+  --gold:#D4A64B;
+  --gold-2:#E8C173;
+  --cream:#F5F1E8;
+  --muted:#8B9BB4;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--cream);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;min-height:100%}
+body{background:
+  radial-gradient(600px 400px at 100% 0%,rgba(212,166,75,.06),transparent 70%),
+  radial-gradient(500px 400px at 0% 100%,rgba(212,166,75,.04),transparent 70%),
+  var(--bg);
+}
+#app{max-width:520px;margin:0 auto;padding:26px 22px 60px}
+.serif{font-family:'Playfair Display',serif;font-weight:500;letter-spacing:-.01em}
+
+/* header */
+.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.hd-brand{font-family:'Playfair Display',serif;font-size:14px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;font-weight:400;font-style:italic}
+.hd-back{color:var(--muted);font-size:12px;letter-spacing:.15em;text-transform:uppercase;text-decoration:none}
+
+/* intro */
+.eyebrow{font-size:11px;letter-spacing:.34em;color:var(--gold);text-transform:uppercase;font-weight:500;margin-bottom:14px}
+.headline{font-family:'Playfair Display',serif;font-size:36px;line-height:1.08;letter-spacing:-.02em;font-weight:500;margin-bottom:16px}
+.headline em{font-style:italic;color:var(--gold-2)}
+.lead{color:var(--muted);font-size:14px;line-height:1.65;max-width:400px;margin-bottom:44px;font-weight:300}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:0 0 30px}
+
+/* card */
+.card{margin-bottom:36px}
+.card-hero{position:relative;height:280px;border-radius:2px;overflow:hidden;margin-bottom:22px}
+.card-hero img{width:100%;height:100%;object-fit:cover;filter:brightness(.85) contrast(1.05)}
+.card-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(10,22,40,.85));pointer-events:none}
+.hero-badge{position:absolute;top:16px;left:16px;background:rgba(10,22,40,.75);backdrop-filter:blur(12px);color:var(--gold);font-size:10px;letter-spacing:.24em;padding:8px 14px;text-transform:uppercase;font-family:'Playfair Display',serif;font-style:italic;border:1px solid var(--line);z-index:2}
+.hero-num{position:absolute;top:16px;right:20px;color:var(--gold-2);font-family:'Playfair Display',serif;font-style:italic;font-size:56px;line-height:1;font-weight:400;opacity:.55;letter-spacing:-.03em;z-index:2}
+.card-inner{padding:0 4px}
+.card-cat{font-size:11px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-bottom:10px;font-weight:500}
+.card-title{font-family:'Playfair Display',serif;font-size:26px;line-height:1.15;font-weight:500;margin-bottom:8px;letter-spacing:-.01em}
+.card-ship{font-style:italic;color:var(--muted);font-size:14px;margin-bottom:22px;font-weight:300}
+.meta{display:flex;gap:0;margin-bottom:22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.meta-item{flex:1;padding:16px 8px;text-align:center;border-right:1px solid var(--line)}
+.meta-item:last-child{border-right:none}
+.meta-label{font-size:9px;letter-spacing:.24em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.meta-value{font-family:'Playfair Display',serif;font-size:16px;color:var(--cream);letter-spacing:-.01em}
+.price-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px}
+.price-label{font-size:10px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.price{font-family:'Playfair Display',serif;font-size:32px;color:var(--gold);letter-spacing:-.02em;font-weight:500;line-height:1}
+.price small{font-size:14px;color:var(--muted);font-style:italic;margin-left:6px;font-family:'Inter',sans-serif;letter-spacing:0}
+.cta{display:inline-block;color:var(--gold);font-size:11px;letter-spacing:.28em;text-transform:uppercase;text-decoration:none;padding:14px 0;border-bottom:1px solid var(--gold);font-weight:500}
+.cta::after{content:" →";}
+
+/* footer sig */
+.sig{margin-top:60px;text-align:center;font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:14px;letter-spacing:.02em}
+.sig::before,.sig::after{content:"·";margin:0 12px;color:var(--gold)}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="hd">
+    <div class="hd-brand">Pro Travel · Тверь</div>
+    <a class="hd-back" href="#">Заново</a>
+  </div>
+
+  <div class="eyebrow">Индивидуальная подборка</div>
+  <h1 class="headline">Три круиза,<br>подобранные <em>лично</em> для тебя</h1>
+  <p class="lead">По твоему профилю: пара, Средиземноморье, комфорт от 300 000 ₽ на человека. Свяжусь напрямую, как выберешь.</p>
+  <div class="divider"></div>
+
+  <!-- card 1 -->
+  <div class="card">
+    <div class="card-hero">
+      <div class="hero-badge">Explora Journeys</div>
+      <div class="hero-num">I</div>
+      <img src="https://images.unsplash.com/photo-1580541631950-7282082b53fe?w=800&auto=format&fit=crop&q=80" alt="">
+    </div>
+    <div class="card-inner">
+      <div class="card-cat">Средиземноморье · Люкс</div>
+      <h2 class="card-title">Riviera Grand Tour</h2>
+      <div class="card-ship">Explora I · Барселона → Ницца → Рим</div>
+      <div class="meta">
+        <div class="meta-item"><div class="meta-label">Дата</div><div class="meta-value">14 сен</div></div>
+        <div class="meta-item"><div class="meta-label">Ночей</div><div class="meta-value">7</div></div>
+        <div class="meta-item"><div class="meta-label">Порт</div><div class="meta-value">BCN</div></div>
+      </div>
+      <div class="price-row">
+        <div>
+          <div class="price-label">Стоимость от</div>
+          <div class="price">780 000 <small>₽ / чел</small></div>
+        </div>
+        <a class="cta" href="#">Смотреть</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- card 2 -->
+  <div class="card">
+    <div class="card-hero">
+      <div class="hero-badge">MSC Cruises</div>
+      <div class="hero-num">II</div>
+      <img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&auto=format&fit=crop&q=80" alt="">
+    </div>
+    <div class="card-inner">
+      <div class="card-cat">Средиземное море · Классика</div>
+      <h2 class="card-title">Классика Средиземноморья</h2>
+      <div class="card-ship">MSC Fantasia · Генуя → Марсель → Мальта</div>
+      <div class="meta">
+        <div class="meta-item"><div class="meta-label">Дата</div><div class="meta-value">3 окт</div></div>
+        <div class="meta-item"><div class="meta-label">Ночей</div><div class="meta-value">7</div></div>
+        <div class="meta-item"><div class="meta-label">Порт</div><div class="meta-value">GOA</div></div>
+      </div>
+      <div class="price-row">
+        <div>
+          <div class="price-label">Стоимость от</div>
+          <div class="price">350 000 <small>₽ / чел</small></div>
+        </div>
+        <a class="cta" href="#">Смотреть</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- card 3 -->
+  <div class="card">
+    <div class="card-hero">
+      <div class="hero-badge">MSC Cruises</div>
+      <div class="hero-num">III</div>
+      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80" alt="">
+    </div>
+    <div class="card-inner">
+      <div class="card-cat">Персидский залив · Без визы</div>
+      <h2 class="card-title">Эмираты и Оман</h2>
+      <div class="card-ship">MSC Bellissima · Дубай → Абу-Даби → Маскат</div>
+      <div class="meta">
+        <div class="meta-item"><div class="meta-label">Дата</div><div class="meta-value">21 ноя</div></div>
+        <div class="meta-item"><div class="meta-label">Ночей</div><div class="meta-value">7</div></div>
+        <div class="meta-item"><div class="meta-label">Порт</div><div class="meta-value">DXB</div></div>
+      </div>
+      <div class="price-row">
+        <div>
+          <div class="price-label">Стоимость от</div>
+          <div class="price">180 000 <small>₽ / чел</small></div>
+        </div>
+        <a class="cta" href="#">Смотреть</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sig">Pro Travel</div>
+</div>
+</body>
+</html>
