@@ -1,6 +1,6 @@
 {
-  "as_of": "02 July 2026, 22:43 МСК",
-  "as_of_iso": "2026-07-02T22:43:20.409657+03:00",
+  "as_of": "02 July 2026, 22:48 МСК",
+  "as_of_iso": "2026-07-02T22:48:08.468446+03:00",
   "today_str": "2 июля",
   "months": [
     {
@@ -42,6 +42,12 @@
         "client": "Румянцева Н.",
         "dest": "Австралия"
       },
+      "weekly": [
+        {
+          "label": "W1",
+          "value": 60000
+        }
+      ],
       "delta_pct": -95,
       "delta_label": "июнь"
     },
@@ -84,6 +90,24 @@
         "client": "Фогель Е.",
         "dest": "Китай"
       },
+      "weekly": [
+        {
+          "label": "W1",
+          "value": 295219
+        },
+        {
+          "label": "W2",
+          "value": 203000
+        },
+        {
+          "label": "W3",
+          "value": 211849
+        },
+        {
+          "label": "W4",
+          "value": 416321
+        }
+      ],
       "delta_pct": 150,
       "delta_label": "май"
     },
@@ -126,6 +150,24 @@
         "client": "Татаринова А.",
         "dest": "Италия"
       },
+      "weekly": [
+        {
+          "label": "W1",
+          "value": 161850
+        },
+        {
+          "label": "W2",
+          "value": 53138
+        },
+        {
+          "label": "W3",
+          "value": 568
+        },
+        {
+          "label": "W4",
+          "value": 234141
+        }
+      ],
       "delta_pct": -76,
       "delta_label": "апрель"
     },
@@ -168,6 +210,24 @@
         "client": "Цомая И.",
         "dest": ""
       },
+      "weekly": [
+        {
+          "label": "W1",
+          "value": 55000
+        },
+        {
+          "label": "W2",
+          "value": 319736
+        },
+        {
+          "label": "W3",
+          "value": 426221
+        },
+        {
+          "label": "W4",
+          "value": 502034
+        }
+      ],
       "delta_pct": 102,
       "delta_label": "март"
     },
@@ -210,6 +270,24 @@
         "client": "Искандарова Э.",
         "dest": ""
       },
+      "weekly": [
+        {
+          "label": "W1",
+          "value": 164959
+        },
+        {
+          "label": "W2",
+          "value": 191003
+        },
+        {
+          "label": "W3",
+          "value": 297894
+        },
+        {
+          "label": "W4",
+          "value": 129625
+        }
+      ],
       "delta_pct": -8,
       "delta_label": "февраль"
     },
@@ -252,6 +330,24 @@
         "client": "Анисимова Т.",
         "dest": ""
       },
+      "weekly": [
+        {
+          "label": "W1",
+          "value": 124640
+        },
+        {
+          "label": "W2",
+          "value": 212431
+        },
+        {
+          "label": "W3",
+          "value": 442546
+        },
+        {
+          "label": "W4",
+          "value": 248305
+        }
+      ],
       "delta_pct": -60,
       "delta_label": "январь"
     },
@@ -294,6 +390,24 @@
         "client": "Сердюкова Т.",
         "dest": ""
       },
+      "weekly": [
+        {
+          "label": "W1",
+          "value": 112111
+        },
+        {
+          "label": "W2",
+          "value": 200171
+        },
+        {
+          "label": "W3",
+          "value": 1815616
+        },
+        {
+          "label": "W4",
+          "value": 186659
+        }
+      ],
       "delta_pct": 6,
       "delta_label": "декабрь"
     },
@@ -336,6 +450,24 @@
         "client": "Овчинникова Е.",
         "dest": ""
       },
+      "weekly": [
+        {
+          "label": "W1",
+          "value": 765059
+        },
+        {
+          "label": "W2",
+          "value": 521346
+        },
+        {
+          "label": "W3",
+          "value": 374737
+        },
+        {
+          "label": "W4",
+          "value": 610544
+        }
+      ],
       "delta_pct": -48,
       "delta_label": "ноябрь"
     },
@@ -378,6 +510,24 @@
         "client": "Раевская О.",
         "dest": ""
       },
+      "weekly": [
+        {
+          "label": "W1",
+          "value": 551938
+        },
+        {
+          "label": "W2",
+          "value": 2000612
+        },
+        {
+          "label": "W3",
+          "value": 1226037
+        },
+        {
+          "label": "W4",
+          "value": 645124
+        }
+      ],
       "delta_pct": 67,
       "delta_label": "октябрь"
     },
@@ -420,6 +570,24 @@
         "client": "Бабайцева Н.",
         "dest": "Австралия"
       },
+      "weekly": [
+        {
+          "label": "W1",
+          "value": 150490
+        },
+        {
+          "label": "W2",
+          "value": 28020
+        },
+        {
+          "label": "W3",
+          "value": 1036580
+        },
+        {
+          "label": "W4",
+          "value": 950949
+        }
+      ],
       "delta_pct": 83,
       "delta_label": "сентябрь"
     },
@@ -462,6 +630,24 @@
         "client": "Цомая И.",
         "dest": ""
       },
+      "weekly": [
+        {
+          "label": "W1",
+          "value": 505749
+        },
+        {
+          "label": "W2",
+          "value": 317154
+        },
+        {
+          "label": "W3",
+          "value": 16821
+        },
+        {
+          "label": "W4",
+          "value": 469575
+        }
+      ],
       "delta_pct": -11,
       "delta_label": "август"
     },
@@ -504,6 +690,24 @@
         "client": "Виноградова О.",
         "dest": ""
       },
+      "weekly": [
+        {
+          "label": "W1",
+          "value": 405275
+        },
+        {
+          "label": "W2",
+          "value": 429794
+        },
+        {
+          "label": "W3",
+          "value": 288662
+        },
+        {
+          "label": "W4",
+          "value": 78641
+        }
+      ],
       "delta_pct": 0,
       "delta_label": ""
     }
@@ -568,24 +772,66 @@
       "mo": "июл",
       "days": 16,
       "name": "Цомая И.",
+      "full_name": "Цомая Инна",
       "loc": "Европа",
-      "photo": "https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=400&q=80"
+      "photo": "https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=400&q=80",
+      "reservation": "KM149192, KM149191, 5615657, 5615364",
+      "date_begin": "18.07.2026",
+      "date_end": "02.08.2026",
+      "nights": 15,
+      "route": "",
+      "ship": "",
+      "travel_type": "Круиз по Европе",
+      "supplier": "ООО &quot;Краски Мира&quot;",
+      "status": "Подтверждена",
+      "phone": "+79409272507",
+      "email": "inessabets@mail.ru",
+      "price": 600797,
+      "price_fmt": "600K"
     },
     {
       "day": "01",
       "mo": "авг",
       "days": 30,
       "name": "Фогель Е.",
+      "full_name": "Фогель Екатерина",
       "loc": "Азия",
-      "photo": "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=400&q=80"
+      "photo": "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=400&q=80",
+      "reservation": "MCC608017E",
+      "date_begin": "01.08.2026",
+      "date_end": "09.08.2026",
+      "nights": 8,
+      "route": "",
+      "ship": "",
+      "travel_type": "Круиз по Азии",
+      "supplier": "АКЦИОНЕРНОЕ ОБЩЕСТВО АГЕНТСТВО &quot;ПАК-ТРЭВЕЛ&quot;",
+      "status": "Подтверждена",
+      "phone": "+79823589951",
+      "email": "katrin_ss82@mail.ru",
+      "price": 237081,
+      "price_fmt": "237K"
     },
     {
       "day": "03",
       "mo": "авг",
       "days": 32,
       "name": "Володенкова Н.",
+      "full_name": "Володенкова Наталия",
       "loc": "Европа · В работе",
-      "photo": "https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=400&q=80"
+      "photo": "https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=400&q=80",
+      "reservation": "MSC60803LA, 66801766",
+      "date_begin": "03.08.2026",
+      "date_end": "10.08.2026",
+      "nights": 7,
+      "route": "MSC Crociere/MSC DIVINA--,7 ночей/Каюта 1-2 pax(Каюта с балконом Junior Fantastica (BM1)),2 ad/FB Полный пансион/\nСмена питания: 1\nНомер каюты: 9176",
+      "ship": "MSC DIVINA",
+      "travel_type": "Круиз по Европе",
+      "supplier": "АКЦИОНЕРНОЕ ОБЩЕСТВО АГЕНТСТВО &quot;ПАК-ТРЭВЕЛ&quot;",
+      "status": "В работе",
+      "phone": "89158947005",
+      "email": "nat-volodenkova@yandex.ru",
+      "price": 350098,
+      "price_fmt": "350K"
     }
   ],
   "source_note": "ДДС по дате платежа · U-ON: 479 заявок · синк 2026-07-03T00:27"
