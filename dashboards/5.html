@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>5 · Glass iOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--text:#FFFFFF;--muted:rgba(255,255,255,.68);--muted-2:rgba(255,255,255,.42);--glass:rgba(255,255,255,.11);--glass-2:rgba(255,255,255,.17);--line:rgba(255,255,255,.15);--pink:#FF6EA0;--purple:#A78BFA;--cyan:#67E8F9;--lime:#BEF264;--peach:#FDBA74}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{color:var(--text);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;min-height:100%}
+body{background:
+  radial-gradient(600px 400px at 15% 5%,rgba(167,139,250,.6),transparent 60%),
+  radial-gradient(500px 400px at 90% 40%,rgba(255,110,160,.55),transparent 60%),
+  radial-gradient(500px 500px at 30% 95%,rgba(103,232,249,.4),transparent 60%),
+  linear-gradient(160deg,#20134B 0%,#3B1F5C 50%,#1E1140 100%);
+  background-attachment:fixed;
+}
+#app{max-width:520px;margin:0 auto;padding:24px 18px 60px}
+
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;letter-spacing:-.01em}
+.brand-emoji{width:32px;height:32px;background:var(--glass-2);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.date-pill{background:var(--glass);backdrop-filter:blur(24px);border:1px solid var(--line);color:var(--text);font-size:12px;font-weight:600;padding:8px 14px;border-radius:99px;letter-spacing:.01em}
+
+.hero-card{background:var(--glass);backdrop-filter:blur(30px);border:1px solid var(--line);border-radius:24px;padding:24px;margin-bottom:14px;box-shadow:0 20px 60px rgba(0,0,0,.25);position:relative;overflow:hidden}
+.hero-card::before{content:"";position:absolute;top:-50%;right:-30%;width:250px;height:250px;background:radial-gradient(circle,rgba(255,255,255,.15),transparent 60%);border-radius:50%;pointer-events:none}
+.hero-lbl{color:var(--muted);font-size:13px;font-weight:600;margin-bottom:10px;letter-spacing:.02em;position:relative}
+.hero-num{font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1;margin-bottom:14px;position:relative}
+.hero-num small{color:var(--muted);font-size:20px;font-weight:600;margin-left:6px}
+.hero-delta{display:inline-flex;align-items:center;gap:6px;background:rgba(190,242,100,.2);color:var(--lime);font-size:13px;font-weight:700;padding:6px 12px;border-radius:99px;border:1px solid rgba(190,242,100,.3);position:relative}
+.hero-delta::before{content:"↑"}
+
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.mini{background:var(--glass);backdrop-filter:blur(24px);border:1px solid var(--line);border-radius:18px;padding:14px}
+.mini-lbl{color:var(--muted);font-size:11px;font-weight:600;margin-bottom:6px;letter-spacing:.02em}
+.mini-val{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:2px}
+.mini-val small{font-size:11px;color:var(--muted);font-weight:600;margin-left:2px}
+.mini-delta{font-size:10px;font-weight:700;color:var(--lime);margin-top:6px}
+.mini-delta.d{color:var(--peach)}
+
+.card{background:var(--glass);backdrop-filter:blur(24px);border:1px solid var(--line);border-radius:22px;padding:20px;margin-bottom:14px;box-shadow:0 15px 40px rgba(0,0,0,.2)}
+.card-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.card-title{font-size:15px;font-weight:800;letter-spacing:-.01em}
+.card-hint{color:var(--muted);font-size:12px;font-weight:600}
+
+.chart{display:flex;align-items:flex-end;gap:10px;height:100px}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px}
+.col-bar{width:100%;background:linear-gradient(180deg,var(--cyan),var(--purple));border-radius:8px 8px 4px 4px;box-shadow:0 6px 16px rgba(103,232,249,.35)}
+.col-bar.big{background:linear-gradient(180deg,var(--pink),var(--purple));box-shadow:0 6px 16px rgba(255,110,160,.4)}
+.col-lbl{color:var(--muted);font-size:11px;font-weight:700}
+
+.li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.li:last-child{border-bottom:none}
+.li:first-child{padding-top:0}
+.li-av{width:40px;height:40px;border-radius:14px;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.li-av.b{background:linear-gradient(135deg,var(--cyan),var(--purple))}
+.li-av.p{background:linear-gradient(135deg,var(--peach),var(--pink))}
+.li-body{flex:1;min-width:0}
+.li-name{font-size:14px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.li-meta{color:var(--muted);font-size:11px;margin-top:2px;font-weight:600}
+.li-val{font-size:15px;font-weight:800;text-align:right;letter-spacing:-.01em}
+.li-val small{display:block;color:var(--muted-2);font-size:10px;font-weight:700;margin-top:2px;letter-spacing:.05em;text-transform:uppercase}
+.chip{display:inline-block;background:rgba(190,242,100,.2);color:var(--lime);font-size:10px;padding:3px 8px;border-radius:99px;font-weight:700;margin-left:6px;border:1px solid rgba(190,242,100,.3)}
+.chip.hot{background:rgba(255,110,160,.2);color:var(--pink);border-color:rgba(255,110,160,.3)}
+</style></head>
+<body><div id="app">
+<div class="top"><div class="brand"><div class="brand-emoji">🚢</div>Pro Travel</div><div class="date-pill">Июль 26</div></div>
+
+<div class="hero-card">
+  <div class="hero-lbl">Выручка за июль</div>
+  <div class="hero-num">2 340 000<small>₽</small></div>
+  <div class="hero-delta">18.2% к июню</div>
+</div>
+
+<div class="grid3">
+  <div class="mini"><div class="mini-lbl">Прибыль</div><div class="mini-val">468<small>K</small></div><div class="mini-delta">+12%</div></div>
+  <div class="mini"><div class="mini-lbl">Ср. чек</div><div class="mini-val">187<small>K</small></div><div class="mini-delta">+5%</div></div>
+  <div class="mini"><div class="mini-lbl">Заявок</div><div class="mini-val">14</div><div class="mini-delta d">−2</div></div>
+</div>
+
+<div class="card">
+  <div class="card-hd"><div class="card-title">По неделям</div><div class="card-hint">июль</div></div>
+  <div class="chart">
+    <div class="col"><div class="col-bar" style="height:55%"></div><div class="col-lbl">W1</div></div>
+    <div class="col"><div class="col-bar" style="height:72%"></div><div class="col-lbl">W2</div></div>
+    <div class="col"><div class="col-bar" style="height:62%"></div><div class="col-lbl">W3</div></div>
+    <div class="col"><div class="col-bar big" style="height:88%"></div><div class="col-lbl">W4</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-hd"><div class="card-title">Топ клиенты · LTV</div><div class="card-hint">всё время</div></div>
+  <div class="li"><div class="li-av">СА</div><div class="li-body"><div class="li-name">Смирнов А. <span class="chip">VIP</span></div><div class="li-meta">4 поездки · июнь</div></div><div class="li-val">1.24M<small>LTV</small></div></div>
+  <div class="li"><div class="li-av b">КЕ</div><div class="li-body"><div class="li-name">Козлова Е.</div><div class="li-meta">3 поездки · май</div></div><div class="li-val">890K<small>LTV</small></div></div>
+  <div class="li"><div class="li-av p">ПИ</div><div class="li-body"><div class="li-name">Петров И.</div><div class="li-meta">2 поездки · апрель</div></div><div class="li-val">640K<small>LTV</small></div></div>
+</div>
+
+<div class="card">
+  <div class="card-hd"><div class="card-title">Ближайшие вылеты</div><div class="card-hint">3 клиента</div></div>
+  <div class="li"><div class="li-av">🚢</div><div class="li-body"><div class="li-name">Иванова М. <span class="chip hot">6 дн</span></div><div class="li-meta">08 июля · Барселона · MSC Fantasia</div></div></div>
+  <div class="li"><div class="li-av b">🌴</div><div class="li-body"><div class="li-name">Смирнов А.</div><div class="li-meta">12 июля · Дубай · MSC Bellissima</div></div><div class="li-val">10<small>дней</small></div></div>
+  <div class="li"><div class="li-av p">✈️</div><div class="li-body"><div class="li-name">Козлова Е.</div><div class="li-meta">15 июля · Милан · авиа</div></div><div class="li-val">13<small>дней</small></div></div>
+</div>
+</div></body></html>

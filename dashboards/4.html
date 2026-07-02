@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>4 · Notion</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FAFAF7;--card:#FFFFFF;--line:#EBEBE5;--line-2:#DFDED6;--text:#37352F;--muted:#787774;--muted-2:#9B9A94;--blue:#4E88E4;--green:#22A06B;--orange:#F0864D;--pink:#E255A1;--purple:#7A61E8;--yellow:#E8B517}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-.005em}
+#app{max-width:520px;margin:0 auto;padding:22px 20px 60px}
+
+.top{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.emoji-box{font-size:36px;line-height:1}
+.title-block{flex:1}
+.title{font-size:28px;font-weight:800;line-height:1.15;letter-spacing:-.02em;margin-bottom:2px}
+.sub{color:var(--muted);font-size:13px;font-weight:500}
+
+.tabs{display:flex;gap:4px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.tab{padding:6px 12px;font-size:13px;color:var(--muted);font-weight:500;border-radius:6px;cursor:pointer}
+.tab.on{background:var(--line);color:var(--text);font-weight:600}
+
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.kpi-cell{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.kpi-emo{font-size:20px;margin-bottom:10px;display:inline-block;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.kpi-lbl{color:var(--muted);font-size:12px;font-weight:500;margin-bottom:4px}
+.kpi-val{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.kpi-val small{color:var(--muted);font-size:14px;font-weight:600;margin-left:2px}
+.kpi-delta{font-size:11px;font-weight:600;margin-top:6px;padding:3px 8px;border-radius:99px;display:inline-block}
+.kpi-delta.up{background:#DAF2E5;color:var(--green)}
+.kpi-delta.down{background:#F5D9CB;color:var(--orange)}
+
+.section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px}
+.sec-hd{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.sec-emoji{font-size:16px}
+.sec-title{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.sec-hint{color:var(--muted-2);font-size:12px;margin-left:auto;font-weight:500}
+
+.chart{display:flex;align-items:flex-end;gap:12px;height:100px}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px}
+.col-bar{width:100%;background:var(--blue);border-radius:4px 4px 0 0}
+.col-bar.hi{background:linear-gradient(180deg,var(--purple),var(--blue))}
+.col-lbl{color:var(--muted);font-size:11px;font-weight:600}
+.col-val{color:var(--text);font-size:11px;font-weight:700}
+
+.li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.li:last-child{border-bottom:none}
+.li-emoji{font-size:22px;width:38px;height:38px;background:var(--bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.li-emoji.p{background:#F5E5F0}
+.li-emoji.b{background:#E5EEFF}
+.li-emoji.g{background:#DAF2E5}
+.li-body{flex:1;min-width:0}
+.li-name{font-size:14px;font-weight:600;letter-spacing:-.01em}
+.li-meta{color:var(--muted);font-size:12px;margin-top:2px;font-weight:500}
+.li-val{font-size:14px;font-weight:700;text-align:right}
+.li-val small{display:block;color:var(--muted-2);font-size:10px;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.05em}
+.badge{display:inline-block;background:#FFF3D6;color:#8B6D14;font-size:10px;padding:2px 8px;border-radius:99px;font-weight:700;margin-left:6px}
+.badge.hot{background:#F5D9CB;color:#C24E1F}
+.badge.new{background:#DAE7F5;color:#2058A5}
+</style></head>
+<body><div id="app">
+<div class="top">
+  <div class="emoji-box">📊</div>
+  <div class="title-block">
+    <div class="title">Мой июль</div>
+    <div class="sub">Pro Travel · Тверь · обновлено сейчас</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab on">💰 Деньги</div>
+  <div class="tab">👥 Клиенты</div>
+  <div class="tab">✈️ Вылеты</div>
+</div>
+
+<div class="kpi">
+  <div class="kpi-cell">
+    <div class="kpi-emo" style="background:#DAF2E5">💵</div>
+    <div class="kpi-lbl">Выручка</div>
+    <div class="kpi-val">2.34<small>M ₽</small></div>
+    <div class="kpi-delta up">+18% к июню</div>
+  </div>
+  <div class="kpi-cell">
+    <div class="kpi-emo" style="background:#E5EEFF">📈</div>
+    <div class="kpi-lbl">Прибыль</div>
+    <div class="kpi-val">468<small>K ₽</small></div>
+    <div class="kpi-delta up">маржа 20%</div>
+  </div>
+  <div class="kpi-cell">
+    <div class="kpi-emo" style="background:#F5E5F0">🎫</div>
+    <div class="kpi-lbl">Средний чек</div>
+    <div class="kpi-val">187<small>K ₽</small></div>
+    <div class="kpi-delta up">+5%</div>
+  </div>
+  <div class="kpi-cell">
+    <div class="kpi-emo" style="background:#FFF3D6">📋</div>
+    <div class="kpi-lbl">Заявок в работе</div>
+    <div class="kpi-val">14<small>/21</small></div>
+    <div class="kpi-delta down">−2 к июню</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-hd"><span class="sec-emoji">📊</span><span class="sec-title">Выручка по неделям</span><span class="sec-hint">июль</span></div>
+  <div class="chart">
+    <div class="col"><div class="col-val">480K</div><div class="col-bar" style="height:55%"></div><div class="col-lbl">W1</div></div>
+    <div class="col"><div class="col-val">620K</div><div class="col-bar" style="height:72%"></div><div class="col-lbl">W2</div></div>
+    <div class="col"><div class="col-val">540K</div><div class="col-bar" style="height:62%"></div><div class="col-lbl">W3</div></div>
+    <div class="col"><div class="col-val">700K</div><div class="col-bar hi" style="height:88%"></div><div class="col-lbl">W4</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-hd"><span class="sec-emoji">💎</span><span class="sec-title">Топ по LTV</span><span class="sec-hint">за всё время</span></div>
+  <div class="li"><div class="li-emoji p">👑</div><div class="li-body"><div class="li-name">Смирнов А. <span class="badge">VIP</span></div><div class="li-meta">4 поездки · последняя в июне</div></div><div class="li-val">1.24M<small>LTV</small></div></div>
+  <div class="li"><div class="li-emoji b">🌟</div><div class="li-body"><div class="li-name">Козлова Е.</div><div class="li-meta">3 поездки · май</div></div><div class="li-val">890K<small>LTV</small></div></div>
+  <div class="li"><div class="li-emoji g">🙌</div><div class="li-body"><div class="li-name">Петров И. <span class="badge new">лид</span></div><div class="li-meta">2 поездки · апрель</div></div><div class="li-val">640K<small>LTV</small></div></div>
+</div>
+
+<div class="section">
+  <div class="sec-hd"><span class="sec-emoji">✈️</span><span class="sec-title">Ближайшие вылеты</span><span class="sec-hint">14 дней</span></div>
+  <div class="li"><div class="li-emoji" style="background:#FFF3D6">🚢</div><div class="li-body"><div class="li-name">Иванова М. <span class="badge hot">скоро</span></div><div class="li-meta">08 июля · Барселона · MSC Fantasia</div></div><div class="li-val">6<small>дней</small></div></div>
+  <div class="li"><div class="li-emoji" style="background:#F5E5F0">🌴</div><div class="li-body"><div class="li-name">Смирнов А.</div><div class="li-meta">12 июля · Дубай · MSC Bellissima</div></div><div class="li-val">10<small>дней</small></div></div>
+  <div class="li"><div class="li-emoji" style="background:#E5EEFF">✈️</div><div class="li-body"><div class="li-name">Козлова Е.</div><div class="li-meta">15 июля · Милан · авиа</div></div><div class="li-val">13<small>дней</small></div></div>
+</div>
+</div></body></html>

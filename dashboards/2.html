@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>2 · Люкс</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A1628;--card:#152540;--line:rgba(212,166,75,.18);--line-2:rgba(212,166,75,.32);--gold:#D4A64B;--gold-2:#E8C173;--cream:#F5F1E8;--muted:#8B9BB4}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--cream);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(600px 400px at 100% 0%,rgba(212,166,75,.06),transparent 70%),radial-gradient(500px 400px at 0% 100%,rgba(212,166,75,.04),transparent 70%),var(--bg);background-attachment:fixed;min-height:100%}
+#app{max-width:520px;margin:0 auto;padding:26px 22px 60px}
+.serif{font-family:'Playfair Display',serif}
+.eyebrow{font-size:10px;letter-spacing:.32em;color:var(--gold);text-transform:uppercase;font-weight:500}
+
+.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.hd-brand{font-family:'Playfair Display',serif;font-size:13px;letter-spacing:.24em;color:var(--gold);text-transform:uppercase;font-style:italic}
+.hd-date{color:var(--muted);font-family:'Playfair Display',serif;font-style:italic;font-size:13px}
+
+.headline{margin:14px 0 30px}
+.headline-e{margin-bottom:12px}
+.headline-h{font-family:'Playfair Display',serif;font-size:32px;line-height:1.08;letter-spacing:-.02em;font-weight:500;color:var(--cream)}
+.headline-h em{font-style:italic;color:var(--gold-2)}
+
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:32px}
+.kpi-cell{background:var(--bg);padding:18px 6px;text-align:center}
+.kpi-lbl{font-size:9px;letter-spacing:.24em;color:var(--muted);text-transform:uppercase;margin-bottom:8px;font-weight:500}
+.kpi-val{font-family:'Playfair Display',serif;font-size:32px;color:var(--cream);letter-spacing:-.02em;font-weight:500;line-height:1}
+.kpi-val small{font-size:13px;color:var(--muted);font-style:italic;font-family:'Inter',sans-serif;font-weight:300;margin-left:4px;letter-spacing:0}
+.kpi-delta{font-size:10px;color:var(--gold);letter-spacing:.02em;margin-top:6px;font-style:italic;font-family:'Playfair Display',serif}
+
+.section{margin-bottom:32px}
+.sec-hd{margin-bottom:18px}
+.sec-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;letter-spacing:-.01em}
+.sec-title em{font-style:italic;color:var(--gold-2)}
+.sec-sub{color:var(--muted);font-size:12px;font-style:italic;font-family:'Playfair Display',serif;margin-top:2px}
+
+.chart{display:flex;align-items:flex-end;gap:10px;height:130px;padding:10px 0 14px;border-bottom:1px solid var(--line)}
+.chart-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px}
+.chart-bar{width:100%;background:linear-gradient(180deg,var(--gold-2),var(--gold));border-radius:0}
+.chart-lbl{font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:12px;letter-spacing:.02em}
+.chart-scale{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;padding:8px 0 0;font-variant-numeric:tabular-nums;font-family:'Playfair Display',serif}
+
+.list{display:flex;flex-direction:column}
+.li{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.li:last-child{border-bottom:none}
+.li-num{font-family:'Playfair Display',serif;font-style:italic;color:var(--gold);font-size:22px;font-weight:400;min-width:32px}
+.li-body{flex:1}
+.li-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:500;letter-spacing:-.01em;line-height:1.2}
+.li-meta{color:var(--muted);font-size:12px;font-style:italic;font-family:'Playfair Display',serif;margin-top:2px}
+.li-val{font-family:'Playfair Display',serif;color:var(--gold);font-size:18px;letter-spacing:-.01em;font-weight:500;text-align:right}
+.li-val small{display:block;font-size:10px;color:var(--muted);letter-spacing:.24em;text-transform:uppercase;font-family:'Inter',sans-serif;font-weight:500;font-style:normal;margin-bottom:2px}
+</style></head>
+<body><div id="app">
+<div class="hd"><div class="hd-brand">Pro Travel · Тверь</div><div class="hd-date">Июль 26</div></div>
+
+<div class="headline">
+  <div class="headline-e eyebrow">Обзор месяца</div>
+  <div class="headline-h">Твой <em>июль</em>,<br>цифрами</div>
+</div>
+
+<div class="kpi">
+  <div class="kpi-cell"><div class="kpi-lbl">Выручка</div><div class="kpi-val">2.34<small>M ₽</small></div><div class="kpi-delta">+ 18% к июню</div></div>
+  <div class="kpi-cell"><div class="kpi-lbl">Прибыль</div><div class="kpi-val">468<small>K ₽</small></div><div class="kpi-delta">маржа 20%</div></div>
+  <div class="kpi-cell"><div class="kpi-lbl">Средний чек</div><div class="kpi-val">187<small>K ₽</small></div><div class="kpi-delta">+ 5% к июню</div></div>
+  <div class="kpi-cell"><div class="kpi-lbl">Заявки в работе</div><div class="kpi-val">14<small> / 21</small></div><div class="kpi-delta">— 2 к июню</div></div>
+</div>
+
+<div class="section">
+  <div class="sec-hd"><div class="sec-title">Выручка <em>по неделям</em></div><div class="sec-sub">июль, тысячи рублей</div></div>
+  <div class="chart">
+    <div class="chart-col"><div class="chart-bar" style="height:55%"></div><div class="chart-lbl">i</div></div>
+    <div class="chart-col"><div class="chart-bar" style="height:72%"></div><div class="chart-lbl">ii</div></div>
+    <div class="chart-col"><div class="chart-bar" style="height:62%"></div><div class="chart-lbl">iii</div></div>
+    <div class="chart-col"><div class="chart-bar" style="height:88%"></div><div class="chart-lbl">iv</div></div>
+  </div>
+  <div class="chart-scale"><span>480</span><span>620</span><span>540</span><span>700</span></div>
+</div>
+
+<div class="section">
+  <div class="sec-hd"><div class="sec-title">Топ <em>по LTV</em></div><div class="sec-sub">клиенты — совокупная выручка</div></div>
+  <div class="list">
+    <div class="li"><div class="li-num">I</div><div class="li-body"><div class="li-name">Смирнов А.</div><div class="li-meta">4 поездки · последняя июнь 26</div></div><div class="li-val"><small>LTV</small>1.24<span style="font-size:11px;color:var(--muted);margin-left:2px">M</span></div></div>
+    <div class="li"><div class="li-num">II</div><div class="li-body"><div class="li-name">Козлова Е.</div><div class="li-meta">3 поездки · май 26</div></div><div class="li-val"><small>LTV</small>890<span style="font-size:11px;color:var(--muted);margin-left:2px">K</span></div></div>
+    <div class="li"><div class="li-num">III</div><div class="li-body"><div class="li-name">Петров И.</div><div class="li-meta">2 поездки · апрель 26</div></div><div class="li-val"><small>LTV</small>640<span style="font-size:11px;color:var(--muted);margin-left:2px">K</span></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-hd"><div class="sec-title">Ближайшие <em>вылеты</em></div></div>
+  <div class="list">
+    <div class="li"><div class="li-num" style="font-size:14px">08.07</div><div class="li-body"><div class="li-name">Иванова М.</div><div class="li-meta">Барселона · MSC Fantasia</div></div><div class="li-val" style="font-family:'Playfair Display',serif;font-style:italic;font-size:14px">6 дней</div></div>
+    <div class="li"><div class="li-num" style="font-size:14px">12.07</div><div class="li-body"><div class="li-name">Смирнов А.</div><div class="li-meta">Дубай · MSC Bellissima</div></div><div class="li-val" style="font-family:'Playfair Display',serif;font-style:italic;font-size:14px">10 дней</div></div>
+    <div class="li"><div class="li-num" style="font-size:14px">15.07</div><div class="li-body"><div class="li-name">Козлова Е.</div><div class="li-meta">Милан · авиа</div></div><div class="li-val" style="font-family:'Playfair Display',serif;font-style:italic;font-size:14px">13 дней</div></div>
+  </div>
+</div>
+</div></body></html>

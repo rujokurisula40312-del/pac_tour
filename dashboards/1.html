@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>1 · Терминал</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0D1117;--bg-2:#161B22;--card:#0D1117;--line:#21262D;--text:#C9D1D9;--muted:#6E7681;--green:#3FB950;--red:#F85149;--yellow:#D29922;--blue:#58A6FF}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;-webkit-font-smoothing:antialiased;font-size:13px}
+#app{max-width:520px;margin:0 auto;padding:16px 14px 40px}
+
+.hdr{display:flex;justify-content:space-between;align-items:center;padding:8px 0 12px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.hdr-title{font-weight:700;font-size:11px;letter-spacing:.15em;color:var(--text);text-transform:uppercase}
+.hdr-title span{color:var(--muted);font-weight:500}
+.hdr-time{color:var(--muted);font-size:11px;letter-spacing:.05em}
+.hdr-time b{color:var(--green);font-weight:600}
+
+.tick-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:14px}
+.tick{background:var(--bg);padding:10px 12px}
+.tick-lbl{color:var(--muted);font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px}
+.tick-val{font-size:20px;font-weight:700;color:var(--text);line-height:1;letter-spacing:-.01em}
+.tick-val small{font-size:11px;color:var(--muted);font-weight:500;margin-left:4px}
+.tick-delta{font-size:11px;margin-top:6px;font-weight:600}
+.tick-delta.up{color:var(--green)}
+.tick-delta.down{color:var(--red)}
+.tick-delta::before{content:"▲ ";font-size:9px}
+.tick-delta.down::before{content:"▼ "}
+
+.section{margin-bottom:16px}
+.section-hdr{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);margin-bottom:10px}
+.section-title{font-size:10px;letter-spacing:.24em;color:var(--muted);text-transform:uppercase;font-weight:600}
+.section-refresh{color:var(--green);font-size:9px;letter-spacing:.1em}
+.section-refresh::before{content:"● ";animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{50%{opacity:.4}}
+
+.bars{display:flex;align-items:flex-end;gap:6px;height:110px;padding:8px 0;border-bottom:1px solid var(--line);margin-bottom:10px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.bar{width:100%;background:var(--green);border-top:1px solid rgba(63,185,80,.4);transition:all .3s ease;position:relative}
+.bar.dim{background:var(--muted);border-top-color:rgba(110,118,129,.4)}
+.bar-lbl{font-size:9px;color:var(--muted);letter-spacing:.1em}
+.bars-scale{display:flex;justify-content:space-between;color:var(--muted);font-size:9px;padding-top:4px}
+
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;color:var(--muted);font-weight:500;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:6px 0;border-bottom:1px solid var(--line)}
+.tbl th.r{text-align:right}
+.tbl td{padding:10px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl td.r{text-align:right}
+.tbl td.mono{font-variant-numeric:tabular-nums;font-weight:600}
+.tbl tr:last-child td{border-bottom:none}
+.name-cell{display:flex;align-items:center;gap:8px}
+.name-idx{color:var(--muted);font-size:10px;min-width:16px}
+.chip{display:inline-block;background:rgba(63,185,80,.14);color:var(--green);font-size:9px;padding:2px 6px;border-radius:2px;letter-spacing:.05em;font-weight:600}
+.chip.y{background:rgba(210,153,34,.14);color:var(--yellow)}
+.chip.b{background:rgba(88,166,255,.14);color:var(--blue)}
+
+.foot{margin-top:20px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:10px;letter-spacing:.1em;text-align:center}
+.foot span{color:var(--green)}
+</style></head>
+<body><div id="app">
+<div class="hdr"><div class="hdr-title">PRO_TRAVEL · <span>DASHBOARD</span></div><div class="hdr-time"><b>●</b> LIVE · 17:52</div></div>
+
+<div class="tick-row">
+  <div class="tick"><div class="tick-lbl">Revenue MTD</div><div class="tick-val">2.34<small>M ₽</small></div><div class="tick-delta up">18.2%</div></div>
+  <div class="tick"><div class="tick-lbl">Profit MTD</div><div class="tick-val">468K<small> ₽</small></div><div class="tick-delta up">12.4%</div></div>
+  <div class="tick"><div class="tick-lbl">Avg Ticket</div><div class="tick-val">187K<small> ₽</small></div><div class="tick-delta up">4.8%</div></div>
+  <div class="tick"><div class="tick-lbl">Open Deals</div><div class="tick-val">14<small> / 21</small></div><div class="tick-delta down">2.1%</div></div>
+</div>
+
+<div class="section">
+  <div class="section-hdr"><div class="section-title">Weekly Revenue · Jul 26</div><div class="section-refresh">SYNC</div></div>
+  <div class="bars">
+    <div class="bar-col"><div class="bar dim" style="height:55%"></div><div class="bar-lbl">W1</div></div>
+    <div class="bar-col"><div class="bar dim" style="height:72%"></div><div class="bar-lbl">W2</div></div>
+    <div class="bar-col"><div class="bar dim" style="height:62%"></div><div class="bar-lbl">W3</div></div>
+    <div class="bar-col"><div class="bar" style="height:88%"></div><div class="bar-lbl">W4</div></div>
+  </div>
+  <div class="bars-scale"><span>480K</span><span>620K</span><span>540K</span><span>700K</span></div>
+</div>
+
+<div class="section">
+  <div class="section-hdr"><div class="section-title">Top Clients · LTV</div></div>
+  <table class="tbl">
+    <thead><tr><th>Name</th><th class="r">Trips</th><th class="r">LTV</th></tr></thead>
+    <tbody>
+      <tr><td><span class="name-cell"><span class="name-idx">01</span>Смирнов А.</span></td><td class="r mono">4</td><td class="r mono">1.24M</td></tr>
+      <tr><td><span class="name-cell"><span class="name-idx">02</span>Козлова Е.</span></td><td class="r mono">3</td><td class="r mono">890K</td></tr>
+      <tr><td><span class="name-cell"><span class="name-idx">03</span>Петров И.</span></td><td class="r mono">2</td><td class="r mono">640K</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-hdr"><div class="section-title">Upcoming Departures</div></div>
+  <table class="tbl">
+    <tbody>
+      <tr><td><span class="chip">6d</span> Иванова М.</td><td class="r">08.07 · BCN</td></tr>
+      <tr><td><span class="chip y">10d</span> Смирнов А.</td><td class="r">12.07 · DXB</td></tr>
+      <tr><td><span class="chip b">13d</span> Козлова Е.</td><td class="r">15.07 · MXP</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="foot">SESSION <span>ACTIVE</span> · UPDATED 17:52:14 · v0.1</div>
+</div></body></html>

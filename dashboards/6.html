@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>6 · Editorial</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F1E8;--card:#FFFFFF;--line:rgba(20,15,10,.1);--line-2:rgba(20,15,10,.18);--text:#14100A;--muted:#6B6558;--muted-2:#94907F;--red:#C24E1F;--green:#3B7A4F;--yellow:#B4873A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(500px 400px at 100% 0%,rgba(196,127,71,.06),transparent 70%),var(--bg);background-attachment:fixed;min-height:100%}
+#app{max-width:520px;margin:0 auto;padding:26px 22px 60px}
+
+.masthead{border-bottom:2px solid var(--text);padding-bottom:14px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-end}
+.mast-name{font-family:'Fraunces',serif;font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.mast-name em{font-style:italic;font-weight:600}
+.mast-date{color:var(--muted);font-family:'Fraunces',serif;font-style:italic;font-size:13px;font-weight:400}
+.mast-date b{color:var(--text);font-style:normal;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:11px;display:block;margin-bottom:2px;font-family:'Inter',sans-serif}
+
+.big-num{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+.big-eyebrow{font-size:10px;letter-spacing:.32em;color:var(--muted);text-transform:uppercase;font-weight:600;margin-bottom:12px}
+.big-value{font-family:'Fraunces',serif;font-size:76px;font-weight:600;letter-spacing:-.05em;line-height:.9;margin-bottom:12px}
+.big-value em{font-style:italic}
+.big-value small{font-size:24px;color:var(--muted);font-weight:400;margin-left:8px}
+.big-caption{color:var(--muted);font-family:'Fraunces',serif;font-style:italic;font-size:15px;line-height:1.4;max-width:400px}
+.big-caption b{color:var(--green);font-style:normal;font-weight:600}
+
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--text);padding:1px;margin-bottom:32px}
+.kpi-c{background:var(--bg);padding:16px 4px;text-align:center}
+.kpi-num{font-family:'Fraunces',serif;font-size:32px;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:6px}
+.kpi-num small{font-size:12px;color:var(--muted);font-weight:400;margin-left:2px}
+.kpi-l{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:8px}
+.kpi-d{font-family:'Fraunces',serif;font-style:italic;font-size:12px;color:var(--muted-2);margin-top:6px}
+.kpi-d.up{color:var(--green)}
+.kpi-d.down{color:var(--red)}
+
+.headline{font-family:'Fraunces',serif;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.05;margin-bottom:8px}
+.headline em{font-style:italic;font-weight:600}
+.subhead{font-family:'Fraunces',serif;font-style:italic;color:var(--muted);font-size:14px;margin-bottom:20px}
+
+.chart{display:flex;align-items:flex-end;gap:14px;height:130px;padding:8px 0 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:8px}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.col-num{font-family:'Fraunces',serif;font-size:11px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+.col-bar{width:100%;background:var(--text);border-top:2px solid var(--text)}
+.col-lbl{font-family:'Fraunces',serif;font-style:italic;color:var(--muted);font-size:13px}
+
+.section{margin-bottom:32px}
+
+.article{display:grid;grid-template-columns:56px 1fr auto;gap:16px;padding:20px 0;border-bottom:1px solid var(--line);align-items:center}
+.article:last-child{border-bottom:none}
+.a-num{font-family:'Fraunces',serif;font-style:italic;font-size:44px;font-weight:400;color:var(--muted-2);letter-spacing:-.05em;line-height:.9;text-align:center}
+.a-body{}
+.a-cat{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600}
+.a-name{font-family:'Fraunces',serif;font-size:20px;font-weight:600;letter-spacing:-.02em;line-height:1.15;margin-bottom:4px}
+.a-name em{font-style:italic;font-weight:400}
+.a-meta{color:var(--muted);font-family:'Fraunces',serif;font-style:italic;font-size:13px}
+.a-val{text-align:right}
+.a-num-r{font-family:'Fraunces',serif;font-size:22px;font-weight:600;letter-spacing:-.02em;line-height:1}
+.a-num-r small{font-size:11px;color:var(--muted);font-weight:400;margin-left:2px}
+.a-lab-r{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:4px;font-weight:600}
+
+.rule{height:1px;background:var(--text);margin:24px 0}
+.rule.dbl{border-top:1px solid var(--text);height:3px;background:none;border-bottom:1px solid var(--text)}
+</style></head>
+<body><div id="app">
+
+<div class="masthead">
+  <div class="mast-name">Pro Travel<br><em>Vol. 07 · 2026</em></div>
+  <div class="mast-date"><b>Ежемесячно</b>июль</div>
+</div>
+
+<div class="big-num">
+  <div class="big-eyebrow">Итог месяца</div>
+  <div class="big-value"><em>2.34</em> млн<small>₽</small></div>
+  <div class="big-caption"><b>+ 18%</b> к июню. Апрельская гипотеза на Дубай сыграла — четвёртая неделя закрыла план.</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi-c"><div class="kpi-l">Прибыль</div><div class="kpi-num">468<small>K</small></div><div class="kpi-d up">маржа 20 %</div></div>
+  <div class="kpi-c"><div class="kpi-l">Ср. чек</div><div class="kpi-num">187<small>K</small></div><div class="kpi-d up">+ 5 % к июню</div></div>
+  <div class="kpi-c"><div class="kpi-l">Заявок</div><div class="kpi-num">14<small>/21</small></div><div class="kpi-d down">— 2 к июню</div></div>
+</div>
+
+<div class="section">
+  <h2 class="headline">Динамика <em>недели за неделей</em></h2>
+  <p class="subhead">Тысячи рублей выручки. Четвёртая — сильнейшая с апреля.</p>
+  <div class="chart">
+    <div class="col"><div class="col-num">480</div><div class="col-bar" style="height:55%"></div><div class="col-lbl">i</div></div>
+    <div class="col"><div class="col-num">620</div><div class="col-bar" style="height:72%"></div><div class="col-lbl">ii</div></div>
+    <div class="col"><div class="col-num">540</div><div class="col-bar" style="height:62%"></div><div class="col-lbl">iii</div></div>
+    <div class="col"><div class="col-num">700</div><div class="col-bar" style="height:88%"></div><div class="col-lbl">iv</div></div>
+  </div>
+</div>
+
+<div class="rule dbl"></div>
+
+<div class="section">
+  <h2 class="headline">Топ клиенты <em>по LTV</em></h2>
+  <p class="subhead">Три имени, которые держат бизнес.</p>
+  <div class="article"><div class="a-num">I</div><div class="a-body"><div class="a-cat">Постоянный клиент</div><div class="a-name">Смирнов А.</div><div class="a-meta">4 поездки за 3 года · последняя в июне</div></div><div class="a-val"><div class="a-num-r">1.24<small>M</small></div><div class="a-lab-r">LTV</div></div></div>
+  <div class="article"><div class="a-num">II</div><div class="a-body"><div class="a-cat">Регулярный</div><div class="a-name">Козлова <em>Е.</em></div><div class="a-meta">3 поездки · крайняя в мае</div></div><div class="a-val"><div class="a-num-r">890<small>K</small></div><div class="a-lab-r">LTV</div></div></div>
+  <div class="article"><div class="a-num">III</div><div class="a-body"><div class="a-cat">Новый в топе</div><div class="a-name">Петров <em>И.</em></div><div class="a-meta">2 поездки · апрель 26</div></div><div class="a-val"><div class="a-num-r">640<small>K</small></div><div class="a-lab-r">LTV</div></div></div>
+</div>
+
+<div class="rule dbl"></div>
+
+<div class="section">
+  <h2 class="headline">Ближайшие <em>вылеты</em></h2>
+  <p class="subhead">Три клиента, которых нужно провожать в этом месяце.</p>
+  <div class="article"><div class="a-num" style="font-family:'Fraunces',serif;font-size:22px;font-style:normal;font-weight:600;line-height:1.1">08<br><span style="font-size:11px;font-weight:500;letter-spacing:.05em;color:var(--muted)">июл</span></div><div class="a-body"><div class="a-cat">Через 6 дней</div><div class="a-name">Иванова М.</div><div class="a-meta">Барселона · MSC Fantasia</div></div><div class="a-val"><div class="a-num-r" style="font-size:14px;font-style:italic;font-weight:400;color:var(--muted)">оплачено</div></div></div>
+  <div class="article"><div class="a-num" style="font-family:'Fraunces',serif;font-size:22px;font-style:normal;font-weight:600;line-height:1.1">12<br><span style="font-size:11px;font-weight:500;letter-spacing:.05em;color:var(--muted)">июл</span></div><div class="a-body"><div class="a-cat">Через 10 дней</div><div class="a-name">Смирнов А.</div><div class="a-meta">Дубай · MSC Bellissima</div></div><div class="a-val"><div class="a-num-r" style="font-size:14px;font-style:italic;font-weight:400;color:var(--muted)">оплачено</div></div></div>
+  <div class="article"><div class="a-num" style="font-family:'Fraunces',serif;font-size:22px;font-style:normal;font-weight:600;line-height:1.1">15<br><span style="font-size:11px;font-weight:500;letter-spacing:.05em;color:var(--muted)">июл</span></div><div class="a-body"><div class="a-cat">Через 13 дней</div><div class="a-name">Козлова Е.</div><div class="a-meta">Милан · авиа</div></div><div class="a-val"><div class="a-num-r" style="font-size:14px;font-style:italic;font-weight:400;color:var(--red)">ожидает</div></div></div>
+</div>
+
+</div></body></html>

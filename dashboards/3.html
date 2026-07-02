@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>3 · Linear</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08080A;--card:#131316;--card-2:#1B1B1F;--line:#26262B;--text:#F4F4F5;--muted:#71717A;--accent:#7C3AED;--accent-2:#A78BFA;--green:#22D3EE;--red:#F43F5E;--yellow:#FBBF24}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+#app{max-width:520px;margin:0 auto;padding:20px 18px 60px}
+
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.top-left{display:flex;align-items:center;gap:10px}
+.logo{width:26px;height:26px;background:linear-gradient(135deg,var(--accent),var(--green));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.brand{font-weight:700;font-size:15px;letter-spacing:-.02em}
+.brand small{color:var(--muted);font-weight:500;margin-left:4px;font-size:13px}
+.top-menu{display:flex;align-items:center;gap:8px;background:var(--card);padding:6px 10px;border-radius:8px;border:1px solid var(--line);color:var(--muted);font-size:12px;font-weight:500}
+.top-menu::before{content:"";width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}
+
+.hero{margin-bottom:26px}
+.hero-lbl{color:var(--muted);font-size:12px;font-weight:500;margin-bottom:8px;letter-spacing:.02em}
+.hero-num{font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1;margin-bottom:12px}
+.hero-num small{font-size:20px;color:var(--muted);font-weight:600;margin-left:6px}
+.hero-delta{display:inline-flex;align-items:center;gap:6px;background:rgba(34,211,238,.12);color:var(--green);font-size:12px;font-weight:600;padding:5px 10px;border-radius:6px;border:1px solid rgba(34,211,238,.2)}
+.hero-delta::before{content:"↑";font-weight:800}
+
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}
+.mini{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.mini-lbl{color:var(--muted);font-size:11px;font-weight:500;margin-bottom:6px;letter-spacing:.01em}
+.mini-val{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:4px}
+.mini-delta{font-size:10px;font-weight:600;color:var(--green)}
+.mini-delta.d{color:var(--red)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
+.card-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.card-title{font-size:14px;font-weight:700;letter-spacing:-.01em}
+.card-hint{color:var(--muted);font-size:12px;font-weight:500}
+
+.chart{display:flex;align-items:flex-end;gap:8px;height:120px;padding:8px 0}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px}
+.col-bar{width:100%;background:linear-gradient(180deg,var(--accent-2),var(--accent));border-radius:6px 6px 2px 2px;position:relative}
+.col-bar.big::after{content:"700K";position:absolute;top:-22px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:3px 6px;border-radius:4px;letter-spacing:.02em;white-space:nowrap}
+.col-lbl{color:var(--muted);font-size:10px;font-weight:600;font-family:'JetBrains Mono',monospace}
+
+.clist{display:flex;flex-direction:column;gap:12px}
+.crow{display:flex;align-items:center;gap:12px}
+.cavatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--green));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff;flex-shrink:0}
+.cbody{flex:1;min-width:0}
+.cname{font-size:14px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.cmeta{color:var(--muted);font-size:11px;margin-top:2px;font-weight:500}
+.cval{font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.cval small{color:var(--muted);font-weight:500;font-size:10px;display:block;margin-top:2px;letter-spacing:.02em}
+
+.dep-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.dep-row:last-child{border-bottom:none;padding-bottom:0}
+.dep-row:first-child{padding-top:0}
+.dep-date{background:var(--card-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;text-align:center;min-width:52px}
+.dep-day{font-size:16px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.dep-mo{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-top:2px}
+.dep-body{flex:1;min-width:0}
+.dep-name{font-size:14px;font-weight:600;letter-spacing:-.01em}
+.dep-loc{color:var(--muted);font-size:12px;font-weight:500;margin-top:2px}
+.dep-badge{background:rgba(124,58,237,.16);color:var(--accent-2);font-size:10px;padding:4px 8px;border-radius:6px;font-weight:700;letter-spacing:.02em}
+</style></head>
+<body><div id="app">
+<div class="top"><div class="top-left"><div class="logo">✦</div><div class="brand">Pro Travel<small>· Тверь</small></div></div><div class="top-menu">июль 26</div></div>
+
+<div class="hero">
+  <div class="hero-lbl">Выручка за июль</div>
+  <div class="hero-num">2 340 000<small>₽</small></div>
+  <div class="hero-delta">18.2% к июню</div>
+</div>
+
+<div class="grid3">
+  <div class="mini"><div class="mini-lbl">Прибыль</div><div class="mini-val">468K</div><div class="mini-delta">+12.4%</div></div>
+  <div class="mini"><div class="mini-lbl">Ср. чек</div><div class="mini-val">187K</div><div class="mini-delta">+4.8%</div></div>
+  <div class="mini"><div class="mini-lbl">Заявок</div><div class="mini-val">14</div><div class="mini-delta d">−2</div></div>
+</div>
+
+<div class="card">
+  <div class="card-hd"><div class="card-title">Выручка по неделям</div><div class="card-hint">июль</div></div>
+  <div class="chart">
+    <div class="col"><div class="col-bar" style="height:55%"></div><div class="col-lbl">W1</div></div>
+    <div class="col"><div class="col-bar" style="height:72%"></div><div class="col-lbl">W2</div></div>
+    <div class="col"><div class="col-bar" style="height:62%"></div><div class="col-lbl">W3</div></div>
+    <div class="col"><div class="col-bar big" style="height:88%"></div><div class="col-lbl">W4</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-hd"><div class="card-title">Топ клиенты · LTV</div><div class="card-hint">за всё время</div></div>
+  <div class="clist">
+    <div class="crow"><div class="cavatar">СА</div><div class="cbody"><div class="cname">Смирнов А.</div><div class="cmeta">4 поездки · последняя июнь</div></div><div class="cval">1.24M<small>LTV</small></div></div>
+    <div class="crow"><div class="cavatar" style="background:linear-gradient(135deg,#F43F5E,#FBBF24)">КЕ</div><div class="cbody"><div class="cname">Козлова Е.</div><div class="cmeta">3 поездки · май</div></div><div class="cval">890K<small>LTV</small></div></div>
+    <div class="crow"><div class="cavatar" style="background:linear-gradient(135deg,#22D3EE,#7C3AED)">ПИ</div><div class="cbody"><div class="cname">Петров И.</div><div class="cmeta">2 поездки · апрель</div></div><div class="cval">640K<small>LTV</small></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-hd"><div class="card-title">Ближайшие вылеты</div><div class="card-hint">3 клиента</div></div>
+  <div class="dep-row"><div class="dep-date"><div class="dep-day">08</div><div class="dep-mo">июл</div></div><div class="dep-body"><div class="dep-name">Иванова М.</div><div class="dep-loc">Барселона · MSC Fantasia</div></div><div class="dep-badge">6 дн</div></div>
+  <div class="dep-row"><div class="dep-date"><div class="dep-day">12</div><div class="dep-mo">июл</div></div><div class="dep-body"><div class="dep-name">Смирнов А.</div><div class="dep-loc">Дубай · MSC Bellissima</div></div><div class="dep-badge">10 дн</div></div>
+  <div class="dep-row"><div class="dep-date"><div class="dep-day">15</div><div class="dep-mo">июл</div></div><div class="dep-body"><div class="dep-name">Козлова Е.</div><div class="dep-loc">Милан · авиа</div></div><div class="dep-badge">13 дн</div></div>
+</div>
+</div></body></html>
