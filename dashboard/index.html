@@ -405,12 +405,12 @@ function render(){
     </div>` : ''}
 
     ${m.top_operator ? `
-    <div class="weekly-card">
+    <div class="weekly-card" onclick="openOperator('${esc(m.top_operator.name)}')" style="cursor:pointer">
       <div class="weekly-hd"><div class="weekly-t">Топ туроператор ${esc(m.name_short)}</div><div class="weekly-c">по приходам</div></div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0 4px">
         <div>
           <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;letter-spacing:-.02em">${esc(m.top_operator.name)}</div>
-          ${m.top_tour ? `<div style="font-size:12px;color:var(--muted);font-weight:500;margin-top:4px">крупнейшая заявка: <b style="color:var(--text)">${esc(m.top_tour.client || m.top_tour.num)}</b>${m.top_tour.dest ? ` · ${esc(m.top_tour.dest)}` : ''}${m.top_tour.client ? ` <span style="color:var(--muted-2);font-size:10px;letter-spacing:.02em">(${esc(m.top_tour.num)})</span>` : ''}</div>` : ''}
+          ${m.top_tour ? `<div style="font-size:12px;color:var(--muted);font-weight:500;margin-top:4px">крупнейшая заявка: <b style="color:var(--text)">${esc(m.top_tour.client || m.top_tour.num)}</b>${m.top_tour.dest ? ` · ${esc(m.top_tour.dest)}` : ''}</div>` : ''}
         </div>
         <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--coral)">${m.top_operator.amount >= 1000000 ? (m.top_operator.amount/1000000).toFixed(2)+'M' : Math.round(m.top_operator.amount/1000)+'K'}<small style="font-size:12px;color:var(--muted);font-weight:600;font-family:'Inter',sans-serif;margin-left:2px">₽</small></div>
       </div>
@@ -434,9 +434,10 @@ function render(){
 
     <div class="sec-hd">
       <div class="sec-t">Скоро <em>в путь</em></div>
-      <div class="sec-c">${d.departures.length} клиента</div>
+      <div class="sec-c">${d.departures.length} из ${d.departures_all_count || d.departures.length}</div>
     </div>
     <div class="dep-list">${dep}</div>
+    ${d.departures_all_count && d.departures_all_count > d.departures.length ? `<div style="text-align:center;margin-top:12px"><button onclick="openAllDepartures()" style="background:var(--card);border:1px solid var(--line);padding:10px 20px;border-radius:99px;font-family:inherit;font-size:13px;font-weight:700;color:var(--text);cursor:pointer">Показать все ${d.departures_all_count}</button></div>` : ''}
 
     <div class="foot">обновлено ${esc(d.as_of)} · ${esc(d.source_note)}</div>
   `;
@@ -541,6 +542,74 @@ function openExpenseGroup(group){
             <div style="color:var(--muted);font-size:10px;font-weight:600;margin-top:2px">${esc(t.date)}</div>
           </div>
         </div>`).join('')}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('active');
+}
+
+function openAllDepartures(){
+  const all = state.data.departures_all || state.data.departures || [];
+  const body = document.getElementById('modal-body');
+  body.innerHTML = `
+    <div style="padding:22px 22px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:2">
+      <button class="modal-close-btn" style="position:absolute;top:14px;right:14px" onclick="closeModal()">✕</button>
+      <div style="color:var(--muted);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">все вылеты</div>
+      <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:800;letter-spacing:-.02em">${all.length} <span style="font-style:italic;font-weight:600">будущих поездки</span></div>
+    </div>
+    <div class="modal-content">
+      <div class="dep-list">
+        ${all.map((x, i) => `
+          <div class="dep" onclick="closeModal(); setTimeout(() => openDeparture(state.data.departures_all_indexOf ? state.data.departures_all_indexOf(${i}) : ${i}), 300)" style="cursor:pointer">
+            <div class="dep-row">
+              <div class="dep-photo" style="background-image:url('${x.photo}')">
+                <div class="dep-date"><div class="dep-day">${esc(x.day)}</div><div class="dep-mo">${esc(x.mo)}</div></div>
+              </div>
+              <div class="dep-b"><div class="dep-n">${esc(x.name)}</div><div class="dep-l">${esc(x.loc)}</div></div>
+              <div class="dep-days"><div class="dep-days-n">${x.days}</div><div class="dep-days-l">${daysWord(x.days)}</div></div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>
+  `;
+  document.getElementById('modal').classList.add('active');
+}
+
+function openOperator(name){
+  // Aggregate this month's operator data from expense_txs + top_operator
+  const m = pickMonth();
+  const opTxs = ((m.expense_txs || {}).operator_pay || []).filter(t => t.operator === name);
+  const revenue = m.top_operator && m.top_operator.name === name ? m.top_operator.amount : 0;
+  const paid = opTxs.reduce((s,t)=>s+t.amount, 0);
+  const netto = revenue - paid;
+  const body = document.getElementById('modal-body');
+  body.innerHTML = `
+    <div style="padding:22px 22px 14px;border-bottom:1px solid var(--line)">
+      <button class="modal-close-btn" style="position:absolute;top:14px;right:14px" onclick="closeModal()">✕</button>
+      <div style="color:var(--muted);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">туроператор</div>
+      <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;letter-spacing:-.02em">${esc(name)}</div>
+      <div style="color:var(--muted);font-size:12px;font-weight:600;margin-top:4px">${m.name_short} 2026</div>
+    </div>
+    <div class="modal-content">
+      <div class="info-grid2" style="margin-top:0">
+        <div class="info-cell"><div class="info-cell-lbl">Приход от клиентов</div><div class="info-cell-val" style="color:var(--olive)">${revenue >= 1000000 ? (revenue/1000000).toFixed(2)+'M' : Math.round(revenue/1000)+'K'} ₽</div></div>
+        <div class="info-cell"><div class="info-cell-lbl">Оплата ТО</div><div class="info-cell-val" style="color:var(--clay)">${paid >= 1000000 ? (paid/1000000).toFixed(2)+'M' : Math.round(paid/1000)+'K'} ₽</div></div>
+        <div class="info-cell" style="grid-column:span 2"><div class="info-cell-lbl">Твоя маржа по нему</div><div class="info-cell-val" style="color:${netto<0?'var(--clay)':'var(--olive)'};font-size:18px">${netto >= 1000000 ? (netto/1000000).toFixed(2)+'M' : Math.round(netto/1000)+'K'} ₽</div></div>
+      </div>
+
+      ${opTxs.length ? `
+      <div class="modal-section">
+        <h4>Оплаты этому ТО в ${esc(m.name_short)}</h4>
+        ${opTxs.map(t => `
+          <div class="info-cell" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px">
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12px;color:var(--muted);font-weight:500;line-height:1.4">${esc(t.comment)}</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-family:'Fraunces',serif;font-size:15px;font-weight:800;color:var(--clay)">${Math.round(t.amount/1000)}K<small style="font-size:10px;color:var(--muted);font-weight:600;margin-left:2px;font-family:'Inter',sans-serif">₽</small></div>
+              <div style="color:var(--muted);font-size:10px;font-weight:600;margin-top:2px">${esc(t.date)}</div>
+            </div>
+          </div>`).join('')}
+      </div>` : ''}
     </div>
   `;
   document.getElementById('modal').classList.add('active');
