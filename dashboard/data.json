@@ -1,6 +1,6 @@
 {
-  "as_of": "02 July 2026, 23:04 МСК",
-  "as_of_iso": "2026-07-02T23:04:33.348218+03:00",
+  "as_of": "02 July 2026, 23:14 МСК",
+  "as_of_iso": "2026-07-02T23:14:02.215335+03:00",
   "today_str": "2 июля",
   "months": [
     {
@@ -5893,18 +5893,46 @@
   "directions": [
     {
       "name": "Азия",
+      "full_name": "Круиз по Азии",
       "pct": 60,
-      "photo": "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=400&q=80"
+      "count": 9,
+      "photo": "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=400&q=80",
+      "countries": [
+        {
+          "name": "Китай",
+          "count": 9
+        }
+      ]
     },
     {
       "name": "Европа",
+      "full_name": "Круиз по Европе",
       "pct": 33,
-      "photo": "https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=400&q=80"
+      "count": 5,
+      "photo": "https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=400&q=80",
+      "countries": [
+        {
+          "name": "Турция",
+          "count": 4
+        },
+        {
+          "name": "Исландия",
+          "count": 1
+        }
+      ]
     },
     {
       "name": "Виза",
+      "full_name": "Виза",
       "pct": 7,
-      "photo": "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&q=80"
+      "count": 1,
+      "photo": "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&q=80",
+      "countries": [
+        {
+          "name": "Япония",
+          "count": 1
+        }
+      ]
     }
   ],
   "top_clients": [
@@ -5939,13 +5967,13 @@
       "first_date": "01.2024",
       "last_date": "20.02.2026",
       "operators": [
-        "PacTour",
         "Pac Travel",
-        "Pac Group",
         "32 румба",
+        "Pac Tour",
+        "PacTour",
+        "Pac Group",
         "Cruclub",
-        "ИП",
-        "Pac Tour"
+        "ИП"
       ]
     },
     {
@@ -6012,14 +6040,14 @@
       "first_date": "01.2024",
       "last_date": "21.01.2026",
       "operators": [
+        "Pac Tour",
+        "ЛаВояж",
         "PacTour",
         "CruClub",
-        "Pac Group",
-        "Cruclub",
-        "ИП",
         "ФД 1118",
-        "ЛаВояж",
-        "Pac Tour",
+        "Pac Group",
+        "ИП",
+        "Cruclub",
         "ФД 1117"
       ]
     }
@@ -7095,7 +7123,86 @@
     "on_track_fmt": "2.01M",
     "on_track_pct": 50,
     "delta_from_track": -950423,
-    "days_left": 182
+    "days_left": 182,
+    "ideas": {
+      "top_months": [
+        {
+          "month": "апрель",
+          "avg_gross": 513843,
+          "avg_gross_fmt": "513K"
+        },
+        {
+          "month": "октябрь",
+          "avg_gross": 473552,
+          "avg_gross_fmt": "473K"
+        },
+        {
+          "month": "ноябрь",
+          "avg_gross": 412822,
+          "avg_gross_fmt": "412K"
+        }
+      ],
+      "top_directions": [
+        {
+          "name": "Австралия",
+          "revenue": 1320584,
+          "revenue_fmt": "1.32M",
+          "count": 26
+        },
+        {
+          "name": "Китай",
+          "revenue": 1105310,
+          "revenue_fmt": "1.11M",
+          "count": 36
+        },
+        {
+          "name": "Турция",
+          "revenue": 932629,
+          "revenue_fmt": "932K",
+          "count": 16
+        }
+      ],
+      "monthly_need": 496338,
+      "monthly_need_fmt": "496K",
+      "months_left": 5.9,
+      "dormant_clients": [
+        {
+          "name": "Цомая Инна",
+          "ltv": 1658811,
+          "ltv_fmt": "1.66M",
+          "months_dormant": 9,
+          "last_seen": "09.2025"
+        },
+        {
+          "name": "Андреец Ольга",
+          "ltv": 1373259,
+          "ltv_fmt": "1.37M",
+          "months_dormant": 8,
+          "last_seen": "10.2025"
+        },
+        {
+          "name": "Иванова Татьяна",
+          "ltv": 833153,
+          "ltv_fmt": "833K",
+          "months_dormant": 11,
+          "last_seen": "07.2025"
+        },
+        {
+          "name": "Раевская Оксана",
+          "ltv": 715582,
+          "ltv_fmt": "715K",
+          "months_dormant": 7,
+          "last_seen": "11.2025"
+        },
+        {
+          "name": "за Вьетнам 6800$",
+          "ltv": 571200,
+          "ltv_fmt": "571K",
+          "months_dormant": 8,
+          "last_seen": "10.2025"
+        }
+      ]
+    }
   },
   "source_note": "ДДС по дате платежа · U-ON: 479 заявок · синк 2026-07-03T00:27"
 }
