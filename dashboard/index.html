@@ -230,6 +230,33 @@ function esc(s){ return String(s).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&
 function daysWord(n){ if(n===1) return 'день'; if(n>=2&&n<=4) return 'дня'; return 'дней'; }
 function pickMonth(){ return state.data.months[state.activeIdx] || state.data.months[0]; }
 
+function renderYearlyGoal(g){
+  const pct = Math.min(g.pct, 100);
+  const onTrackPct = Math.min(g.on_track_pct, 100);
+  const behind = g.delta_from_track < 0;
+  return `
+  <div class="weekly-card" style="background:linear-gradient(140deg,var(--card),var(--bg-2));border:1px solid var(--line);padding:20px 20px 22px">
+    <div class="weekly-hd" style="margin-bottom:16px">
+      <div class="weekly-t">Годовая цель · ${g.target_fmt} ₽ прибыли</div>
+      <div class="weekly-c">${g.days_left} дней</div>
+    </div>
+    <div style="position:relative;height:14px;background:var(--bg-2);border-radius:99px;overflow:hidden;margin-bottom:10px">
+      <div style="position:absolute;left:0;top:0;bottom:0;width:${pct}%;background:linear-gradient(90deg,var(--gold),var(--coral));border-radius:99px;animation:progressFill 1.5s cubic-bezier(.34,.5,.24,1) .6s both"></div>
+      <div style="position:absolute;left:${onTrackPct}%;top:-4px;bottom:-4px;width:2px;background:var(--muted);opacity:.7" title="на треке к сегодня"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px">
+      <div>
+        <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1">${esc(g.current_fmt)}<small style="font-size:12px;color:var(--muted);font-weight:600;font-family:'Inter',sans-serif;margin-left:2px">₽</small></div>
+        <div style="color:var(--muted);font-size:11px;font-weight:600;margin-top:3px">${g.pct}% от цели · YTD</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:${behind ? 'var(--clay)' : 'var(--olive)'};line-height:1">${behind ? '' : '+'}${(g.delta_from_track/1000000).toFixed(2)}M<small style="font-size:11px;color:var(--muted);font-weight:600;font-family:'Inter',sans-serif;margin-left:2px">₽</small></div>
+        <div style="color:var(--muted);font-size:11px;font-weight:600;margin-top:3px">${behind ? 'отстаём' : 'опережаем'} трек</div>
+      </div>
+    </div>
+  </div>`;
+}
+
 // count up animation: animates innerHTML from 0 to target over duration
 function animateNumber(el, targetText, duration=900){
   // Extract numeric part (K, M suffix supported), preserve rest
@@ -389,6 +416,8 @@ function render(){
       </div>
     </div>` : ''}
 
+    ${d.yearly_goal ? renderYearlyGoal(d.yearly_goal) : ''}
+
     ${weeklyHtml}
 
     <div class="sec-hd">
@@ -432,14 +461,14 @@ function openDeparture(idx){
   if(!dep) return;
   const statusClass = dep.status === 'Подтверждена' ? '' : dep.status === 'В работе' ? 'work' : 'other';
   const body = document.getElementById('modal-body');
-  const phoneClean = (dep.phone||'').replace(/[^\d+]/g,'');
+  const placeStr = [dep.country, dep.port].filter(Boolean).join(' · ');
   body.innerHTML = `
     <div class="modal-hero" style="background-image:url('${dep.photo}')">
       <button class="modal-close-btn" onclick="closeModal()">✕</button>
       <div class="modal-hero-body">
         <span class="modal-days-badge">через ${dep.days} ${daysWord(dep.days)}</span>
         <div class="modal-hero-name">${esc(dep.full_name || dep.name)}</div>
-        <div class="modal-hero-sub">${esc(dep.travel_type || dep.loc)}</div>
+        <div class="modal-hero-sub">${esc(dep.route || dep.travel_type || dep.loc)}</div>
       </div>
     </div>
     <div class="modal-content">
@@ -455,10 +484,16 @@ function openDeparture(idx){
         <div class="info-cell"><div class="info-cell-lbl">Статус</div><div class="info-cell-val"><span class="status-chip ${statusClass}">${esc(dep.status || '—')}</span></div></div>
       </div>
 
-      ${dep.reservation ? `
+      ${dep.ship ? `
       <div class="modal-section">
-        <h4>Номер брони</h4>
-        <div class="info-cell"><div class="info-cell-val wide">${esc(dep.reservation)}</div></div>
+        <h4>Лайнер</h4>
+        <div class="info-cell"><div class="info-cell-val wide">${esc(dep.ship)}${dep.cabin ? ` <span style="color:var(--muted);font-family:'Inter',sans-serif;font-weight:500;font-size:12px">· ${esc(dep.cabin)}</span>` : ''}</div></div>
+      </div>` : ''}
+
+      ${placeStr ? `
+      <div class="modal-section">
+        <h4>Направление</h4>
+        <div class="info-cell"><div class="info-cell-val wide">${esc(placeStr)}</div></div>
       </div>` : ''}
 
       ${dep.supplier ? `
@@ -466,19 +501,6 @@ function openDeparture(idx){
         <h4>Туроператор</h4>
         <div class="info-cell"><div class="info-cell-val wide">${esc(dep.supplier)}</div></div>
       </div>` : ''}
-
-      ${dep.route ? `
-      <div class="modal-section">
-        <h4>Маршрут / лайнер</h4>
-        <div class="route-txt">${esc(dep.route)}</div>
-      </div>` : ''}
-
-      <div class="modal-section">
-        <div class="contact-btns">
-          ${phoneClean ? `<a class="cbtn" href="tel:${phoneClean}">📞 Позвонить</a>` : ''}
-          ${phoneClean ? `<a class="cbtn outline" href="https://wa.me/${phoneClean.replace('+','')}">WhatsApp</a>` : ''}
-        </div>
-      </div>
     </div>
   `;
   document.getElementById('modal').classList.add('active');
