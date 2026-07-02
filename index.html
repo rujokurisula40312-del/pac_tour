@@ -746,27 +746,26 @@ function buildLeadText(c){
 
 function sendLead(){
   const c = state.selectedCruise;
-  const text = buildLeadText(c);
-  const url = `https://t.me/${CFG.BOT_USER}?text=${encodeURIComponent(text)}`;
+  const url = `https://t.me/${CFG.BOT_USER}?text=${encodeURIComponent(buildLeadText(c))}`;
   const tg = window.Telegram?.WebApp;
-  // Try sendData first (works only if launched from keyboard button)
-  if(tg && tg.initData){
-    try{ tg.sendData(JSON.stringify({type:'cruise_lead', cruise:c, profile:state.answers})); tg.close(); return; }catch(e){}
-    // Menu-button/inline launches: fallback to openTelegramLink
-    try{ tg.openTelegramLink(url); Modal.close(); swap('s-sent'); return; }catch(e){}
+  // openTelegramLink works reliably from ANY launch context (menu button, inline, keyboard, browser)
+  if(tg && tg.openTelegramLink){
+    tg.openTelegramLink(url);
+    Modal.close();
+    swap('s-sent');
+    return;
   }
-  // Browser fallback
   window.open(url, '_blank');
   Modal.close(); swap('s-sent');
 }
 
 function sendManualLead(){
-  const text = buildLeadText(null);
-  const url = `https://t.me/${CFG.BOT_USER}?text=${encodeURIComponent(text)}`;
+  const url = `https://t.me/${CFG.BOT_USER}?text=${encodeURIComponent(buildLeadText(null))}`;
   const tg = window.Telegram?.WebApp;
-  if(tg && tg.initData){
-    try{ tg.sendData(JSON.stringify({type:'manual_lead', profile:state.answers})); tg.close(); return; }catch(e){}
-    try{ tg.openTelegramLink(url); swap('s-sent'); return; }catch(e){}
+  if(tg && tg.openTelegramLink){
+    tg.openTelegramLink(url);
+    swap('s-sent');
+    return;
   }
   window.open(url, '_blank');
   swap('s-sent');
