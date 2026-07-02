@@ -114,6 +114,10 @@ body{background:radial-gradient(500px 400px at 100% 0%,rgba(232,109,90,.08),tran
 .mt{flex-shrink:0;background:var(--card);border:1px solid var(--line);padding:8px 14px;border-radius:99px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .18s ease;letter-spacing:-.005em}
 .mt.on{background:var(--text);color:var(--bg);border-color:var(--text)}
 .mt.on-current{background:var(--coral);color:#fff;border-color:var(--coral)}
+.refresh-btn{background:var(--card);border:1px solid var(--line);padding:8px 12px;border-radius:99px;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .18s ease}
+.refresh-btn:active{transform:scale(.95)}
+.refresh-btn.spinning::before{content:"↻";animation:spin 1s linear infinite;display:inline-block}
+.refresh-btn::before{content:"↻";font-size:14px}
 </style></head>
 <body>
 <div id="app">
@@ -199,7 +203,7 @@ function render(){
   app.innerHTML = `
     <div class="top">
       <div class="top-l"><div class="logo">P</div><div class="brand">Pro Travel</div></div>
-      <div class="top-r">${esc(m.name)}</div>
+      <button class="refresh-btn" onclick="refresh()">Обновить</button>
     </div>
 
     ${monthTabs}
@@ -294,6 +298,17 @@ async function load(){
   } catch(e){
     app.innerHTML = `<div class="loading">Не смогла загрузить данные. Попробуй ещё раз через минуту.<br><br><small>${e.message}</small></div>`;
   }
+}
+
+async function refresh(){
+  const btn = document.querySelector('.refresh-btn');
+  if(btn) btn.classList.add('spinning');
+  const prevIdx = state.activeIdx;
+  await load();
+  state.activeIdx = prevIdx < (state.data.months?.length || 1) ? prevIdx : 0;
+  render();
+  const btn2 = document.querySelector('.refresh-btn');
+  if(btn2) btn2.classList.remove('spinning');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
