@@ -1,6 +1,6 @@
 {
-  "as_of": "02 July 2026, 22:22 МСК",
-  "as_of_iso": "2026-07-02T22:22:07.488994+03:00",
+  "as_of": "02 July 2026, 22:29 МСК",
+  "as_of_iso": "2026-07-02T22:29:01.911638+03:00",
   "today_str": "2 июля",
   "months": [
     {
@@ -483,13 +483,18 @@
   "directions": [
     {
       "name": "Азия",
-      "pct": 58,
+      "pct": 60,
       "photo": "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=400&q=80"
     },
     {
       "name": "Европа",
-      "pct": 42,
+      "pct": 33,
       "photo": "https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=400&q=80"
+    },
+    {
+      "name": "Виза",
+      "pct": 7,
+      "photo": "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&q=80"
     }
   ],
   "top_clients": [
@@ -547,5 +552,5 @@
       "photo": "https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?w=400&q=80"
     }
   ],
-  "source_note": "ДДС по дате платежа · U-ON: 464 заявок · синк 2026-07-03T00:09"
+  "source_note": "ДДС по дате платежа · U-ON: 479 заявок · синк 2026-07-03T00:27"
 }
