@@ -108,6 +108,12 @@ body{background:radial-gradient(500px 400px at 100% 0%,rgba(232,109,90,.08),tran
 .loading{text-align:center;padding:60px 20px;color:var(--muted)}
 .loading-spinner{width:36px;height:36px;border:3px solid rgba(232,109,90,.2);border-top-color:var(--coral);border-radius:50%;margin:0 auto 16px;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+.month-tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 4px 8px;margin:0 -4px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.month-tabs::-webkit-scrollbar{display:none}
+.mt{flex-shrink:0;background:var(--card);border:1px solid var(--line);padding:8px 14px;border-radius:99px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .18s ease;letter-spacing:-.005em}
+.mt.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.mt.on-current{background:var(--coral);color:#fff;border-color:var(--coral)}
 </style></head>
 <body>
 <div id="app">
@@ -119,18 +125,33 @@ body{background:radial-gradient(500px 400px at 100% 0%,rgba(232,109,90,.08),tran
 
 <script>
 const app = document.getElementById('app');
+let state = { data: null, activeIdx: 0 };
 
 function esc(s){ return String(s).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c])); }
 function daysWord(n){ if(n===1) return 'день'; if(n>=2&&n<=4) return 'дня'; return 'дней'; }
+function pickMonth(){ return state.data.months[state.activeIdx] || state.data.months[0]; }
 
-function render(d){
-  const m = d.month;
-  const pm = d.prev_month;
+function switchMonth(i){
+  state.activeIdx = i;
+  render();
+}
+
+function render(){
+  const d = state.data;
+  const m = pickMonth();
   const upDown = m.delta_pct >= 0 ? 'up' : 'down';
-  const deltaStr = `${Math.abs(m.delta_pct)}% к ${pm.name}`;
+  const deltaStr = m.delta_label ? `${Math.abs(m.delta_pct)}% к ${m.delta_label}` : '';
+
+  // Month tabs — from left (most recent) to right (older)
+  const tabs = d.months.map((mo, i) => {
+    const cls = i === state.activeIdx ? (mo.is_current ? 'mt on-current' : 'mt on') : 'mt';
+    return `<div class="${cls}" onclick="switchMonth(${i})">${esc(mo.name_short)}${mo.year !== 2026 ? ` '${String(mo.year).slice(-2)}` : ''}</div>`;
+  }).join('');
+  const monthTabs = `<div class="month-tabs">${tabs}</div>`;
 
   let weeklyHtml = '';
-  if(d.weekly && d.weekly.length){
+  // Weekly only makes sense for current month (real-time bars)
+  if(m.is_current && d.weekly && d.weekly.length){
     const maxV = Math.max(...d.weekly.map(x=>x.value), 1);
     const bars = d.weekly.map((w,i)=>{
       const h = Math.round(w.value/maxV*100);
@@ -175,31 +196,30 @@ function render(d){
       </div>
     </div>`).join('');
 
-  const commentary = d.commentary ? `<div class="hero-cap">${esc(d.commentary)}</div>` : '';
-
   app.innerHTML = `
     <div class="top">
       <div class="top-l"><div class="logo">P</div><div class="brand">Pro Travel</div></div>
       <div class="top-r">${esc(m.name)}</div>
     </div>
 
+    ${monthTabs}
+
     <div class="hero">
       <div class="hero-img"></div>
       <div class="hero-top">
-        <div class="hero-tag">Итог месяца</div>
-        <div class="hero-num ${upDown}">${deltaStr}</div>
+        <div class="hero-tag">${m.is_current ? 'Идёт месяц' : 'Итог месяца'}</div>
+        ${deltaStr ? `<div class="hero-num ${upDown}">${deltaStr}</div>` : ''}
       </div>
       <div class="hero-body">
-        <div class="hero-l">выручка</div>
+        <div class="hero-l">приход (от клиентов)</div>
         <div class="hero-v">${esc(m.revenue_fmt)}<small>₽</small></div>
-        ${commentary}
       </div>
     </div>
 
     <div class="qstats" style="grid-template-columns:1fr 1fr">
-      <div class="qs"><div class="qs-l">валовая прибыль</div><div class="qs-v" style="color:${m.gross_profit<0?'var(--clay)':'var(--olive)'}">${m.gross_profit<0?'-':''}${esc(m.gross_profit_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d">приход − ТО − банк</div></div>
-      <div class="qs"><div class="qs-l">чистая (до налога)</div><div class="qs-v" style="color:${m.net_before_tax<0?'var(--clay)':'var(--olive)'}">${m.net_before_tax<0?'-':''}${esc(m.net_before_tax_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d">минус ИП-обслуживание</div></div>
-      <div class="qs"><div class="qs-l">налог УСН 3%</div><div class="qs-v" style="color:var(--sea)">${esc(m.tax_fmt)}<small>₽</small></div><div class="qs-d">с ${esc(m.revenue_fmt)} дохода</div></div>
+      <div class="qs"><div class="qs-l">мой доход</div><div class="qs-v" style="color:${m.gross_profit<0?'var(--clay)':'var(--olive)'}">${m.gross_profit<0?'-':''}${esc(m.gross_profit_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d">приход − ТО − банк</div></div>
+      <div class="qs"><div class="qs-l">после расх. ИП</div><div class="qs-v" style="color:${m.net_before_tax<0?'var(--clay)':'var(--olive)'}">${m.net_before_tax<0?'-':''}${esc(m.net_before_tax_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d">минус обслуживание</div></div>
+      <div class="qs"><div class="qs-l">налог УСН 3%</div><div class="qs-v" style="color:var(--sea)">${esc(m.tax_fmt)}<small>₽</small></div><div class="qs-d">с прихода</div></div>
       <div class="qs"><div class="qs-l">на руки</div><div class="qs-v" style="color:${m.net_after_tax<0?'var(--clay)':'var(--olive)'}">${m.net_after_tax<0?'-':''}${esc(m.net_after_tax_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d ${m.net_after_tax<0?'d':''}">${m.margin_pct}% маржа</div></div>
     </div>
 
@@ -227,25 +247,16 @@ function render(d){
       </div>
     </div>` : ''}
 
-    ${m.top_operator || m.top_tour ? `
+    ${m.top_operator ? `
     <div class="weekly-card">
-      <div class="weekly-hd"><div class="weekly-t">Топ по деньгам</div><div class="weekly-c">${esc(m.name_short)}</div></div>
-      ${m.top_operator ? `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)">
+      <div class="weekly-hd"><div class="weekly-t">Топ туроператор ${esc(m.name_short)}</div><div class="weekly-c">по приходам</div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0 4px">
         <div>
-          <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:2px">туроператор</div>
-          <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700">${esc(m.top_operator.name)}</div>
+          <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;letter-spacing:-.02em">${esc(m.top_operator.name)}</div>
+          ${m.top_tour ? `<div style="font-size:12px;color:var(--muted);font-weight:500;margin-top:4px">крупнейшая заявка: <b style="color:var(--text)">${esc(m.top_tour.num)}</b></div>` : ''}
         </div>
-        <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:var(--coral)">${m.top_operator.amount >= 1000000 ? (m.top_operator.amount/1000000).toFixed(2)+'M' : Math.round(m.top_operator.amount/1000)+'K'}<small style="font-size:11px;color:var(--muted);font-weight:600;font-family:'Inter',sans-serif;margin-left:2px">₽</small></div>
-      </div>` : ''}
-      ${m.top_tour ? `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0 4px">
-        <div>
-          <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:2px">заявка</div>
-          <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700">${esc(m.top_tour.num)}</div>
-        </div>
-        <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:var(--coral)">${m.top_tour.amount >= 1000000 ? (m.top_tour.amount/1000000).toFixed(2)+'M' : Math.round(m.top_tour.amount/1000)+'K'}<small style="font-size:11px;color:var(--muted);font-weight:600;font-family:'Inter',sans-serif;margin-left:2px">₽</small></div>
-      </div>` : ''}
+        <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--coral)">${m.top_operator.amount >= 1000000 ? (m.top_operator.amount/1000000).toFixed(2)+'M' : Math.round(m.top_operator.amount/1000)+'K'}<small style="font-size:12px;color:var(--muted);font-weight:600;font-family:'Inter',sans-serif;margin-left:2px">₽</small></div>
+      </div>
     </div>` : ''}
 
     ${weeklyHtml}
@@ -277,7 +288,9 @@ async function load(){
     const r = await fetch(`data.json?t=${Date.now()}`);
     if(!r.ok) throw new Error('HTTP '+r.status);
     const d = await r.json();
-    render(d);
+    state.data = d;
+    state.activeIdx = d.active_month_idx || 0;
+    render();
   } catch(e){
     app.innerHTML = `<div class="loading">Не смогла загрузить данные. Попробуй ещё раз через минуту.<br><br><small>${e.message}</small></div>`;
   }
