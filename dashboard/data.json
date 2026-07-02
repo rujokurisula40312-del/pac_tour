@@ -1,6 +1,6 @@
 {
-  "as_of": "02 July 2026, 22:11 МСК",
-  "as_of_iso": "2026-07-02T22:11:22.247748+03:00",
+  "as_of": "02 July 2026, 22:12 МСК",
+  "as_of_iso": "2026-07-02T22:12:19.155326+03:00",
   "today_str": "2 июля",
   "months": [
     {
@@ -482,9 +482,24 @@
   ],
   "directions": [
     {
+      "name": "Азия",
+      "pct": 50,
+      "photo": "https://images.unsplash.com/photo-1548919973-5cef591cdbc9?w=200&q=80"
+    },
+    {
       "name": "Европа",
-      "pct": 100,
+      "pct": 36,
       "photo": "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=200&q=80"
+    },
+    {
+      "name": "Виза",
+      "pct": 7,
+      "photo": "https://images.unsplash.com/photo-1544588002-2fa08497f4d0?w=200&q=80"
+    },
+    {
+      "name": "Прочее",
+      "pct": 7,
+      "photo": "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=200&q=80"
     }
   ],
   "top_clients": [
@@ -522,7 +537,7 @@
       "mo": "июл",
       "days": 16,
       "name": "Цомая И.",
-      "loc": "Европа · ООО &quot;Краски Мира&quo",
+      "loc": "Европа",
       "photo": "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=200&q=80"
     },
     {
@@ -530,7 +545,7 @@
       "mo": "авг",
       "days": 30,
       "name": "Фогель Е.",
-      "loc": "Азия · АКЦИОНЕРНОЕ ОБЩЕСТВО АГЕН",
+      "loc": "Азия",
       "photo": "https://images.unsplash.com/photo-1548919973-5cef591cdbc9?w=200&q=80"
     },
     {
@@ -538,7 +553,7 @@
       "mo": "авг",
       "days": 32,
       "name": "Володенкова Н.",
-      "loc": "Европа · АКЦИОНЕРНОЕ ОБЩЕСТВО АГЕН",
+      "loc": "Европа · В работе",
       "photo": "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=200&q=80"
     }
   ],
