@@ -197,10 +197,55 @@ function render(d){
     </div>
 
     <div class="qstats">
-      <div class="qs"><div class="qs-l">прибыль</div><div class="qs-v">${esc(m.profit_fmt)}<small>₽</small></div><div class="qs-d">маржа ${m.margin_pct}%</div></div>
-      <div class="qs"><div class="qs-l">ср. чек</div><div class="qs-v">${esc(m.avg_check_fmt)}<small>₽</small></div><div class="qs-d">${m.deals_count} платежей</div></div>
-      <div class="qs"><div class="qs-l">заявок</div><div class="qs-v">${m.deals_count}</div><div class="qs-d">в ${esc(m.name_short)}</div></div>
+      <div class="qs"><div class="qs-l">затраты</div><div class="qs-v" style="color:${m.expenses>0?'var(--clay)':'var(--text)'}">${esc(m.expenses_fmt)}<small>₽</small></div><div class="qs-d d">все расходы</div></div>
+      <div class="qs"><div class="qs-l">прибыль</div><div class="qs-v" style="color:${m.net_profit<0?'var(--clay)':'var(--olive)'}">${m.net_profit<0?'-':''}${esc(m.net_profit_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d ${m.net_profit<0?'d':''}">маржа ${m.margin_pct}%</div></div>
+      <div class="qs"><div class="qs-l">ср. чек</div><div class="qs-v">${esc(m.avg_check_fmt)}<small>₽</small></div><div class="qs-d">${m.payments_count} платежей</div></div>
     </div>
+
+    ${m.expenses > 0 ? `
+    <div class="weekly-card">
+      <div class="weekly-hd"><div class="weekly-t">Затраты — куда</div><div class="weekly-c">${esc(m.name_short)}</div></div>
+      <div style="display:flex;flex-direction:column;gap:10px;padding:4px 0 4px">
+        ${[
+          {label:'Оплата туроператору', val:m.operator_pay, color:'#E86D5A'},
+          {label:'Обслуживание ИП', val:m.ie_overhead, color:'#D4A24A'},
+          {label:'Комиссия банка', val:m.bank_comm, color:'#7A8A5A'},
+          {label:'Прочее', val:m.other_exp, color:'#B8663D'},
+        ].filter(x=>x.val>0).map(x => {
+          const pct = Math.round(x.val / m.expenses * 100);
+          const fmt = x.val >= 1000000 ? (x.val/1000000).toFixed(2)+'M' : Math.round(x.val/1000)+'K';
+          return `
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:13px">
+              <span style="font-weight:600">${x.label}</span>
+              <span style="font-family:'Fraunces',serif;font-weight:700"><span style="color:var(--text)">${fmt} ₽</span> <span style="color:var(--muted);font-size:11px">${pct}%</span></span>
+            </div>
+            <div style="height:8px;background:var(--bg-2);border-radius:99px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${x.color};border-radius:99px"></div></div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>` : ''}
+
+    ${m.top_operator || m.top_tour ? `
+    <div class="weekly-card">
+      <div class="weekly-hd"><div class="weekly-t">Топ по деньгам</div><div class="weekly-c">${esc(m.name_short)}</div></div>
+      ${m.top_operator ? `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)">
+        <div>
+          <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:2px">туроператор</div>
+          <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700">${esc(m.top_operator.name)}</div>
+        </div>
+        <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:var(--coral)">${m.top_operator.amount >= 1000000 ? (m.top_operator.amount/1000000).toFixed(2)+'M' : Math.round(m.top_operator.amount/1000)+'K'}<small style="font-size:11px;color:var(--muted);font-weight:600;font-family:'Inter',sans-serif;margin-left:2px">₽</small></div>
+      </div>` : ''}
+      ${m.top_tour ? `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0 4px">
+        <div>
+          <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:2px">заявка</div>
+          <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700">${esc(m.top_tour.num)}</div>
+        </div>
+        <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:800;color:var(--coral)">${m.top_tour.amount >= 1000000 ? (m.top_tour.amount/1000000).toFixed(2)+'M' : Math.round(m.top_tour.amount/1000)+'K'}<small style="font-size:11px;color:var(--muted);font-weight:600;font-family:'Inter',sans-serif;margin-left:2px">₽</small></div>
+      </div>` : ''}
+    </div>` : ''}
 
     ${weeklyHtml}
 
