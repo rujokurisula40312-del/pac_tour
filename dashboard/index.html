@@ -498,8 +498,13 @@ function openClient(idx){
       </div>` : ''}
 
       <div class="modal-section">
-        <h4>Заявки</h4>
-        <div class="info-cell" style="font-size:12px;font-family:'Inter',sans-serif;font-weight:500;color:var(--muted);line-height:1.6">${(c.trips_list||[]).join(', ') || '—'}</div>
+        <h4>Заявки — тап открывает кабинет ТО</h4>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${(c.trips_with_urls || (c.trips_list||[]).map(n => ({num:n, url:null}))).map(t =>
+            t.url ? `<a href="${esc(t.url)}" target="_blank" style="background:var(--card);border:1px solid var(--line);padding:6px 10px;border-radius:8px;font-size:12px;font-weight:600;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:4px">${esc(t.num)} <span style="color:var(--muted);font-size:10px">↗</span></a>`
+            : `<span style="background:var(--card);border:1px solid var(--line);padding:6px 10px;border-radius:8px;font-size:12px;font-weight:600;color:var(--muted)">${esc(t.num)}</span>`
+          ).join('') || '—'}
+        </div>
       </div>
     </div>
   `;
