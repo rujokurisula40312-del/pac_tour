@@ -1,25 +1,42 @@
 {
-  "as_of": "02 July 2026, 21:15 МСК",
-  "as_of_iso": "2026-07-02T21:15:01.760393+03:00",
+  "as_of": "02 July 2026, 21:27 МСК",
+  "as_of_iso": "2026-07-02T21:27:55.708577+03:00",
+  "today_str": "2 июля",
   "month": {
     "name": "июль 2026",
     "name_short": "июль",
-    "revenue": 590900,
-    "revenue_fmt": "590K",
-    "profit": 45957,
-    "profit_fmt": "45K",
-    "margin_pct": 8,
+    "revenue": 60000,
+    "revenue_fmt": "60K",
+    "expenses": 3934,
+    "expenses_fmt": "3K",
+    "net_profit": 56065,
+    "net_profit_fmt": "56K",
+    "margin_pct": 93,
     "avg_check": 30000,
     "avg_check_fmt": "30K",
-    "deals_count": 2,
-    "delta_pct": -62
+    "payments_count": 2,
+    "delta_pct": -95,
+    "bank_comm": 420,
+    "ie_overhead": 0,
+    "operator_pay": 19800,
+    "other_exp": 19051,
+    "top_operator": {
+      "name": "Ла Вояж",
+      "amount": 60000
+    },
+    "top_tour": {
+      "num": "CBR71017A2",
+      "amount": 40000
+    }
   },
   "prev_month": {
     "name": "июнь",
-    "revenue": 1566863,
-    "revenue_fmt": "1.57M"
+    "revenue": 1126390,
+    "revenue_fmt": "1.13M",
+    "net_profit": -100452,
+    "net_profit_fmt": "-100452"
   },
-  "commentary": "Первые дни июля. Прошлый июнь закрыла на 1.57M ₽.",
+  "commentary": "Первые дни июля. Прошлый июнь закрыла на 1.13M ₽ выручки, -100452 ₽ прибыли.",
   "weekly": [
     {
       "label": "W1",
@@ -77,29 +94,29 @@
   ],
   "departures": [
     {
+      "day": "08",
+      "mo": "июл",
+      "days": 6,
       "name": "Иванова М.",
       "loc": "Барселона · MSC Fantasia",
-      "photo": "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&q=80",
-      "days": 6,
-      "day": "08",
-      "mo": "июл"
+      "photo": "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&q=80"
     },
     {
+      "day": "12",
+      "mo": "июл",
+      "days": 10,
       "name": "Смирнов А.",
       "loc": "Дубай · MSC Bellissima",
-      "photo": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80",
-      "days": 10,
-      "day": "12",
-      "mo": "июл"
+      "photo": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80"
     },
     {
+      "day": "15",
+      "mo": "июл",
+      "days": 13,
       "name": "Козлова Е.",
       "loc": "Милан · авиа",
-      "photo": "https://images.unsplash.com/photo-1520175480921-4edfa2983e0f?w=400&q=80",
-      "days": 13,
-      "day": "15",
-      "mo": "июл"
+      "photo": "https://images.unsplash.com/photo-1520175480921-4edfa2983e0f?w=400&q=80"
     }
   ],
-  "source_note": "живая финансовая таблица · U-ON скоро подключу"
+  "source_note": "живая таблица · по дате платежа · U-ON скоро подключу"
 }
