@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>7 · Bento</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A0C;
+  --card:#141418;
+  --card-2:#1C1C22;
+  --line:#26262E;
+  --text:#F5F5F7;
+  --muted:#8A8A94;
+  --lime:#D3FF54;
+  --purple:#8B7FFF;
+  --pink:#FF6B9D;
+  --cyan:#4DE1FF;
+  --peach:#FFA366;
+  --green:#4ADE80;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-.015em;min-height:100%}
+#app{max-width:520px;margin:0 auto;padding:16px 14px 60px}
+
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:4px 4px}
+.top-l{display:flex;align-items:center;gap:10px}
+.logo{width:30px;height:30px;background:var(--lime);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--bg);font-weight:900;font-size:15px}
+.brand{font-weight:800;font-size:15px}
+.top-r{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 10px;font-size:12px;font-weight:600;color:var(--muted)}
+.top-r::before{content:"";width:6px;height:6px;background:var(--green);border-radius:50%}
+
+.bento{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+
+.b{background:var(--card);border-radius:20px;padding:16px;position:relative;overflow:hidden}
+.b-lbl{color:var(--muted);font-size:11px;font-weight:600;margin-bottom:6px;text-transform:lowercase;letter-spacing:.005em}
+.b-val{font-size:28px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.b-val small{font-size:14px;color:var(--muted);font-weight:600;margin-left:2px}
+
+/* huge revenue card */
+.b-hero{grid-column:span 4;background:var(--lime);color:var(--bg);padding:22px 22px 22px;border-radius:24px;position:relative;overflow:hidden}
+.b-hero::before{content:"";position:absolute;top:-30%;right:-15%;width:200px;height:200px;background:radial-gradient(circle,rgba(0,0,0,.08),transparent 60%);border-radius:50%}
+.b-hero-l{font-size:13px;font-weight:700;opacity:.65;margin-bottom:8px;letter-spacing:-.005em}
+.b-hero-v{font-size:56px;font-weight:900;letter-spacing:-.045em;line-height:.92;margin-bottom:10px}
+.b-hero-v small{font-size:22px;font-weight:800;opacity:.55;margin-left:6px}
+.b-hero-d{display:inline-flex;align-items:center;gap:5px;background:var(--bg);color:var(--lime);font-size:12px;font-weight:800;padding:5px 10px;border-radius:99px}
+.b-hero-d::before{content:"↑"}
+
+/* profit / avg / open */
+.b-2{grid-column:span 2}
+.b-1{grid-column:span 1}
+
+.b-profit{background:var(--purple);color:var(--bg)}
+.b-profit .b-lbl{color:var(--bg);opacity:.5;font-weight:700}
+.b-profit .b-val{font-weight:900}
+.b-profit-arc{position:absolute;bottom:-20px;right:-20px;width:90px;height:90px;border:12px solid rgba(0,0,0,.15);border-right-color:var(--bg);border-radius:50%;transform:rotate(-45deg)}
+
+.b-avg .b-val{color:var(--cyan)}
+
+.b-open{grid-column:span 2}
+.b-open .b-val::after{content:"/21";font-size:14px;color:var(--muted);font-weight:600;margin-left:4px}
+
+/* weekly bars */
+.b-chart{grid-column:span 4;padding:18px 18px 16px}
+.b-chart-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.b-chart-l{font-size:12px;color:var(--muted);font-weight:600}
+.b-chart-t{font-size:13px;font-weight:700}
+.bars{display:flex;align-items:flex-end;gap:6px;height:88px}
+.br{flex:1;background:var(--card-2);border-radius:6px 6px 4px 4px;transition:all .3s ease}
+.br.a{background:var(--pink)}
+.br.b{background:var(--peach)}
+.br.c{background:var(--cyan)}
+.br.d{background:var(--lime)}
+
+/* clients bento */
+.b-cli{grid-column:span 2;background:var(--card)}
+.b-cli .b-lbl{margin-bottom:14px}
+.avs{display:flex;margin-bottom:12px}
+.av{width:36px;height:36px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--bg);border:3px solid var(--card);margin-left:-8px}
+.av:first-child{margin-left:0;background:var(--lime)}
+.av:nth-child(2){background:var(--cyan)}
+.av:nth-child(3){background:var(--pink)}
+.av:nth-child(4){background:var(--peach);color:var(--bg);font-size:11px;font-weight:900}
+.cli-val{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.cli-val small{font-size:12px;color:var(--muted);font-weight:600;margin-left:4px}
+
+/* next departure */
+.b-dep{grid-column:span 2;background:var(--card);position:relative}
+.b-dep .b-val{font-size:22px;font-weight:800}
+.b-dep-flag{font-size:22px;margin-bottom:8px}
+.b-dep-name{font-size:13px;color:var(--muted);font-weight:600;margin-top:4px}
+
+/* map / directions */
+.b-dir{grid-column:span 4;padding:18px}
+.b-dir-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.b-dir-t{font-size:13px;font-weight:700}
+.b-dir-c{font-size:11px;color:var(--muted);font-weight:600}
+.rings{display:flex;gap:14px;align-items:center;justify-content:space-around}
+.ring{position:relative;width:64px;height:64px;flex-shrink:0}
+.ring svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--card-2);stroke-width:8}
+.ring-fg{fill:none;stroke-width:8;stroke-linecap:round}
+.ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.ring-emo{font-size:18px}
+.ring-pct{font-size:12px;font-weight:800;color:var(--text)}
+.ring-lbl{font-size:10px;color:var(--muted);font-weight:600;text-align:center;margin-top:6px}
+
+/* departures big row card */
+.b-dep-big{grid-column:span 4;padding:16px 18px}
+.dep-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.dep-hd-t{font-size:13px;font-weight:700}
+.dep-hd-c{background:var(--pink);color:var(--bg);font-size:10px;font-weight:800;padding:3px 8px;border-radius:99px}
+.dep-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.dep-row:last-child{border-bottom:none}
+.dep-row:first-child{padding-top:0}
+.dep-d{background:var(--card-2);border-radius:12px;padding:8px 10px;text-align:center;min-width:52px}
+.dep-day{font-size:18px;font-weight:900;line-height:1;letter-spacing:-.03em}
+.dep-mo{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.dep-b{flex:1;min-width:0}
+.dep-n{font-size:14px;font-weight:700}
+.dep-l{color:var(--muted);font-size:12px;font-weight:600;margin-top:2px}
+.dep-t{font-size:22px}
+</style></head>
+<body><div id="app">
+
+<div class="top">
+  <div class="top-l"><div class="logo">P</div><div class="brand">Pro Travel</div></div>
+  <div class="top-r">июль</div>
+</div>
+
+<div class="bento">
+
+  <!-- hero: revenue -->
+  <div class="b b-hero">
+    <div class="b-hero-l">выручка</div>
+    <div class="b-hero-v">2.34<small>M</small></div>
+    <div class="b-hero-d">+18%</div>
+  </div>
+
+  <!-- profit -->
+  <div class="b b-2 b-profit">
+    <div class="b-lbl">прибыль</div>
+    <div class="b-val">468K</div>
+    <div class="b-profit-arc"></div>
+  </div>
+
+  <!-- avg check -->
+  <div class="b b-2 b-avg">
+    <div class="b-lbl">чек</div>
+    <div class="b-val">187K</div>
+  </div>
+
+  <!-- weekly chart -->
+  <div class="b b-chart">
+    <div class="b-chart-hd">
+      <div class="b-chart-t">по неделям</div>
+      <div class="b-chart-l">₽ · июль</div>
+    </div>
+    <div class="bars">
+      <div class="br a" style="height:55%"></div>
+      <div class="br b" style="height:72%"></div>
+      <div class="br c" style="height:62%"></div>
+      <div class="br d" style="height:88%"></div>
+    </div>
+  </div>
+
+  <!-- open deals -->
+  <div class="b b-2 b-open">
+    <div class="b-lbl">заявок</div>
+    <div class="b-val">14</div>
+  </div>
+
+  <!-- next departure -->
+  <div class="b b-2 b-dep">
+    <div class="b-dep-flag">🚢</div>
+    <div class="b-lbl">ближайший</div>
+    <div class="b-val">6 <small>дней</small></div>
+    <div class="b-dep-name">Иванова М. · BCN</div>
+  </div>
+
+  <!-- top clients -->
+  <div class="b b-2 b-cli">
+    <div class="b-lbl">топ · LTV</div>
+    <div class="avs">
+      <div class="av">СА</div>
+      <div class="av">КЕ</div>
+      <div class="av">ПИ</div>
+      <div class="av">+11</div>
+    </div>
+    <div class="cli-val">1.24M<small>· Смирнов</small></div>
+  </div>
+
+  <!-- direction rings -->
+  <div class="b b-2 b-dir">
+    <div class="b-dir-hd"><div class="b-dir-t">направления</div></div>
+    <div class="rings">
+      <div>
+        <div class="ring">
+          <svg width="64" height="64" viewBox="0 0 64 64">
+            <circle cx="32" cy="32" r="24" class="ring-bg"/>
+            <circle cx="32" cy="32" r="24" class="ring-fg" stroke="var(--lime)" stroke-dasharray="60,150"/>
+          </svg>
+          <div class="ring-c"><span class="ring-emo">🌊</span><span class="ring-pct">40%</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="ring">
+          <svg width="64" height="64" viewBox="0 0 64 64">
+            <circle cx="32" cy="32" r="24" class="ring-bg"/>
+            <circle cx="32" cy="32" r="24" class="ring-fg" stroke="var(--peach)" stroke-dasharray="37,150"/>
+          </svg>
+          <div class="ring-c"><span class="ring-emo">🏝️</span><span class="ring-pct">25%</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="ring">
+          <svg width="64" height="64" viewBox="0 0 64 64">
+            <circle cx="32" cy="32" r="24" class="ring-bg"/>
+            <circle cx="32" cy="32" r="24" class="ring-fg" stroke="var(--cyan)" stroke-dasharray="22,150"/>
+          </svg>
+          <div class="ring-c"><span class="ring-emo">🌴</span><span class="ring-pct">15%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- departures list -->
+  <div class="b b-dep-big">
+    <div class="dep-hd"><div class="dep-hd-t">вылеты</div><div class="dep-hd-c">3 клиента</div></div>
+    <div class="dep-row">
+      <div class="dep-d"><div class="dep-day">08</div><div class="dep-mo">июл</div></div>
+      <div class="dep-b"><div class="dep-n">Иванова М.</div><div class="dep-l">Барселона · MSC Fantasia</div></div>
+      <div class="dep-t">🚢</div>
+    </div>
+    <div class="dep-row">
+      <div class="dep-d"><div class="dep-day">12</div><div class="dep-mo">июл</div></div>
+      <div class="dep-b"><div class="dep-n">Смирнов А.</div><div class="dep-l">Дубай · MSC Bellissima</div></div>
+      <div class="dep-t">🌴</div>
+    </div>
+    <div class="dep-row">
+      <div class="dep-d"><div class="dep-day">15</div><div class="dep-mo">июл</div></div>
+      <div class="dep-b"><div class="dep-n">Козлова Е.</div><div class="dep-l">Милан · авиа</div></div>
+      <div class="dep-t">✈️</div>
+    </div>
+  </div>
+
+</div>
+</div></body></html>
