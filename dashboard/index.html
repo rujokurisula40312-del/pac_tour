@@ -170,6 +170,38 @@ body{background:radial-gradient(500px 400px at 100% 0%,rgba(232,109,90,.08),tran
 /* screen transition on month switch */
 .screen-fade{animation:fadeIn .35s ease}
 
+/* Departure modal */
+.modal{position:fixed;inset:0;background:rgba(20,15,10,.7);backdrop-filter:blur(8px);z-index:100;display:none;align-items:flex-end;justify-content:center;padding:0}
+.modal.active{display:flex;animation:fadeIn .25s ease}
+.modal-body{background:var(--bg);width:100%;max-width:520px;max-height:92vh;border-radius:24px 24px 0 0;overflow-y:auto;animation:slideModal .35s cubic-bezier(.34,.5,.24,1)}
+@keyframes slideModal{from{transform:translateY(100%)}to{transform:none}}
+.modal-hero{position:relative;height:220px;background:var(--card) center/cover no-repeat;border-radius:24px 24px 0 0}
+.modal-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(20,15,10,.75));border-radius:24px 24px 0 0}
+.modal-close-btn{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.9);border:none;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;z-index:2}
+.modal-hero-body{position:absolute;bottom:16px;left:20px;right:20px;z-index:2;color:#fff}
+.modal-days-badge{display:inline-block;background:var(--coral);color:#fff;font-size:11px;padding:5px 12px;border-radius:99px;font-weight:800;letter-spacing:.02em;margin-bottom:8px}
+.modal-hero-name{font-family:'Fraunces',serif;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4px}
+.modal-hero-sub{font-family:'Fraunces',serif;font-style:italic;font-size:14px;opacity:.9}
+.modal-content{padding:20px 22px 30px}
+.modal-price{background:linear-gradient(140deg,var(--card),var(--bg-2));border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:20px;text-align:center}
+.modal-price-lbl{color:var(--muted);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.modal-price-amt{font-family:'Fraunces',serif;font-size:34px;font-weight:800;letter-spacing:-.02em;color:var(--coral);line-height:1}
+.modal-price-amt small{font-size:14px;color:var(--muted);font-weight:600;font-family:'Inter',sans-serif;margin-left:4px}
+.info-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.info-cell{background:var(--card);border-radius:14px;padding:12px 14px}
+.info-cell-lbl{color:var(--muted);font-size:11px;font-weight:600;margin-bottom:3px}
+.info-cell-val{font-family:'Fraunces',serif;font-size:15px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.info-cell-val.wide{font-size:14px}
+.modal-section{margin-bottom:16px}
+.modal-section h4{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-weight:700}
+.route-txt{background:var(--card);border-radius:14px;padding:14px;font-size:13px;line-height:1.5;color:var(--text)}
+.contact-btns{display:flex;gap:8px;margin-top:6px}
+.cbtn{flex:1;background:var(--text);color:var(--bg);border:none;padding:14px;border-radius:14px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px}
+.cbtn.outline{background:var(--card);color:var(--text);border:1px solid var(--line-2, rgba(20,15,10,.15))}
+.status-chip{display:inline-block;background:var(--olive);color:#fff;font-size:10px;padding:3px 10px;border-radius:99px;font-weight:800;letter-spacing:.03em;text-transform:uppercase}
+.status-chip.work{background:var(--gold)}
+.status-chip.other{background:var(--muted)}
+
 .month-tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 4px 8px;margin:0 -4px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .month-tabs::-webkit-scrollbar{display:none}
 .mt{flex-shrink:0;background:var(--card);border:1px solid var(--line);padding:8px 14px;border-radius:99px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .18s ease;letter-spacing:-.005em}
@@ -187,6 +219,8 @@ body{background:radial-gradient(500px 400px at 100% 0%,rgba(232,109,90,.08),tran
     Читаю твою таблицу...
   </div>
 </div>
+
+<div class="modal" id="modal"><div class="modal-body" id="modal-body"></div></div>
 
 <script>
 const app = document.getElementById('app');
@@ -244,16 +278,16 @@ function render(){
   const monthTabs = `<div class="month-tabs">${tabs}</div>`;
 
   let weeklyHtml = '';
-  // Weekly only makes sense for current month (real-time bars)
-  if(m.is_current && d.weekly && d.weekly.length){
-    const maxV = Math.max(...d.weekly.map(x=>x.value), 1);
-    const bars = d.weekly.map((w,i)=>{
+  const weekly = m.weekly || (m.is_current ? d.weekly : null);
+  if(weekly && weekly.length){
+    const maxV = Math.max(...weekly.map(x=>x.value), 1);
+    const bars = weekly.map((w,i)=>{
       const h = Math.round(w.value/maxV*100);
       const cls = ['a','b','c','d'][i%4];
       const short = w.value >= 1000000 ? `${(w.value/1000000).toFixed(1)}M` : `${Math.round(w.value/1000)}K`;
       return `<div class="br ${cls}" style="height:${Math.max(h,5)}%" data-v="${short}"></div>`;
     }).join('');
-    const lbls = d.weekly.map(w=>`<div>${esc(w.label)}</div>`).join('');
+    const lbls = weekly.map(w=>`<div>${esc(w.label)}</div>`).join('');
     weeklyHtml = `
     <div class="weekly-card">
       <div class="weekly-hd"><div class="weekly-t">Выручка по неделям</div><div class="weekly-c">${esc(m.name_short)}</div></div>
@@ -279,8 +313,8 @@ function render(){
       <div class="cli-v"><div class="cli-vn">${(c.ltv/1000000).toFixed(2)}M<small>LTV</small></div></div>
     </div>`).join('');
 
-  const dep = (d.departures||[]).map(x => `
-    <div class="dep">
+  const dep = (d.departures||[]).map((x, i) => `
+    <div class="dep" onclick="openDeparture(${i})" style="cursor:pointer">
       <div class="dep-row">
         <div class="dep-photo" style="background-image:url('${x.photo}')">
           <div class="dep-date"><div class="dep-day">${esc(x.day)}</div><div class="dep-mo">${esc(x.mo)}</div></div>
@@ -391,6 +425,71 @@ async function load(){
   } catch(e){
     app.innerHTML = `<div class="loading">Не смогла загрузить данные. Попробуй ещё раз через минуту.<br><br><small>${e.message}</small></div>`;
   }
+}
+
+function openDeparture(idx){
+  const dep = state.data.departures[idx];
+  if(!dep) return;
+  const statusClass = dep.status === 'Подтверждена' ? '' : dep.status === 'В работе' ? 'work' : 'other';
+  const body = document.getElementById('modal-body');
+  const phoneClean = (dep.phone||'').replace(/[^\d+]/g,'');
+  body.innerHTML = `
+    <div class="modal-hero" style="background-image:url('${dep.photo}')">
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+      <div class="modal-hero-body">
+        <span class="modal-days-badge">через ${dep.days} ${daysWord(dep.days)}</span>
+        <div class="modal-hero-name">${esc(dep.full_name || dep.name)}</div>
+        <div class="modal-hero-sub">${esc(dep.travel_type || dep.loc)}</div>
+      </div>
+    </div>
+    <div class="modal-content">
+      <div class="modal-price">
+        <div class="modal-price-lbl">стоимость заявки</div>
+        <div class="modal-price-amt">${dep.price >= 1000000 ? (dep.price/1000000).toFixed(2)+'M' : Math.round(dep.price/1000)+'K'}<small>₽</small></div>
+      </div>
+
+      <div class="info-grid2">
+        <div class="info-cell"><div class="info-cell-lbl">Вылет</div><div class="info-cell-val">${esc(dep.date_begin)}</div></div>
+        <div class="info-cell"><div class="info-cell-lbl">Возврат</div><div class="info-cell-val">${esc(dep.date_end || '—')}</div></div>
+        <div class="info-cell"><div class="info-cell-lbl">Ночей</div><div class="info-cell-val">${dep.nights || '—'}</div></div>
+        <div class="info-cell"><div class="info-cell-lbl">Статус</div><div class="info-cell-val"><span class="status-chip ${statusClass}">${esc(dep.status || '—')}</span></div></div>
+      </div>
+
+      ${dep.reservation ? `
+      <div class="modal-section">
+        <h4>Номер брони</h4>
+        <div class="info-cell"><div class="info-cell-val wide">${esc(dep.reservation)}</div></div>
+      </div>` : ''}
+
+      ${dep.supplier ? `
+      <div class="modal-section">
+        <h4>Туроператор</h4>
+        <div class="info-cell"><div class="info-cell-val wide">${esc(dep.supplier)}</div></div>
+      </div>` : ''}
+
+      ${dep.route ? `
+      <div class="modal-section">
+        <h4>Маршрут / лайнер</h4>
+        <div class="route-txt">${esc(dep.route)}</div>
+      </div>` : ''}
+
+      <div class="modal-section">
+        <div class="contact-btns">
+          ${phoneClean ? `<a class="cbtn" href="tel:${phoneClean}">📞 Позвонить</a>` : ''}
+          ${phoneClean ? `<a class="cbtn outline" href="https://wa.me/${phoneClean.replace('+','')}">WhatsApp</a>` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('modal').classList.add('active');
+  const tg = window.Telegram?.WebApp;
+  if(tg?.BackButton) { tg.BackButton.show(); tg.BackButton.onClick(closeModal); }
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('active');
+  const tg = window.Telegram?.WebApp;
+  if(tg?.BackButton) tg.BackButton.hide();
 }
 
 async function refresh(){
