@@ -1,6 +1,6 @@
 {
-  "as_of": "02 July 2026, 22:01 МСК",
-  "as_of_iso": "2026-07-02T22:01:14.667287+03:00",
+  "as_of": "02 July 2026, 22:11 МСК",
+  "as_of_iso": "2026-07-02T22:11:22.247748+03:00",
   "today_str": "2 июля",
   "months": [
     {
@@ -482,24 +482,9 @@
   ],
   "directions": [
     {
-      "name": "Италия",
-      "pct": 40,
+      "name": "Европа",
+      "pct": 100,
       "photo": "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=200&q=80"
-    },
-    {
-      "name": "Эмираты",
-      "pct": 25,
-      "photo": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=200&q=80"
-    },
-    {
-      "name": "Норвегия",
-      "pct": 15,
-      "photo": "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=200&q=80"
-    },
-    {
-      "name": "Прочее",
-      "pct": 20,
-      "photo": "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=200&q=80"
     }
   ],
   "top_clients": [
@@ -533,29 +518,29 @@
   ],
   "departures": [
     {
-      "day": "08",
+      "day": "18",
       "mo": "июл",
-      "days": 6,
-      "name": "Иванова М.",
-      "loc": "Барселона · MSC Fantasia",
-      "photo": "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&q=80"
+      "days": 16,
+      "name": "Цомая И.",
+      "loc": "Европа · ООО &quot;Краски Мира&quo",
+      "photo": "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=200&q=80"
     },
     {
-      "day": "12",
-      "mo": "июл",
-      "days": 10,
-      "name": "Смирнов А.",
-      "loc": "Дубай · MSC Bellissima",
-      "photo": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80"
+      "day": "01",
+      "mo": "авг",
+      "days": 30,
+      "name": "Фогель Е.",
+      "loc": "Азия · АКЦИОНЕРНОЕ ОБЩЕСТВО АГЕН",
+      "photo": "https://images.unsplash.com/photo-1548919973-5cef591cdbc9?w=200&q=80"
     },
     {
-      "day": "15",
-      "mo": "июл",
-      "days": 13,
-      "name": "Козлова Е.",
-      "loc": "Милан · авиа",
-      "photo": "https://images.unsplash.com/photo-1520175480921-4edfa2983e0f?w=400&q=80"
+      "day": "03",
+      "mo": "авг",
+      "days": 32,
+      "name": "Володенкова Н.",
+      "loc": "Европа · АКЦИОНЕРНОЕ ОБЩЕСТВО АГЕН",
+      "photo": "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=200&q=80"
     }
   ],
-  "source_note": "живая таблица · по дате платежа · U-ON скоро подключу"
+  "source_note": "ДДС по дате платежа · U-ON: 464 заявок · синк 2026-07-03T00:09"
 }
