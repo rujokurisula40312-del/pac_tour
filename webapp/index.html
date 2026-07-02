@@ -1,43 +1,742 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#ffffff">
-    <title>Поиск круизов</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Круиз со мной — Pro Travel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{
+  --bg:#0B1220;
+  --bg-2:#0F1830;
+  --card:#172032;
+  --card-2:#1E2A44;
+  --line:#2A3547;
+  --text:#FFFFFF;
+  --muted:#94A3B8;
+  --accent:#F5A65B;
+  --accent-2:#F28A3B;
+  --ok:#4ADE80;
+  --danger:#F87171;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%;background:var(--bg);color:var(--text);font-family:'Manrope',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+body{background:radial-gradient(1200px 700px at 90% -10%,rgba(245,166,91,.12),transparent 60%),radial-gradient(900px 600px at -20% 110%,rgba(59,130,246,.10),transparent 60%),var(--bg)}
+#app{max-width:520px;margin:0 auto;min-height:100vh;position:relative;padding:20px 18px 32px;display:flex;flex-direction:column}
+.screen{display:none;flex:1;flex-direction:column;animation:fade .35s ease}
+.screen.active{display:flex}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+/* header + progress */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.brand{font-weight:700;font-size:14px;letter-spacing:.02em;color:var(--muted);display:flex;align-items:center;gap:8px}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.progress{flex:1;height:6px;background:var(--card);border-radius:99px;overflow:hidden;max-width:180px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:99px;transition:width .35s ease}
+.back-btn{background:none;border:none;color:var(--muted);font-size:15px;cursor:pointer;padding:8px 4px}
+.back-btn:disabled{opacity:0}
 
-    <link rel="stylesheet" href="https://widget.gocruise.ru/css/app.css">
-    <link rel="stylesheet" href="style.css">
+/* welcome */
+.welcome{text-align:center;padding-top:20px}
+.welcome-emoji{font-size:64px;margin-bottom:16px;filter:drop-shadow(0 8px 24px rgba(245,166,91,.3))}
+.welcome h1{font-size:32px;line-height:1.1;font-weight:800;margin:0 0 12px;letter-spacing:-.02em}
+.welcome h1 span{background:linear-gradient(120deg,var(--accent),#FDCB8A);-webkit-background-clip:text;background-clip:text;color:transparent}
+.welcome p{color:var(--muted);font-size:16px;line-height:1.5;margin:0 0 32px;padding:0 8px}
+.welcome-bullets{display:flex;flex-direction:column;gap:12px;margin-bottom:36px;text-align:left}
+.welcome-bullet{background:var(--card);border:1px solid var(--line);padding:14px 16px;border-radius:14px;display:flex;align-items:center;gap:12px;font-size:15px}
+.welcome-bullet-emoji{font-size:22px}
+
+/* quiz question */
+.qtitle{font-size:24px;font-weight:700;line-height:1.25;margin:8px 0 8px;letter-spacing:-.01em}
+.qhint{color:var(--muted);font-size:14px;margin:0 0 22px}
+.qhint b{color:var(--accent)}
+.options{display:flex;flex-direction:column;gap:10px;flex:1}
+.option{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .18s ease;text-align:left;font-family:inherit;color:var(--text);font-size:16px;font-weight:500;width:100%}
+.option:active{transform:scale(.98)}
+.option:hover{border-color:#3A4A66}
+.option.selected{background:linear-gradient(180deg,rgba(245,166,91,.15),rgba(245,166,91,.05));border-color:var(--accent);box-shadow:0 4px 20px rgba(245,166,91,.2)}
+.option-emoji{font-size:24px;flex-shrink:0}
+.option-text{flex:1}
+.option-text small{display:block;color:var(--muted);font-size:13px;font-weight:400;margin-top:2px}
+.option-check{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.option.selected .option-check{background:var(--accent);border-color:var(--accent)}
+.option.selected .option-check::after{content:"✓";color:#0B1220;font-weight:800;font-size:14px}
+
+/* buttons row */
+.actions{display:flex;gap:10px;margin-top:22px;padding-top:12px}
+.btn{flex:1;padding:16px;border-radius:14px;border:none;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:all .18s ease;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(180deg,var(--accent),var(--accent-2));color:#0B1220;box-shadow:0 6px 24px rgba(245,166,91,.35)}
+.btn-primary:disabled{opacity:.4;box-shadow:none;cursor:not-allowed}
+.btn-ghost{background:var(--card);color:var(--muted);flex:0 0 auto;padding:16px 20px}
+.btn-full{width:100%}
+
+/* loading */
+.loading{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:40px 20px}
+.spinner{width:56px;height:56px;border-radius:50%;border:3px solid rgba(245,166,91,.2);border-top-color:var(--accent);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{color:var(--muted);text-align:center;font-size:15px;line-height:1.5}
+.loading-text b{color:var(--text);display:block;font-size:18px;margin-bottom:6px;font-weight:700}
+
+/* results */
+.results-head{margin-bottom:18px}
+.results-head h2{font-size:22px;font-weight:700;margin:0 0 6px}
+.results-head p{color:var(--muted);font-size:14px;margin:0}
+.cards{display:flex;flex-direction:column;gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;transition:all .2s ease}
+.card:active{transform:scale(.99)}
+.card-img{width:100%;height:160px;background:var(--card-2) center/cover no-repeat;position:relative}
+.card-img-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,18,32,0),rgba(11,18,32,.85));padding:12px;display:flex;align-items:flex-end}
+.card-badge{background:rgba(245,166,91,.9);color:#0B1220;font-weight:700;font-size:12px;padding:5px 10px;border-radius:99px;display:inline-block}
+.card-body{padding:16px}
+.card-title{font-size:17px;font-weight:700;line-height:1.3;margin:0 0 6px}
+.card-ship{color:var(--muted);font-size:13px;margin:0 0 12px}
+.card-meta{display:flex;gap:16px;color:var(--muted);font-size:13px;margin-bottom:12px}
+.card-meta-item{display:flex;align-items:center;gap:6px}
+.card-price{display:flex;align-items:baseline;justify-content:space-between;padding-top:12px;border-top:1px solid var(--line)}
+.card-price-label{color:var(--muted);font-size:13px}
+.card-price-amount{font-size:20px;font-weight:800;color:var(--accent)}
+
+.empty{text-align:center;padding:40px 20px}
+.empty-emoji{font-size:56px;margin-bottom:16px}
+.empty h3{font-size:18px;margin:0 0 8px}
+.empty p{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 20px}
+
+/* cruise detail modal */
+.modal{position:fixed;inset:0;background:rgba(11,18,32,.85);backdrop-filter:blur(6px);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.modal.active{display:flex}
+.modal-body{background:var(--bg-2);width:100%;max-width:520px;max-height:92vh;border-radius:22px 22px 0 0;overflow-y:auto;animation:slideup .3s ease}
+@keyframes slideup{from{transform:translateY(100%)}to{transform:none}}
+.modal-close{position:sticky;top:0;background:linear-gradient(180deg,var(--bg-2),transparent);padding:14px 18px 8px;display:flex;justify-content:flex-end;z-index:2}
+.modal-close-btn{background:var(--card);border:none;color:var(--text);width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.modal-content{padding:0 20px 24px}
+.modal-map{width:100%;height:200px;background:var(--card-2) center/cover no-repeat;border-radius:16px;margin-bottom:20px}
+.modal-title{font-size:24px;font-weight:800;line-height:1.2;margin:0 0 6px}
+.modal-subtitle{color:var(--muted);font-size:14px;margin:0 0 18px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+.info-cell{background:var(--card);border-radius:12px;padding:12px 14px}
+.info-cell-label{color:var(--muted);font-size:12px;margin-bottom:4px}
+.info-cell-value{font-size:15px;font-weight:600}
+.section{margin-bottom:22px}
+.section h4{font-size:15px;font-weight:700;margin:0 0 10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-size:12px}
+.includes-list{display:flex;flex-direction:column;gap:8px}
+.includes-item{color:var(--text);font-size:14px;line-height:1.4;padding-left:22px;position:relative}
+.includes-item::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
+.price-block{background:linear-gradient(140deg,rgba(245,166,91,.12),rgba(245,166,91,.02));border:1px solid rgba(245,166,91,.3);border-radius:16px;padding:18px;margin-bottom:22px}
+.price-block-label{color:var(--muted);font-size:13px;margin-bottom:4px}
+.price-block-amount{font-size:32px;font-weight:800;color:var(--accent);line-height:1;margin-bottom:6px}
+.price-block-hint{color:var(--muted);font-size:12px}
+
+/* success/sent */
+.sent{text-align:center;padding:60px 20px}
+.sent-emoji{font-size:80px;margin-bottom:20px}
+.sent h2{font-size:26px;margin:0 0 12px;font-weight:800}
+.sent p{color:var(--muted);font-size:15px;line-height:1.5;margin:0 0 28px}
+
+/* utility */
+.pill{display:inline-block;background:var(--card);color:var(--muted);font-size:12px;padding:4px 10px;border-radius:99px;margin-right:6px;margin-bottom:6px}
+</style>
 </head>
 <body>
-    <main class="page">
-        <header class="page__header">
-            <h1 class="page__title">🚢 Поиск круизов</h1>
-            <p class="page__subtitle">Выберите направление, даты и оператора — и мы подберём подходящий круиз.</p>
-        </header>
+<div id="app">
 
-        <section class="widget-wrap">
-            <div id="ces-app"></div>
-        </section>
-    </main>
-
-    <div class="manager-bar" id="manager-bar" hidden>
-        <button type="button" id="manager-btn" class="manager-btn">
-            ✉️ Написать менеджеру
-        </button>
+<!-- Welcome -->
+<div class="screen active" id="s-welcome">
+  <div class="top">
+    <div class="brand"><span class="brand-dot"></span>Pro Travel · Тверь</div>
+  </div>
+  <div class="welcome">
+    <div class="welcome-emoji">🚢</div>
+    <h1>Найду <span>твой круиз</span> за 2 минуты</h1>
+    <p>Ответь на 7 вопросов — покажу 3 круиза под тебя из живой базы MSC и Explora.</p>
+    <div class="welcome-bullets">
+      <div class="welcome-bullet"><span class="welcome-bullet-emoji">🎯</span><div>Учту бюджет, страхи и с кем едешь</div></div>
+      <div class="welcome-bullet"><span class="welcome-bullet-emoji">📅</span><div>Актуальные даты и цены, не из головы</div></div>
+      <div class="welcome-bullet"><span class="welcome-bullet-emoji">💬</span><div>Понравится — пишу лично, подберу каюту</div></div>
     </div>
+    <button class="btn btn-primary btn-full" onclick="Quiz.start()">Погнали →</button>
+  </div>
+</div>
 
-    <script>
-        var cesSettings = {
-            email: "anastasia.ukolova@yandex.ru",
-            currencies: ["RUB", "USD", "EUR"],
-            defaultVendor: "MSC",
-            showResults: true
-        };
-    </script>
-    <script src="https://widget.gocruise.ru/js/app.js"></script>
-    <script src="script.js"></script>
+<!-- Quiz -->
+<div class="screen" id="s-quiz">
+  <div class="top">
+    <button class="back-btn" id="back-btn" onclick="Quiz.back()">← Назад</button>
+    <div class="progress"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div style="width:60px;text-align:right;color:var(--muted);font-size:13px" id="q-counter">1 / 7</div>
+  </div>
+  <h2 class="qtitle" id="q-title"></h2>
+  <p class="qhint" id="q-hint"></p>
+  <div class="options" id="q-options"></div>
+  <div class="actions">
+    <button class="btn btn-ghost" id="skip-btn" onclick="Quiz.skip()" style="display:none">Пропустить</button>
+    <button class="btn btn-primary" id="next-btn" onclick="Quiz.next()" disabled>Дальше →</button>
+  </div>
+</div>
+
+<!-- Loading -->
+<div class="screen" id="s-loading">
+  <div class="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">
+      <b id="loading-title">Ищу подходящие круизы...</b>
+      <span id="loading-sub">смотрю живую базу MSC + Explora</span>
+    </div>
+  </div>
+</div>
+
+<!-- Results -->
+<div class="screen" id="s-results">
+  <div class="top">
+    <button class="back-btn" onclick="Quiz.restart()">← Пройти заново</button>
+    <div class="brand"><span class="brand-dot"></span>Pro Travel</div>
+  </div>
+  <div class="results-head">
+    <h2 id="results-title">Вот 3 варианта под тебя</h2>
+    <p id="results-sub"></p>
+  </div>
+  <div class="cards" id="results-list"></div>
+</div>
+
+<!-- Empty results -->
+<div class="screen" id="s-empty">
+  <div class="top">
+    <button class="back-btn" onclick="Quiz.restart()">← Пройти заново</button>
+    <div class="brand"><span class="brand-dot"></span>Pro Travel</div>
+  </div>
+  <div class="empty">
+    <div class="empty-emoji">🤔</div>
+    <h3>По твоим фильтрам ничего не нашла</h3>
+    <p>Давай я подберу вручную — напиши мне в личку, что искала. Я знаю больше, чем видит виджет.</p>
+    <button class="btn btn-primary btn-full" onclick="sendManualLead()">Написать Насте</button>
+  </div>
+</div>
+
+<!-- Sent -->
+<div class="screen" id="s-sent">
+  <div class="sent">
+    <div class="sent-emoji">✨</div>
+    <h2>Заявка ушла Насте</h2>
+    <p>Свяжусь с тобой в течение дня — покажу актуальные каюты, цены и оформлю бронирование. Спасибо, что доверяешь!</p>
+    <button class="btn btn-primary btn-full" onclick="Quiz.restart()">Подобрать ещё круиз</button>
+  </div>
+</div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-body" id="modal-body"></div>
+</div>
+
+<script>
+// ============ CONFIG ============
+const CFG = {
+  API: 'https://widget.gocruise.ru/proxy',
+  EUR_TO_RUB: 100, // approx, used only for budget filter display
+  BOT_USER: 'Malinkina_Anastasiia', // fallback tg link
+  BOT_APP: 'TravelAndBusinessBot',
+};
+
+// Regions grouped by user-facing direction (curated from PAC regions.list)
+const DIRECTIONS = {
+  'med': {label:'Средиземка (Италия, Испания, Греция)', regions:[3,25,35,47,62,64,86,87,88,92,134]},
+  'north': {label:'Северная Европа (Норвегия, фьорды)', regions:[14,18,43,50,52,58,59,63,69,74]},
+  'east': {label:'Восток (Дубай, Азия)', regions:[4,9,29,48,49,57,72,78,79,81]},
+  'carib': {label:'Карибы, Америка', regions:[7,26,34,36,39,44,89,93,95,100]},
+  'any': {label:'Всё равно, покажи что есть', regions:[]},
+};
+
+const DATE_RANGES = {
+  'soon': {label:'В ближайший месяц', months:[0,1]},
+  '1-3': {label:'Через 1-3 месяца', months:[1,3]},
+  '3-6': {label:'Через 3-6 месяцев', months:[3,6]},
+  'later': {label:'Позже, планирую заранее', months:[6,18]},
+};
+
+const BUDGET = {
+  'lo': {label:'До 150 000 ₽ / чел', maxEur:1500},
+  'mid': {label:'150 000 - 300 000 ₽', maxEur:3000},
+  'hi': {label:'300 000 - 500 000 ₽', maxEur:5000},
+  'lux': {label:'От 500 000 ₽ / чел', maxEur:99999},
+};
+
+// ============ QUESTIONS ============
+const QUESTIONS = [
+  {
+    key:'company',
+    title:'С кем едешь?',
+    hint:'От этого зависит тип каюты и услуги на борту',
+    type:'single',
+    options:[
+      {v:'solo', emoji:'🙋‍♀️', label:'Одна / один'},
+      {v:'pair', emoji:'💑', label:'С парой'},
+      {v:'family', emoji:'👨‍👩‍👧', label:'Семья с детьми', hint:'подскажу лайнеры для детей'},
+      {v:'friends', emoji:'👯', label:'С компанией друзей'},
+    ],
+  },
+  {
+    key:'when',
+    title:'Когда планируешь?',
+    hint:'Актуальные круизы под твои даты',
+    type:'single',
+    options:Object.entries(DATE_RANGES).map(([v,d])=>({v, emoji:'📅', label:d.label})),
+  },
+  {
+    key:'budget',
+    title:'Какой бюджет на человека?',
+    hint:'Указывай честно — я найду то, что реально подходит',
+    type:'single',
+    options:Object.entries(BUDGET).map(([v,d])=>({v, emoji:'💰', label:d.label})),
+  },
+  {
+    key:'direction',
+    title:'Куда тянет?',
+    hint:'Можно "всё равно" — сама выберу самое интересное',
+    type:'single',
+    options:Object.entries(DIRECTIONS).map(([v,d])=>({v, emoji:'🌍', label:d.label})),
+  },
+  {
+    key:'first',
+    title:'Первый круиз в жизни?',
+    hint:'Если первый — покажу спокойные маршруты для старта',
+    type:'single',
+    options:[
+      {v:'yes', emoji:'🌟', label:'Да, первый'},
+      {v:'no', emoji:'✈️', label:'Нет, ходил(а) раньше'},
+    ],
+  },
+  {
+    key:'avoid',
+    title:'Что важно избежать?',
+    hint:'Можно выбрать <b>несколько</b> или ничего',
+    type:'multi',
+    options:[
+      {v:'seasick', emoji:'🌊', label:'Качку', hint:'спокойные моря, большие лайнеры'},
+      {v:'longflight', emoji:'✈️', label:'Долгий перелёт', hint:'вылет из ЕС/России'},
+      {v:'transfers', emoji:'🔀', label:'Пересадки'},
+      {v:'visa', emoji:'📋', label:'Возню с визой'},
+    ],
+    skippable:true,
+  },
+  {
+    key:'visa',
+    title:'Виза',
+    hint:'Опционально — можно пропустить',
+    type:'single',
+    options:[
+      {v:'schengen', emoji:'✅', label:'Есть Шенген'},
+      {v:'other', emoji:'📘', label:'Есть другая виза'},
+      {v:'none', emoji:'❌', label:'Нет визы'},
+      {v:'ready', emoji:'📝', label:'Готова оформить'},
+    ],
+    skippable:true,
+  },
+];
+
+// ============ STATE ============
+const state = {
+  answers:{}, // key -> value(s)
+  qIdx:0,
+  cruises:[],
+  ships:{},
+  regions:{},
+  cities:{},
+  selectedCruise:null,
+};
+
+// ============ QUIZ ENGINE ============
+const Quiz = {
+  start(){
+    state.qIdx = 0;
+    state.answers = {};
+    swap('s-quiz');
+    this.render();
+  },
+  render(){
+    const q = QUESTIONS[state.qIdx];
+    document.getElementById('q-title').textContent = q.title;
+    document.getElementById('q-hint').innerHTML = q.hint;
+    document.getElementById('progress-fill').style.width = ((state.qIdx+1)/QUESTIONS.length*100)+'%';
+    document.getElementById('q-counter').textContent = `${state.qIdx+1} / ${QUESTIONS.length}`;
+    document.getElementById('back-btn').disabled = state.qIdx===0;
+    document.getElementById('skip-btn').style.display = q.skippable ? '' : 'none';
+
+    const cur = state.answers[q.key];
+    const container = document.getElementById('q-options');
+    container.innerHTML = '';
+    q.options.forEach(o=>{
+      const isSel = q.type==='multi' ? (cur||[]).includes(o.v) : cur===o.v;
+      const btn = document.createElement('button');
+      btn.className = 'option'+(isSel?' selected':'');
+      btn.innerHTML = `
+        <span class="option-emoji">${o.emoji}</span>
+        <span class="option-text">${o.label}${o.hint?`<small>${o.hint}</small>`:''}</span>
+        <span class="option-check"></span>
+      `;
+      btn.onclick = ()=>Quiz.pick(o.v);
+      container.appendChild(btn);
+    });
+    document.getElementById('next-btn').disabled = !this.canNext();
+  },
+  pick(v){
+    const q = QUESTIONS[state.qIdx];
+    if(q.type==='multi'){
+      const arr = state.answers[q.key] || [];
+      if(arr.includes(v)) state.answers[q.key] = arr.filter(x=>x!==v);
+      else state.answers[q.key] = [...arr, v];
+    } else {
+      state.answers[q.key] = v;
+    }
+    this.render();
+  },
+  canNext(){
+    const q = QUESTIONS[state.qIdx];
+    if(q.skippable) return true;
+    if(q.type==='multi') return (state.answers[q.key]||[]).length>0;
+    return !!state.answers[q.key];
+  },
+  next(){
+    if(!this.canNext()) return;
+    if(state.qIdx < QUESTIONS.length-1){
+      state.qIdx++;
+      this.render();
+    } else {
+      Quiz.search();
+    }
+  },
+  skip(){
+    if(state.qIdx < QUESTIONS.length-1){
+      state.qIdx++;
+      this.render();
+    } else {
+      Quiz.search();
+    }
+  },
+  back(){
+    if(state.qIdx>0){ state.qIdx--; this.render(); }
+  },
+  async search(){
+    swap('s-loading');
+    try {
+      await Search.run();
+      if(state.cruises.length===0) swap('s-empty');
+      else { swap('s-results'); Results.render(); }
+    } catch(e){
+      console.error(e);
+      swap('s-empty');
+    }
+  },
+  restart(){
+    state.qIdx = 0; state.answers = {}; state.cruises = []; state.selectedCruise = null;
+    swap('s-welcome');
+  },
+};
+
+// ============ API ============
+const API = {
+  async call(action, params={}){
+    const url = new URL(CFG.API);
+    url.searchParams.set('action', action);
+    Object.entries(params).forEach(([k,v])=>{
+      if(v===null||v===undefined) return;
+      if(Array.isArray(v)) v.forEach(x=>url.searchParams.append(`params[${k}][]`, x));
+      else url.searchParams.set(`params[${k}]`, v);
+    });
+    const r = await fetch(url.toString());
+    const j = await r.json();
+    return j.data;
+  },
+  async loadDicts(){
+    const [ships, regions, cities] = await Promise.all([
+      this.call('ships.list'),
+      this.call('regions.list'),
+      this.call('cities.list'),
+    ]);
+    ships.forEach(s => state.ships[s.id] = s);
+    regions.forEach(r => state.regions[r.id] = r);
+    cities.forEach(c => state.cities[c.id] = c);
+  },
+};
+
+// ============ SEARCH ============
+const Search = {
+  async run(){
+    if(Object.keys(state.ships).length===0) await API.loadDicts();
+    const {dateFrom, dateTill} = this.dateRange();
+    // fetch both vendors
+    const [msc, exj] = await Promise.all([
+      API.call('cruises.find', {dateFrom, dateTill, vendors:'MSC'}).catch(()=>[]),
+      API.call('cruises.find', {dateFrom, dateTill, vendors:'EXJ'}).catch(()=>[]),
+    ]);
+    let all = [...(msc||[]), ...(exj||[])];
+    // dedupe by grouping (same cruise different fares)
+    const seen = new Set();
+    all = all.filter(c=>{
+      const k = c.grouping || c.id;
+      if(seen.has(k)) return false;
+      seen.add(k); return true;
+    });
+    // score and filter
+    all = all.map(c=>({...c, score:this.score(c)})).filter(c=>c.score>-100);
+    all.sort((a,b)=>b.score-a.score);
+    state.cruises = all.slice(0, 3);
+  },
+  dateRange(){
+    const key = state.answers.when || 'soon';
+    const r = DATE_RANGES[key];
+    const now = new Date();
+    const from = new Date(now); from.setMonth(from.getMonth()+r.months[0]);
+    const to = new Date(now); to.setMonth(to.getMonth()+r.months[1]);
+    const iso = d=>d.toISOString().slice(0,10);
+    return {dateFrom:iso(from), dateTill:iso(to)};
+  },
+  score(c){
+    let s = 0;
+    const a = state.answers;
+    // direction match
+    if(a.direction && a.direction!=='any'){
+      const targetRegs = DIRECTIONS[a.direction].regions;
+      const has = (c.regions||[]).some(r=>targetRegs.includes(r));
+      if(has) s += 50;
+      else s -= 200; // strong exclusion
+    }
+    // budget
+    const price = this.getPriceRub(c);
+    if(price && a.budget){
+      const max = BUDGET[a.budget].maxEur * CFG.EUR_TO_RUB;
+      const perPax = price;
+      if(perPax <= max) s += 30;
+      else if(perPax <= max*1.2) s += 5; // slight tolerance
+      else s -= 150;
+    }
+    // seasick: prefer large ships (ship class not exposed, so prefer non-EXJ Explora=small luxury, MSC=big)
+    if((a.avoid||[]).includes('seasick')){
+      if(c.vendor==='MSC') s += 8;
+      // prefer summer months (calmer)
+      const m = new Date(c.date).getMonth()+1;
+      if(m>=5 && m<=9) s += 5;
+    }
+    // visa concerns
+    if((a.avoid||[]).includes('visa') || a.visa==='none'){
+      // Emirates/Turkey/Asia friendlier
+      const easy = [4,17,29,48,49,57,72,78,79];
+      const has = (c.regions||[]).some(r=>easy.includes(r));
+      if(has) s += 20;
+    }
+    // first cruise: 7 nights sweet spot
+    if(a.first==='yes'){
+      if(c.nights>=6 && c.nights<=8) s += 15;
+      if(c.nights>14) s -= 10;
+    }
+    // long flight avoidance: prefer flight-included or EU ports
+    if((a.avoid||[]).includes('longflight')){
+      if(c.flight) s += 10;
+    }
+    // slight bonus for having a map (nicer card)
+    if(c.map) s += 2;
+    // recency (sooner is more relevant if soon)
+    if(a.when==='soon'){
+      const days = (new Date(c.date) - new Date())/(1000*60*60*24);
+      if(days<60) s += 10;
+    }
+    return s;
+  },
+  getPriceRub(c){
+    const fares = c.priceInfo?.fares || [];
+    if(!fares.length) return null;
+    // find cheapest fare with grossPriceAmount
+    const prices = fares.map(f=>f.grossPriceAmount).filter(p=>p>0);
+    if(!prices.length) return null;
+    const paxNum = fares[0].paxNum || 2;
+    const totalEur = Math.min(...prices);
+    const perPaxEur = totalEur / paxNum;
+    return perPaxEur * CFG.EUR_TO_RUB;
+  },
+};
+
+// ============ RESULTS ============
+const Results = {
+  render(){
+    const list = document.getElementById('results-list');
+    list.innerHTML = '';
+    state.cruises.forEach(c=>{
+      const ship = state.ships[c.ships?.[0]];
+      const portFrom = state.cities[c.departurePort]?.title || '';
+      const portTo = state.cities[c.destinationPort]?.title || '';
+      const price = Search.getPriceRub(c);
+      const priceStr = price ? this.formatPrice(price) : 'от запроса';
+      const img = c.map || c.mapVendor || '';
+      const dateStr = this.formatDate(c.date);
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.onclick = ()=>Modal.open(c);
+      el.innerHTML = `
+        <div class="card-img" style="background-image:url('${img}')">
+          <div class="card-img-overlay">
+            <span class="card-badge">${c.vendor==='MSC'?'MSC':'Explora'}</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">${c.title}</h3>
+          <p class="card-ship">${ship?.title || ''}</p>
+          <div class="card-meta">
+            <span class="card-meta-item">📅 ${dateStr}</span>
+            <span class="card-meta-item">🌙 ${c.nights} ночей</span>
+          </div>
+          <div class="card-meta" style="margin-bottom:0">
+            <span class="card-meta-item" style="flex:1">📍 ${portFrom}${portTo && portTo!==portFrom?' → '+portTo:''}</span>
+          </div>
+          <div class="card-price">
+            <span class="card-price-label">от</span>
+            <span class="card-price-amount">${priceStr}</span>
+          </div>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+    // subtitle with reasoning
+    const dir = state.answers.direction && state.answers.direction!=='any' ? DIRECTIONS[state.answers.direction].label.split(' (')[0] : 'разные направления';
+    const when = state.answers.when ? DATE_RANGES[state.answers.when].label.toLowerCase() : '';
+    document.getElementById('results-sub').textContent = `${dir}, ${when}. Тапни на карточку — покажу детали.`;
+  },
+  formatPrice(rub){
+    if(rub>=1000000) return `${(rub/1000000).toFixed(1)} млн ₽`;
+    return `${Math.round(rub/1000)} 000 ₽`;
+  },
+  formatDate(iso){
+    const d = new Date(iso);
+    const months = ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+    return `${d.getDate()} ${months[d.getMonth()]}`;
+  },
+};
+
+// ============ MODAL ============
+const Modal = {
+  open(c){
+    state.selectedCruise = c;
+    const ship = state.ships[c.ships?.[0]];
+    const portFrom = state.cities[c.departurePort]?.title || '—';
+    const portTo = state.cities[c.destinationPort]?.title || '—';
+    const price = Search.getPriceRub(c);
+    const priceStr = price ? Results.formatPrice(price) : 'по запросу';
+    const img = c.map || c.mapVendor || '';
+    const includes = (c.priceInfo?.priceIncludes || []).slice(0,5);
+    const body = document.getElementById('modal-body');
+    body.innerHTML = `
+      <div class="modal-close"><button class="modal-close-btn" onclick="Modal.close()">✕</button></div>
+      <div class="modal-content">
+        ${img?`<div class="modal-map" style="background-image:url('${img}')"></div>`:''}
+        <h2 class="modal-title">${c.title}</h2>
+        <p class="modal-subtitle">${ship?.title || ''} · ${c.vendor==='MSC'?'MSC Cruises':'Explora Journeys'}</p>
+
+        <div class="price-block">
+          <div class="price-block-label">Стоимость от</div>
+          <div class="price-block-amount">${priceStr}</div>
+          <div class="price-block-hint">на человека при 2-местном размещении, курс приблизительный</div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-cell"><div class="info-cell-label">Дата старта</div><div class="info-cell-value">${Results.formatDate(c.date)} ${new Date(c.date).getFullYear()}</div></div>
+          <div class="info-cell"><div class="info-cell-label">Длительность</div><div class="info-cell-value">${c.nights} ночей</div></div>
+          <div class="info-cell"><div class="info-cell-label">Порт вылета</div><div class="info-cell-value">${portFrom}</div></div>
+          <div class="info-cell"><div class="info-cell-label">Порт прихода</div><div class="info-cell-value">${portTo}</div></div>
+        </div>
+
+        ${includes.length?`
+        <div class="section">
+          <h4>Что включено</h4>
+          <div class="includes-list">
+            ${includes.map(i=>`<div class="includes-item">${stripHtml(i)}</div>`).join('')}
+          </div>
+        </div>`:''}
+
+        <button class="btn btn-primary btn-full" onclick="sendLead()">Хочу этот круиз →</button>
+        <button class="btn" style="width:100%;background:transparent;color:var(--muted);margin-top:8px;padding:12px" onclick="Modal.close()">Закрыть</button>
+      </div>
+    `;
+    document.getElementById('modal').classList.add('active');
+  },
+  close(){ document.getElementById('modal').classList.remove('active'); },
+};
+
+// ============ LEAD SUBMISSION ============
+function summarizeAnswers(){
+  const a = state.answers;
+  const parts = [];
+  const map = {
+    company:{solo:'одна',pair:'пара',family:'семья с детьми',friends:'компания'},
+    when:{soon:'ближайший месяц','1-3':'1-3 мес','3-6':'3-6 мес',later:'заранее'},
+    budget:{lo:'до 150к ₽',mid:'150-300к ₽',hi:'300-500к ₽',lux:'от 500к ₽'},
+    direction:{med:'Средиземка',north:'Северная Европа',east:'Восток',carib:'Карибы',any:'не важно'},
+    first:{yes:'первый круиз',no:'уже ходил(а)'},
+    visa:{schengen:'есть Шенген',other:'есть виза',none:'нет визы',ready:'готова оформить'},
+  };
+  if(a.company) parts.push(`С кем: ${map.company[a.company]}`);
+  if(a.when) parts.push(`Когда: ${map.when[a.when]}`);
+  if(a.budget) parts.push(`Бюджет: ${map.budget[a.budget]}`);
+  if(a.direction) parts.push(`Куда: ${map.direction[a.direction]}`);
+  if(a.first) parts.push(a.first==='yes'?'Первый круиз':'Не первый');
+  if((a.avoid||[]).length){
+    const av = {seasick:'качка',longflight:'долгий перелёт',transfers:'пересадки',visa:'визы'};
+    parts.push(`Избегает: ${a.avoid.map(x=>av[x]).join(', ')}`);
+  }
+  if(a.visa) parts.push(`Виза: ${map.visa[a.visa]}`);
+  return parts.join('\n');
+}
+
+function sendLead(){
+  const c = state.selectedCruise;
+  const payload = {
+    type:'cruise_lead',
+    cruise:{id:c.id, title:c.title, date:c.date, nights:c.nights, vendor:c.vendor, num:c.num},
+    profile:state.answers,
+  };
+  const tg = window.Telegram?.WebApp;
+  if(tg && tg.initData){
+    // Real mini-app context — send to bot
+    tg.sendData(JSON.stringify(payload));
+    tg.close();
+  } else {
+    // Fallback: open tg chat with prefilled message
+    const text = `Хочу этот круиз:\n\n🚢 ${c.title}\n📅 ${c.date}, ${c.nights} ночей\n\n${summarizeAnswers()}`;
+    window.open(`https://t.me/${CFG.BOT_USER}?text=${encodeURIComponent(text)}`, '_blank');
+    swap('s-sent');
+  }
+}
+
+function sendManualLead(){
+  const payload = {type:'manual_lead', profile:state.answers};
+  const tg = window.Telegram?.WebApp;
+  if(tg && tg.initData){ tg.sendData(JSON.stringify(payload)); tg.close(); }
+  else {
+    const text = `Хочу круиз, но виджет ничего не показал.\n\n${summarizeAnswers()}`;
+    window.open(`https://t.me/${CFG.BOT_USER}?text=${encodeURIComponent(text)}`, '_blank');
+    swap('s-sent');
+  }
+}
+
+// ============ UTIL ============
+function swap(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function stripHtml(s){ return String(s).replace(/<[^>]+>/g,'').trim(); }
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded', ()=>{
+  const tg = window.Telegram?.WebApp;
+  if(tg){
+    tg.expand();
+    tg.setHeaderColor('#0B1220');
+    tg.setBackgroundColor('#0B1220');
+    tg.ready();
+  }
+});
+</script>
 </body>
 </html>

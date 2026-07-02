@@ -14,3 +14,5 @@ services:
         value: https://rujokurisula40312-del.github.io/pac_tour/
       - key: MANAGER_USERNAME
         sync: false
+      - key: OWNER_USER_ID
+        value: "469985712"

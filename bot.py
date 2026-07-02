@@ -19,6 +19,7 @@ load_dotenv()
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 WEBAPP_URL = os.environ["WEBAPP_URL"]
 MANAGER_USERNAME = os.getenv("MANAGER_USERNAME", "your_manager").lstrip("@")
+OWNER_USER_ID = int(os.environ["OWNER_USER_ID"])
 PORT = int(os.environ.get("PORT", "0"))
 
 logging.basicConfig(level=logging.INFO)
@@ -69,29 +70,76 @@ async def on_start(message: Message) -> None:
     )
 
 
+PROFILE_LABELS = {
+    "company": ("С кем едет", {"solo": "одна/один", "pair": "с парой", "family": "семья с детьми", "friends": "с компанией"}),
+    "when": ("Когда", {"soon": "ближайший месяц", "1-3": "через 1-3 мес", "3-6": "через 3-6 мес", "later": "заранее"}),
+    "budget": ("Бюджет/чел", {"lo": "до 150к ₽", "mid": "150-300к ₽", "hi": "300-500к ₽", "lux": "от 500к ₽"}),
+    "direction": ("Направление", {"med": "Средиземка", "north": "Северная Европа", "east": "Восток (Дубай/Азия)", "carib": "Карибы/Америка", "any": "не важно"}),
+    "first": ("Опыт", {"yes": "первый круиз", "no": "уже ходил(а)"}),
+    "visa": ("Виза", {"schengen": "есть Шенген", "other": "есть другая", "none": "нет визы", "ready": "готова оформить"}),
+}
+AVOID_LABELS = {"seasick": "качка", "longflight": "долгий перелёт", "transfers": "пересадки", "visa": "визы"}
+
+
+def format_profile(profile: dict) -> str:
+    lines = []
+    for key, (label, mapping) in PROFILE_LABELS.items():
+        val = profile.get(key)
+        if val:
+            lines.append(f"• {label}: {mapping.get(val, val)}")
+    avoid = profile.get("avoid") or []
+    if avoid:
+        lines.append("• Избегает: " + ", ".join(AVOID_LABELS.get(a, a) for a in avoid))
+    return "\n".join(lines) if lines else "— (не указан)"
+
+
 @dp.message(F.web_app_data)
 async def on_webapp_data(message: Message) -> None:
     raw = message.web_app_data.data or ""
     try:
         payload = json.loads(raw)
     except json.JSONDecodeError:
-        payload = {"action": "contact_manager", "raw": raw}
+        payload = {"type": "manual_lead", "raw": raw}
 
-    details = payload.get("details") or {}
-    summary_lines = []
-    for key in ("vendor", "destination", "departure", "dates", "price"):
-        value = details.get(key)
-        if value:
-            summary_lines.append(f"• {key}: {value}")
-    summary = "\n".join(summary_lines)
+    lead_type = payload.get("type", "manual_lead")
+    cruise = payload.get("cruise") or {}
+    profile = payload.get("profile") or {}
 
-    text = "Отлично! 🚢\n"
-    if summary:
-        text += f"\nВаш выбор:\n{summary}\n"
-    text += (
-        f"\nЧтобы забронировать или уточнить детали — напишите нашему менеджеру "
-        f"@{MANAGER_USERNAME}."
-    )
+    user = message.from_user
+    user_tag = f"@{user.username}" if user.username else f"id{user.id}"
+    user_name = user.full_name or user_tag
+
+    # Notify owner (Настя)
+    owner_lines = ["🔥 <b>Новая заявка через квиз</b>", ""]
+    if lead_type == "cruise_lead" and cruise:
+        owner_lines += [
+            f"🚢 <b>{cruise.get('title', '—')}</b>",
+            f"📅 {cruise.get('date', '—')} · {cruise.get('nights', '?')} ночей · {cruise.get('vendor', '')}",
+            f"🔖 {cruise.get('num', '')}",
+        ]
+    else:
+        owner_lines.append("🤔 <i>Виджет ничего не нашёл — просит подобрать вручную</i>")
+    owner_lines += ["", "<b>Профиль клиента:</b>", format_profile(profile), "", f"👤 {user_name} ({user_tag})"]
+
+    try:
+        await bot.send_message(OWNER_USER_ID, "\n".join(owner_lines), parse_mode="HTML")
+    except Exception as exc:
+        logging.exception("Failed to notify owner: %s", exc)
+
+    # Confirm to user
+    if lead_type == "cruise_lead" and cruise:
+        text = (
+            f"Отлично! 🚢\n\n"
+            f"Заявка на «{cruise.get('title', 'круиз')}» ушла Насте. "
+            f"Она свяжется с вами в течение дня — покажет актуальные каюты и цены, оформит бронирование.\n\n"
+            f"Если хотите, можете сразу написать ей: @{MANAGER_USERNAME}"
+        )
+    else:
+        text = (
+            f"Спасибо! 🙌\n\n"
+            f"Настя увидит вашу заявку и подберёт круиз вручную — напишет в течение дня. "
+            f"Или напишите ей сами: @{MANAGER_USERNAME}"
+        )
 
     await message.answer(text, reply_markup=manager_kb())
 
