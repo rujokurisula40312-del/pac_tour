@@ -737,33 +737,39 @@ function summarizeAnswers(){
   return parts.join('\n');
 }
 
+function buildLeadText(c){
+  const cruiseBlock = c
+    ? `🚢 ${c.title}\n📅 ${c.date}, ${c.nights} ночей\n${c.vendor==='MSC'?'MSC Cruises':'Explora Journeys'}${c.num?` · ${c.num}`:''}`
+    : 'Прошла квиз, но подходящего круиза не показали — подбери, пожалуйста, вручную.';
+  return `Настя, хочу этот круиз!\n\n${cruiseBlock}\n\n— Мой профиль —\n${summarizeAnswers()}`;
+}
+
 function sendLead(){
   const c = state.selectedCruise;
-  const payload = {
-    type:'cruise_lead',
-    cruise:{id:c.id, title:c.title, date:c.date, nights:c.nights, vendor:c.vendor, num:c.num},
-    profile:state.answers,
-  };
+  const text = buildLeadText(c);
+  const url = `https://t.me/${CFG.BOT_USER}?text=${encodeURIComponent(text)}`;
   const tg = window.Telegram?.WebApp;
+  // Try sendData first (works only if launched from keyboard button)
   if(tg && tg.initData){
-    tg.sendData(JSON.stringify(payload));
-    tg.close();
-  } else {
-    const text = `Хочу этот круиз:\n\n🚢 ${c.title}\n📅 ${c.date}, ${c.nights} ночей\n\n${summarizeAnswers()}`;
-    window.open(`https://t.me/${CFG.BOT_USER}?text=${encodeURIComponent(text)}`, '_blank');
-    Modal.close(); swap('s-sent');
+    try{ tg.sendData(JSON.stringify({type:'cruise_lead', cruise:c, profile:state.answers})); tg.close(); return; }catch(e){}
+    // Menu-button/inline launches: fallback to openTelegramLink
+    try{ tg.openTelegramLink(url); Modal.close(); swap('s-sent'); return; }catch(e){}
   }
+  // Browser fallback
+  window.open(url, '_blank');
+  Modal.close(); swap('s-sent');
 }
 
 function sendManualLead(){
-  const payload = {type:'manual_lead', profile:state.answers};
+  const text = buildLeadText(null);
+  const url = `https://t.me/${CFG.BOT_USER}?text=${encodeURIComponent(text)}`;
   const tg = window.Telegram?.WebApp;
-  if(tg && tg.initData){ tg.sendData(JSON.stringify(payload)); tg.close(); }
-  else {
-    const text = `Хочу круиз, но виджет ничего не показал.\n\n${summarizeAnswers()}`;
-    window.open(`https://t.me/${CFG.BOT_USER}?text=${encodeURIComponent(text)}`, '_blank');
-    swap('s-sent');
+  if(tg && tg.initData){
+    try{ tg.sendData(JSON.stringify({type:'manual_lead', profile:state.answers})); tg.close(); return; }catch(e){}
+    try{ tg.openTelegramLink(url); swap('s-sent'); return; }catch(e){}
   }
+  window.open(url, '_blank');
+  swap('s-sent');
 }
 
 // ============ UTIL ============
