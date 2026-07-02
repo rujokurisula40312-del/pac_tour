@@ -235,7 +235,7 @@ function renderYearlyGoal(g){
   const onTrackPct = Math.min(g.on_track_pct, 100);
   const behind = g.delta_from_track < 0;
   return `
-  <div class="weekly-card" style="background:linear-gradient(140deg,var(--card),var(--bg-2));border:1px solid var(--line);padding:20px 20px 22px">
+  <div class="weekly-card" onclick="openGoal()" style="background:linear-gradient(140deg,var(--card),var(--bg-2));border:1px solid var(--line);padding:20px 20px 22px;cursor:pointer">
     <div class="weekly-hd" style="margin-bottom:16px">
       <div class="weekly-t">Годовая цель · ${g.target_fmt} ₽ прибыли</div>
       <div class="weekly-c">${g.days_left} дней</div>
@@ -323,8 +323,8 @@ function render(){
     </div>`;
   }
 
-  const dirs = (d.directions||[]).map(dr => `
-    <div class="dir">
+  const dirs = (d.directions||[]).map((dr, i) => `
+    <div class="dir" onclick="openDirection(${i})" style="cursor:pointer">
       <div class="dir-photo" style="background-image:url('${dr.photo}')"></div>
       <div class="dir-name">${esc(dr.name)}</div>
       <div class="dir-pct">${dr.pct}%</div>
@@ -542,6 +542,111 @@ function openExpenseGroup(group){
             <div style="color:var(--muted);font-size:10px;font-weight:600;margin-top:2px">${esc(t.date)}</div>
           </div>
         </div>`).join('')}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('active');
+}
+
+function openDirection(idx){
+  const dr = state.data.directions[idx];
+  if(!dr) return;
+  const body = document.getElementById('modal-body');
+  const countries = dr.countries || [];
+  const total = countries.reduce((s,c)=>s+c.count,0) || dr.count || 1;
+  body.innerHTML = `
+    <div class="modal-hero" style="background-image:url('${dr.photo}');height:180px">
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+      <div class="modal-hero-body">
+        <div class="modal-hero-name">${esc(dr.full_name || dr.name)}</div>
+        <div class="modal-hero-sub">${dr.count || 0} заявок · ${dr.pct}% от плана</div>
+      </div>
+    </div>
+    <div class="modal-content">
+      ${countries.length ? `
+      <div class="modal-section">
+        <h4>По странам</h4>
+        ${countries.map(c => {
+          const pct = Math.round(c.count/total*100);
+          return `
+          <div class="info-cell" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px">
+            <div style="flex:1;min-width:0">
+              <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;letter-spacing:-.01em">${esc(c.name)}</div>
+              <div style="height:6px;background:var(--bg-2);border-radius:99px;overflow:hidden;margin-top:6px"><div style="height:100%;width:${pct}%;background:var(--coral);border-radius:99px"></div></div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:800;color:var(--coral)">${c.count}</div>
+              <div style="color:var(--muted);font-size:10px;font-weight:600;margin-top:2px">${pct}%</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>` : `<div style="color:var(--muted);text-align:center;padding:30px">Пока нет расшифровки по странам — подключим по мере поступления данных U-ON</div>`}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('active');
+}
+
+function openGoal(){
+  const g = state.data.yearly_goal;
+  if(!g) return;
+  const ideas = g.ideas || {};
+  const behind = g.delta_from_track < 0;
+  const body = document.getElementById('modal-body');
+  body.innerHTML = `
+    <div style="padding:22px 22px 14px;border-bottom:1px solid var(--line);background:linear-gradient(140deg,var(--card),var(--bg-2))">
+      <button class="modal-close-btn" style="position:absolute;top:14px;right:14px" onclick="closeModal()">✕</button>
+      <div style="color:var(--muted);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">годовая цель 2026</div>
+      <div style="font-family:'Fraunces',serif;font-size:32px;font-weight:800;letter-spacing:-.03em">${esc(g.target_fmt)}<small style="font-size:16px;color:var(--muted);font-weight:600;font-family:'Inter',sans-serif;margin-left:4px">₽ прибыли</small></div>
+      <div style="color:var(--muted);font-size:12px;font-weight:600;margin-top:6px">${g.days_left} дней до конца года</div>
+    </div>
+    <div class="modal-content">
+      <div class="modal-price" style="padding:16px 20px;text-align:left">
+        <div class="modal-price-lbl">Осталось до цели</div>
+        <div class="modal-price-amt" style="font-size:28px;color:${behind?'var(--clay)':'var(--olive)'}">${((g.target - g.current)/1000000).toFixed(2)}M<small>₽</small></div>
+        <div style="color:var(--muted);font-size:12px;margin-top:6px">Это <b style="color:var(--text)">${esc(ideas.monthly_need_fmt || '?')} ₽/мес</b> в среднем ближайшие ${ideas.months_left || 6} месяцев</div>
+      </div>
+
+      ${(ideas.top_months && ideas.top_months.length) ? `
+      <div class="modal-section">
+        <h4>🔥 Твои сильные месяцы (среднее по годам)</h4>
+        ${ideas.top_months.map((m,i) => `
+          <div class="info-cell" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div style="display:flex;align-items:center;gap:14px">
+              <span style="font-family:'Fraunces',serif;font-style:italic;font-size:24px;color:var(--gold);font-weight:400;width:22px">${['I','II','III'][i]}</span>
+              <div>
+                <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:800">${esc(m.month)}</div>
+                <div style="color:var(--muted);font-size:11px;font-weight:600;margin-top:2px">в среднем валовой</div>
+              </div>
+            </div>
+            <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:800;color:var(--coral)">${esc(m.avg_gross_fmt)}<small style="font-size:11px;color:var(--muted);font-weight:600;margin-left:2px;font-family:'Inter',sans-serif">₽</small></div>
+          </div>`).join('')}
+      </div>` : ''}
+
+      ${(ideas.top_directions && ideas.top_directions.length) ? `
+      <div class="modal-section">
+        <h4>💰 Топ направления по деньгам за всё время</h4>
+        ${ideas.top_directions.map((d,i) => `
+          <div class="info-cell" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:800">${esc(d.name)}</div>
+              <div style="color:var(--muted);font-size:11px;font-weight:600;margin-top:2px">${d.count} оплат</div>
+            </div>
+            <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:800;color:var(--coral)">${esc(d.revenue_fmt)}<small style="font-size:11px;color:var(--muted);font-weight:600;margin-left:2px;font-family:'Inter',sans-serif">₽</small></div>
+          </div>`).join('')}
+      </div>` : ''}
+
+      ${(ideas.dormant_clients && ideas.dormant_clients.length) ? `
+      <div class="modal-section">
+        <h4>💌 Спящие клиенты — можно вернуть</h4>
+        <div style="color:var(--muted);font-size:12px;margin-bottom:10px;font-weight:500;line-height:1.4">Не покупали больше 6 месяцев. Один такой в среднем даёт больше, чем 5 новых.</div>
+        ${ideas.dormant_clients.map(c => `
+          <div class="info-cell" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-family:'Fraunces',serif;font-size:15px;font-weight:800">${esc(c.name)}</div>
+              <div style="color:var(--muted);font-size:11px;font-weight:600;margin-top:2px">${c.months_dormant} мес молчит · последний ${esc(c.last_seen)}</div>
+            </div>
+            <div style="font-family:'Fraunces',serif;font-size:15px;font-weight:800;color:var(--gold)">${esc(c.ltv_fmt)}<small style="font-size:10px;color:var(--muted);font-weight:600;margin-left:2px;font-family:'Inter',sans-serif">LTV</small></div>
+          </div>`).join('')}
+      </div>` : ''}
     </div>
   `;
   document.getElementById('modal').classList.add('active');
