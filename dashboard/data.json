@@ -1,6 +1,6 @@
 {
-  "as_of": "02 July 2026, 22:32 МСК",
-  "as_of_iso": "2026-07-02T22:32:36.213381+03:00",
+  "as_of": "02 July 2026, 22:43 МСК",
+  "as_of_iso": "2026-07-02T22:43:20.409657+03:00",
   "today_str": "2 июля",
   "months": [
     {
@@ -38,7 +38,9 @@
       },
       "top_tour": {
         "num": "CBR71017A2",
-        "amount": 40000
+        "amount": 40000,
+        "client": "Румянцева Н.",
+        "dest": "Австралия"
       },
       "delta_pct": -95,
       "delta_label": "июнь"
@@ -78,7 +80,9 @@
       },
       "top_tour": {
         "num": "MCC608017E",
-        "amount": 227976
+        "amount": 227976,
+        "client": "Фогель Е.",
+        "dest": "Китай"
       },
       "delta_pct": 150,
       "delta_label": "май"
@@ -118,7 +122,9 @@
       },
       "top_tour": {
         "num": "MCC70110DA",
-        "amount": 123405
+        "amount": 123405,
+        "client": "Татаринова А.",
+        "dest": "Италия"
       },
       "delta_pct": -76,
       "delta_label": "апрель"
@@ -158,7 +164,9 @@
       },
       "top_tour": {
         "num": "KM149192, KM149191",
-        "amount": 535000
+        "amount": 535000,
+        "client": "Цомая И.",
+        "dest": ""
       },
       "delta_pct": 102,
       "delta_label": "март"
@@ -198,7 +206,9 @@
       },
       "top_tour": {
         "num": "KM143747",
-        "amount": 162712
+        "amount": 162712,
+        "client": "Искандарова Э.",
+        "dest": ""
       },
       "delta_pct": -8,
       "delta_label": "февраль"
@@ -238,7 +248,9 @@
       },
       "top_tour": {
         "num": "MCC603010E",
-        "amount": 188605
+        "amount": 188605,
+        "client": "Анисимова Т.",
+        "dest": ""
       },
       "delta_pct": -60,
       "delta_label": "январь"
@@ -278,7 +290,9 @@
       },
       "top_tour": {
         "num": "CBR60321BB",
-        "amount": 349467
+        "amount": 349467,
+        "client": "Сердюкова Т.",
+        "dest": ""
       },
       "delta_pct": 6,
       "delta_label": "декабрь"
@@ -318,7 +332,9 @@
       },
       "top_tour": {
         "num": "KBR51227A1",
-        "amount": 219273
+        "amount": 219273,
+        "client": "Овчинникова Е.",
+        "dest": ""
       },
       "delta_pct": -48,
       "delta_label": "ноябрь"
@@ -358,7 +374,9 @@
       },
       "top_tour": {
         "num": "KM152342",
-        "amount": 423545
+        "amount": 423545,
+        "client": "Раевская О.",
+        "dest": ""
       },
       "delta_pct": 67,
       "delta_label": "октябрь"
@@ -398,7 +416,9 @@
       },
       "top_tour": {
         "num": "KM134604",
-        "amount": 337696
+        "amount": 337696,
+        "client": "Бабайцева Н.",
+        "dest": "Австралия"
       },
       "delta_pct": 83,
       "delta_label": "сентябрь"
@@ -438,7 +458,9 @@
       },
       "top_tour": {
         "num": "KM149034",
-        "amount": 358955
+        "amount": 358955,
+        "client": "Цомая И.",
+        "dest": ""
       },
       "delta_pct": -11,
       "delta_label": "август"
@@ -478,7 +500,9 @@
       },
       "top_tour": {
         "num": "KM149039",
-        "amount": 270116
+        "amount": 270116,
+        "client": "Виноградова О.",
+        "dest": ""
       },
       "delta_pct": 0,
       "delta_label": ""
