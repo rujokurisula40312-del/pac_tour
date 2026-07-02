@@ -1,6 +1,6 @@
 {
-  "as_of": "02 July 2026, 23:14 МСК",
-  "as_of_iso": "2026-07-02T23:14:02.215335+03:00",
+  "as_of": "02 July 2026, 23:17 МСК",
+  "as_of_iso": "2026-07-02T23:17:44.100708+03:00",
   "today_str": "2 июля",
   "months": [
     {
@@ -5964,15 +5964,53 @@
         "PEK51004CA",
         "SYD60124BA"
       ],
+      "trips_with_urls": [
+        {
+          "num": "DPS50407AA",
+          "url": "https://id50536.u-on.ru/request_search.php?req=DPS50407AA"
+        },
+        {
+          "num": "DXB41019DA",
+          "url": "https://id50536.u-on.ru/request_search.php?req=DXB41019DA"
+        },
+        {
+          "num": "KM11471",
+          "url": "https://cruclub.ru/agent/reservation/KM11471"
+        },
+        {
+          "num": "KM134585",
+          "url": "https://cruclub.ru/agent/reservation/KM134585"
+        },
+        {
+          "num": "KM166059",
+          "url": "https://cruclub.ru/agent/reservation/KM166059"
+        },
+        {
+          "num": "MSC40428FA",
+          "url": "https://id50536.u-on.ru/request_search.php?req=MSC40428FA"
+        },
+        {
+          "num": "MSC6030525",
+          "url": "https://id50536.u-on.ru/request_search.php?req=MSC6030525"
+        },
+        {
+          "num": "PEK51004CA",
+          "url": "https://id50536.u-on.ru/request_search.php?req=PEK51004CA"
+        },
+        {
+          "num": "SYD60124BA",
+          "url": "https://id50536.u-on.ru/request_search.php?req=SYD60124BA"
+        }
+      ],
       "first_date": "01.2024",
       "last_date": "20.02.2026",
       "operators": [
         "Pac Travel",
-        "32 румба",
+        "Pac Group",
         "Pac Tour",
         "PacTour",
-        "Pac Group",
         "Cruclub",
+        "32 румба",
         "ИП"
       ]
     },
@@ -5999,11 +6037,45 @@
         "MSC404290Z",
         "КМ4937708"
       ],
+      "trips_with_urls": [
+        {
+          "num": "KM149034",
+          "url": "https://cruclub.ru/agent/reservation/KM149034"
+        },
+        {
+          "num": "KM149192, KM149191",
+          "url": "https://cruclub.ru/agent/reservation/KM149192, KM149191"
+        },
+        {
+          "num": "MCC4050804",
+          "url": "https://www.pac.ru/my/order/mcc4050804/"
+        },
+        {
+          "num": "MCC40821EA",
+          "url": "https://www.pac.ru/my/order/mcc40821ea/"
+        },
+        {
+          "num": "MCC412111G",
+          "url": "https://www.pac.ru/my/order/mcc412111g/"
+        },
+        {
+          "num": "MCC50320FA",
+          "url": "https://www.pac.ru/my/order/mcc50320fa/"
+        },
+        {
+          "num": "MSC404290Z",
+          "url": "https://id50536.u-on.ru/request_search.php?req=MSC404290Z"
+        },
+        {
+          "num": "КМ4937708",
+          "url": "https://id50536.u-on.ru/request_search.php?req=КМ4937708"
+        }
+      ],
       "first_date": "02.2024",
       "last_date": "22.09.2025",
       "operators": [
-        "Cruclub",
         "ИП",
+        "Cruclub",
         "Pac Group"
       ]
     },
@@ -6037,18 +6109,80 @@
         "KM137929",
         "MCC403234Z"
       ],
+      "trips_with_urls": [
+        {
+          "num": "ABD51226HA",
+          "url": "https://id50536.u-on.ru/request_search.php?req=ABD51226HA"
+        },
+        {
+          "num": "CBR80116A5",
+          "url": "https://lavoyage.ru/cabinet/?p=tour&act=showOrder&dgCode=CBR80116A5&PR_KEY=58004#cabinet"
+        },
+        {
+          "num": "DXB601020G",
+          "url": "https://id50536.u-on.ru/request_search.php?req=DXB601020G"
+        },
+        {
+          "num": "KM105996",
+          "url": "https://cruclub.ru/agent/reservation/KM105996"
+        },
+        {
+          "num": "KM105997",
+          "url": "https://cruclub.ru/agent/reservation/KM105997"
+        },
+        {
+          "num": "KM105998",
+          "url": "https://cruclub.ru/agent/reservation/KM105998"
+        },
+        {
+          "num": "KM107625",
+          "url": "https://cruclub.ru/agent/reservation/KM107625"
+        },
+        {
+          "num": "KM114553",
+          "url": "https://cruclub.ru/agent/reservation/KM114553"
+        },
+        {
+          "num": "KM119060",
+          "url": "https://cruclub.ru/agent/reservation/KM119060"
+        },
+        {
+          "num": "KM119194",
+          "url": "https://cruclub.ru/agent/reservation/KM119194"
+        },
+        {
+          "num": "KM119195",
+          "url": "https://cruclub.ru/agent/reservation/KM119195"
+        },
+        {
+          "num": "KM119196",
+          "url": "https://cruclub.ru/agent/reservation/KM119196"
+        },
+        {
+          "num": "KM134929",
+          "url": "https://cruclub.ru/agent/reservation/KM134929"
+        },
+        {
+          "num": "KM137929",
+          "url": "https://cruclub.ru/agent/reservation/KM137929"
+        },
+        {
+          "num": "MCC403234Z",
+          "url": "https://www.pac.ru/my/order/mcc403234z/"
+        }
+      ],
       "first_date": "01.2024",
       "last_date": "21.01.2026",
       "operators": [
-        "Pac Tour",
-        "ЛаВояж",
-        "PacTour",
-        "CruClub",
-        "ФД 1118",
         "Pac Group",
-        "ИП",
+        "ФД 1118",
+        "Pac Tour",
+        "PacTour",
+        "ФД 1117",
+        "CruClub",
         "Cruclub",
-        "ФД 1117"
+        "ИП",
+        "ЛаВояж"
       ]
     }
   ],
