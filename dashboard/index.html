@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>9 · Travel Magazine</title>
+<title>Дашборд · Pro Travel</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 :root{
   --bg:#F4EFE7;
@@ -29,21 +30,21 @@ body{background:radial-gradient(500px 400px at 100% 0%,rgba(232,109,90,.08),tran
 .brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-.03em}
 .top-r{background:var(--card);border:1px solid var(--line);border-radius:99px;padding:8px 14px;font-size:12px;font-weight:700;color:var(--text)}
 
-/* HERO – magazine style with big photo */
 .hero{position:relative;height:380px;border-radius:24px;overflow:hidden;margin-bottom:12px;background:#0F3060}
 .hero-img{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900&auto=format&fit=crop&q=85') center/cover;filter:saturate(1.08)}
-.hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.65) 100%)}
+.hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.7) 100%)}
 .hero-top{position:absolute;top:20px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:flex-start;z-index:2;color:#fff}
 .hero-tag{background:rgba(255,255,255,.2);backdrop-filter:blur(12px);color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:99px;letter-spacing:.05em;border:1px solid rgba(255,255,255,.3);text-transform:uppercase}
 .hero-num{background:var(--coral);color:#fff;font-size:11px;font-weight:800;padding:6px 12px;border-radius:99px;letter-spacing:.02em}
-.hero-num::before{content:"↑ "}
+.hero-num.down{background:var(--clay)}
+.hero-num.down::before{content:"↓ "}
+.hero-num.up::before{content:"↑ "}
 .hero-body{position:absolute;left:20px;right:20px;bottom:20px;z-index:2;color:#fff}
 .hero-l{font-size:12px;font-weight:600;opacity:.9;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase}
 .hero-v{font-family:'Fraunces',serif;font-size:64px;font-weight:800;line-height:.95;letter-spacing:-.04em;margin-bottom:4px}
 .hero-v small{font-size:22px;font-weight:600;opacity:.7;margin-left:6px;font-family:'Inter',sans-serif;letter-spacing:0}
-.hero-cap{font-family:'Fraunces',serif;font-style:italic;font-size:14px;opacity:.85;font-weight:400;line-height:1.3}
+.hero-cap{font-family:'Fraunces',serif;font-style:italic;font-size:14px;opacity:.85;font-weight:400;line-height:1.35;margin-top:8px}
 
-/* Quick stats row */
 .qstats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
 .qs{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 14px}
 .qs-l{color:var(--muted);font-size:11px;font-weight:600;margin-bottom:4px}
@@ -52,20 +53,31 @@ body{background:radial-gradient(500px 400px at 100% 0%,rgba(232,109,90,.08),tran
 .qs-d{font-size:10px;color:var(--olive);font-weight:700;margin-top:6px;text-transform:uppercase;letter-spacing:.06em}
 .qs-d.d{color:var(--clay)}
 
-/* Section headers - editorial */
 .sec-hd{display:flex;justify-content:space-between;align-items:flex-end;margin:24px 4px 12px}
 .sec-t{font-family:'Fraunces',serif;font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1}
 .sec-t em{font-style:italic;font-weight:600}
 .sec-c{color:var(--muted);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
 
-/* Direction row - horizontal photo circles */
+.weekly-card{background:var(--card);border-radius:18px;padding:18px 18px 12px;border:1px solid var(--line);margin-bottom:12px}
+.weekly-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.weekly-t{font-family:'Fraunces',serif;font-size:16px;font-weight:800;letter-spacing:-.02em}
+.weekly-c{color:var(--muted);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.bars{display:flex;align-items:flex-end;gap:10px;height:110px}
+.br{flex:1;border-radius:8px 8px 4px 4px;transition:all .3s ease;position:relative;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.br.a{background:linear-gradient(180deg,#C7A8FF,#9C7EE0)}
+.br.b{background:linear-gradient(180deg,#66E0D0,#4DBAAC)}
+.br.c{background:linear-gradient(180deg,#FF7A8A,#E8556A)}
+.br.d{background:linear-gradient(180deg,var(--gold),var(--coral))}
+.br::after{content:attr(data-v);position:absolute;top:-22px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted);font-weight:800}
+.bars-lbl{display:flex;gap:10px;margin-top:8px}
+.bars-lbl div{flex:1;text-align:center;color:var(--muted);font-size:11px;font-weight:700}
+
 .dirs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;background:var(--card);border-radius:18px;padding:16px;border:1px solid var(--line);margin-bottom:12px}
 .dir{text-align:center}
 .dir-photo{width:100%;aspect-ratio:1;border-radius:50%;background:var(--bg-2) center/cover no-repeat;margin-bottom:8px;border:2px solid var(--card);box-shadow:0 4px 12px rgba(0,0,0,.08)}
 .dir-name{font-family:'Fraunces',serif;font-size:14px;font-weight:700;letter-spacing:-.01em;line-height:1.1}
 .dir-pct{color:var(--muted);font-size:11px;font-weight:600;margin-top:2px}
 
-/* Clients — magazine-article style */
 .cli-row{background:var(--card);border-radius:18px;padding:14px;border:1px solid var(--line);margin-bottom:8px;display:flex;align-items:center;gap:14px}
 .cli-photo{width:60px;height:60px;border-radius:50%;background:var(--bg-2) center/cover no-repeat;flex-shrink:0;position:relative}
 .cli-photo-flag{position:absolute;bottom:-2px;right:-2px;width:22px;height:22px;background:var(--card);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,.15)}
@@ -75,11 +87,10 @@ body{background:radial-gradient(500px 400px at 100% 0%,rgba(232,109,90,.08),tran
 .cli-m{color:var(--muted);font-size:12px;font-weight:500;margin-top:2px;line-height:1.3}
 .cli-v{text-align:right}
 .cli-vn{font-family:'Fraunces',serif;font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--coral);line-height:1}
-.cli-vn small{font-size:11px;color:var(--muted);font-weight:600;font-family:'Inter',sans-serif;letter-spacing:0;display:block;margin-top:2px;text-transform:uppercase;letter-spacing:.08em}
+.cli-vn small{font-size:9px;color:var(--muted);font-weight:700;font-family:'Inter',sans-serif;letter-spacing:.08em;display:block;margin-top:2px;text-transform:uppercase}
 
-/* Departures – photo cards with date badge */
 .dep-list{display:flex;flex-direction:column;gap:10px}
-.dep{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;position:relative}
+.dep{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
 .dep-row{display:flex;align-items:stretch;gap:0}
 .dep-photo{width:110px;background:var(--bg-2) center/cover no-repeat;position:relative;flex-shrink:0}
 .dep-date{position:absolute;top:10px;left:10px;background:var(--card);border-radius:10px;padding:6px 10px;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.15)}
@@ -91,101 +102,145 @@ body{background:radial-gradient(500px 400px at 100% 0%,rgba(232,109,90,.08),tran
 .dep-days{padding-right:16px;text-align:right;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;flex-shrink:0;min-width:60px}
 .dep-days-n{font-family:'Fraunces',serif;font-size:26px;font-weight:800;letter-spacing:-.03em;color:var(--coral);line-height:1}
 .dep-days-l{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+
+.foot{margin-top:20px;text-align:center;font-family:'Fraunces',serif;font-style:italic;color:var(--muted);font-size:12px}
+
+.loading{text-align:center;padding:60px 20px;color:var(--muted)}
+.loading-spinner{width:36px;height:36px;border:3px solid rgba(232,109,90,.2);border-top-color:var(--coral);border-radius:50%;margin:0 auto 16px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style></head>
-<body><div id="app">
-
-<div class="top">
-  <div class="top-l"><div class="logo">P</div><div class="brand">Pro Travel</div></div>
-  <div class="top-r">июль 2026</div>
-</div>
-
-<!-- HERO with big photo -->
-<div class="hero">
-  <div class="hero-img"></div>
-  <div class="hero-top">
-    <div class="hero-tag">Итог месяца</div>
-    <div class="hero-num">18% к июню</div>
-  </div>
-  <div class="hero-body">
-    <div class="hero-l">выручка</div>
-    <div class="hero-v">2.34<small>млн ₽</small></div>
-    <div class="hero-cap">Дубай и Средиземка вытащили четвёртую неделю в +40%.</div>
+<body>
+<div id="app">
+  <div class="loading">
+    <div class="loading-spinner"></div>
+    Читаю твою таблицу...
   </div>
 </div>
 
-<!-- Quick 3-stat row -->
-<div class="qstats">
-  <div class="qs"><div class="qs-l">прибыль</div><div class="qs-v">468<small>K</small></div><div class="qs-d">маржа 20%</div></div>
-  <div class="qs"><div class="qs-l">ср. чек</div><div class="qs-v">187<small>K</small></div><div class="qs-d">+5%</div></div>
-  <div class="qs"><div class="qs-l">заявок</div><div class="qs-v">14<small>/21</small></div><div class="qs-d d">−2</div></div>
-</div>
+<script>
+const app = document.getElementById('app');
 
-<!-- Directions with round photos -->
-<div class="sec-hd">
-  <div class="sec-t"><em>Куда</em> возишь</div>
-  <div class="sec-c">июль</div>
-</div>
-<div class="dirs">
-  <div class="dir"><div class="dir-photo" style="background-image:url('https://images.unsplash.com/photo-1548574505-5e239809ee19?w=200&q=80')"></div><div class="dir-name">Италия</div><div class="dir-pct">40%</div></div>
-  <div class="dir"><div class="dir-photo" style="background-image:url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=200&q=80')"></div><div class="dir-name">Эмираты</div><div class="dir-pct">25%</div></div>
-  <div class="dir"><div class="dir-photo" style="background-image:url('https://images.unsplash.com/photo-1580541631950-7282082b53fe?w=200&q=80')"></div><div class="dir-name">Норвегия</div><div class="dir-pct">15%</div></div>
-  <div class="dir"><div class="dir-photo" style="background-image:url('https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=200&q=80')"></div><div class="dir-name">Прочее</div><div class="dir-pct">20%</div></div>
-</div>
+function esc(s){ return String(s).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c])); }
+function daysWord(n){ if(n===1) return 'день'; if(n>=2&&n<=4) return 'дня'; return 'дней'; }
 
-<!-- Top clients -->
-<div class="sec-hd">
-  <div class="sec-t">Топ <em>клиенты</em></div>
-  <div class="sec-c">LTV · всё время</div>
-</div>
-<div class="cli-row">
-  <div class="cli-photo" style="background-image:url('https://images.unsplash.com/photo-1548574505-5e239809ee19?w=200&q=80')"><div class="cli-photo-flag">🇮🇹</div></div>
-  <div class="cli-b"><div class="cli-n">Смирнов А. <span class="cli-tag">VIP</span></div><div class="cli-m">4 круиза · Италия, Дубай, Норвегия</div></div>
-  <div class="cli-v"><div class="cli-vn">1.24M<small>LTV</small></div></div>
-</div>
-<div class="cli-row">
-  <div class="cli-photo" style="background-image:url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=200&q=80')"><div class="cli-photo-flag">🇦🇪</div></div>
-  <div class="cli-b"><div class="cli-n">Козлова Е.</div><div class="cli-m">3 поездки · Эмираты, Мальдивы, Италия</div></div>
-  <div class="cli-v"><div class="cli-vn">890K<small>LTV</small></div></div>
-</div>
-<div class="cli-row">
-  <div class="cli-photo" style="background-image:url('https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=200&q=80')"><div class="cli-photo-flag">🇬🇷</div></div>
-  <div class="cli-b"><div class="cli-n">Петров И.</div><div class="cli-m">2 круиза · Греция, Испания</div></div>
-  <div class="cli-v"><div class="cli-vn">640K<small>LTV</small></div></div>
-</div>
+function render(d){
+  const m = d.month;
+  const pm = d.prev_month;
+  const upDown = m.delta_pct >= 0 ? 'up' : 'down';
+  const deltaStr = `${Math.abs(m.delta_pct)}% к ${pm.name}`;
 
-<!-- Departures -->
-<div class="sec-hd">
-  <div class="sec-t">Скоро <em>в путь</em></div>
-  <div class="sec-c">3 клиента</div>
-</div>
-<div class="dep-list">
-  <div class="dep">
-    <div class="dep-row">
-      <div class="dep-photo" style="background-image:url('https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&q=80')">
-        <div class="dep-date"><div class="dep-day">08</div><div class="dep-mo">июл</div></div>
+  let weeklyHtml = '';
+  if(d.weekly && d.weekly.length){
+    const maxV = Math.max(...d.weekly.map(x=>x.value), 1);
+    const bars = d.weekly.map((w,i)=>{
+      const h = Math.round(w.value/maxV*100);
+      const cls = ['a','b','c','d'][i%4];
+      const short = w.value >= 1000000 ? `${(w.value/1000000).toFixed(1)}M` : `${Math.round(w.value/1000)}K`;
+      return `<div class="br ${cls}" style="height:${Math.max(h,5)}%" data-v="${short}"></div>`;
+    }).join('');
+    const lbls = d.weekly.map(w=>`<div>${esc(w.label)}</div>`).join('');
+    weeklyHtml = `
+    <div class="weekly-card">
+      <div class="weekly-hd"><div class="weekly-t">Выручка по неделям</div><div class="weekly-c">${esc(m.name_short)}</div></div>
+      <div class="bars">${bars}</div>
+      <div class="bars-lbl">${lbls}</div>
+    </div>`;
+  }
+
+  const dirs = (d.directions||[]).map(dr => `
+    <div class="dir">
+      <div class="dir-photo" style="background-image:url('${dr.photo}')"></div>
+      <div class="dir-name">${esc(dr.name)}</div>
+      <div class="dir-pct">${dr.pct}%</div>
+    </div>`).join('');
+
+  const cli = (d.top_clients||[]).map(c => `
+    <div class="cli-row">
+      <div class="cli-photo" style="background-image:url('${c.photo}')"><div class="cli-photo-flag">${c.flag||'✈️'}</div></div>
+      <div class="cli-b">
+        <div class="cli-n">${esc(c.name)}${c.vip?' <span class="cli-tag">VIP</span>':''}</div>
+        <div class="cli-m">${esc(c.meta||'')}</div>
       </div>
-      <div class="dep-b"><div class="dep-n">Иванова М.</div><div class="dep-l">Барселона · MSC Fantasia</div></div>
-      <div class="dep-days"><div class="dep-days-n">6</div><div class="dep-days-l">дней</div></div>
-    </div>
-  </div>
-  <div class="dep">
-    <div class="dep-row">
-      <div class="dep-photo" style="background-image:url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80')">
-        <div class="dep-date"><div class="dep-day">12</div><div class="dep-mo">июл</div></div>
-      </div>
-      <div class="dep-b"><div class="dep-n">Смирнов А.</div><div class="dep-l">Дубай · MSC Bellissima</div></div>
-      <div class="dep-days"><div class="dep-days-n">10</div><div class="dep-days-l">дней</div></div>
-    </div>
-  </div>
-  <div class="dep">
-    <div class="dep-row">
-      <div class="dep-photo" style="background-image:url('https://images.unsplash.com/photo-1520175480921-4edfa2983e0f?w=400&q=80')">
-        <div class="dep-date"><div class="dep-day">15</div><div class="dep-mo">июл</div></div>
-      </div>
-      <div class="dep-b"><div class="dep-n">Козлова Е.</div><div class="dep-l">Милан · авиа</div></div>
-      <div class="dep-days"><div class="dep-days-n">13</div><div class="dep-days-l">дней</div></div>
-    </div>
-  </div>
-</div>
+      <div class="cli-v"><div class="cli-vn">${(c.ltv/1000000).toFixed(2)}M<small>LTV</small></div></div>
+    </div>`).join('');
 
-</div></body></html>
+  const dep = (d.departures||[]).map(x => `
+    <div class="dep">
+      <div class="dep-row">
+        <div class="dep-photo" style="background-image:url('${x.photo}')">
+          <div class="dep-date"><div class="dep-day">${esc(x.day)}</div><div class="dep-mo">${esc(x.mo)}</div></div>
+        </div>
+        <div class="dep-b"><div class="dep-n">${esc(x.name)}</div><div class="dep-l">${esc(x.loc)}</div></div>
+        <div class="dep-days"><div class="dep-days-n">${x.days}</div><div class="dep-days-l">${daysWord(x.days)}</div></div>
+      </div>
+    </div>`).join('');
+
+  const commentary = d.commentary ? `<div class="hero-cap">${esc(d.commentary)}</div>` : '';
+
+  app.innerHTML = `
+    <div class="top">
+      <div class="top-l"><div class="logo">P</div><div class="brand">Pro Travel</div></div>
+      <div class="top-r">${esc(m.name)}</div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-img"></div>
+      <div class="hero-top">
+        <div class="hero-tag">Итог месяца</div>
+        <div class="hero-num ${upDown}">${deltaStr}</div>
+      </div>
+      <div class="hero-body">
+        <div class="hero-l">выручка</div>
+        <div class="hero-v">${esc(m.revenue_fmt)}<small>₽</small></div>
+        ${commentary}
+      </div>
+    </div>
+
+    <div class="qstats">
+      <div class="qs"><div class="qs-l">прибыль</div><div class="qs-v">${esc(m.profit_fmt)}<small>₽</small></div><div class="qs-d">маржа ${m.margin_pct}%</div></div>
+      <div class="qs"><div class="qs-l">ср. чек</div><div class="qs-v">${esc(m.avg_check_fmt)}<small>₽</small></div><div class="qs-d">${m.deals_count} платежей</div></div>
+      <div class="qs"><div class="qs-l">заявок</div><div class="qs-v">${m.deals_count}</div><div class="qs-d">в ${esc(m.name_short)}</div></div>
+    </div>
+
+    ${weeklyHtml}
+
+    <div class="sec-hd">
+      <div class="sec-t"><em>Куда</em> возишь</div>
+      <div class="sec-c">${esc(m.name_short)}</div>
+    </div>
+    <div class="dirs">${dirs}</div>
+
+    <div class="sec-hd">
+      <div class="sec-t">Топ <em>клиенты</em></div>
+      <div class="sec-c">LTV · всё время</div>
+    </div>
+    ${cli}
+
+    <div class="sec-hd">
+      <div class="sec-t">Скоро <em>в путь</em></div>
+      <div class="sec-c">${d.departures.length} клиента</div>
+    </div>
+    <div class="dep-list">${dep}</div>
+
+    <div class="foot">обновлено ${esc(d.as_of)} · ${esc(d.source_note)}</div>
+  `;
+}
+
+async function load(){
+  try {
+    const r = await fetch(`data.json?t=${Date.now()}`);
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const d = await r.json();
+    render(d);
+  } catch(e){
+    app.innerHTML = `<div class="loading">Не смогла загрузить данные. Попробуй ещё раз через минуту.<br><br><small>${e.message}</small></div>`;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const tg = window.Telegram?.WebApp;
+  if(tg){ tg.expand(); tg.ready(); tg.setBackgroundColor('#F4EFE7'); tg.setHeaderColor('#F4EFE7'); }
+  load();
+});
+</script>
+</body></html>
