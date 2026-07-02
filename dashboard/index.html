@@ -109,6 +109,67 @@ body{background:radial-gradient(500px 400px at 100% 0%,rgba(232,109,90,.08),tran
 .loading-spinner{width:36px;height:36px;border:3px solid rgba(232,109,90,.2);border-top-color:var(--coral);border-radius:50%;margin:0 auto 16px;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ANIMATIONS */
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{opacity:0;transform:scale(.7)}70%{transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+@keyframes barGrow{from{height:0}}
+@keyframes progressFill{from{width:0}}
+@keyframes ringDraw{from{stroke-dashoffset:200}}
+@keyframes shimmer{0%{background-position:-200px 0}100%{background-position:200px 0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+.hero{animation:slideUp .55s cubic-bezier(.34,.5,.24,1)}
+.hero-v{animation:fadeIn .8s ease .3s both}
+.hero-cap{animation:fadeIn .8s ease .55s both}
+.hero-num{animation:pop .45s cubic-bezier(.34,1.56,.64,1) .35s both}
+.hero-tag{animation:fadeIn .5s ease .2s both}
+.month-tabs{animation:slideUp .45s ease .05s both}
+
+.qs{opacity:0;animation:slideUp .5s cubic-bezier(.34,.5,.24,1) both}
+.qs:nth-child(1){animation-delay:.15s}
+.qs:nth-child(2){animation-delay:.22s}
+.qs:nth-child(3){animation-delay:.29s}
+.qs:nth-child(4){animation-delay:.36s}
+.qs-v{animation:fadeIn .5s ease .3s both}
+
+.weekly-card,.dirs,.cli-row,.dep{opacity:0;animation:slideUp .5s cubic-bezier(.34,.5,.24,1) both}
+.weekly-card{animation-delay:.4s}
+.dirs{animation-delay:.5s}
+.cli-row:nth-child(1){animation-delay:.55s}
+.cli-row:nth-child(2){animation-delay:.62s}
+.cli-row:nth-child(3){animation-delay:.69s}
+.dep:nth-child(1){animation-delay:.75s}
+.dep:nth-child(2){animation-delay:.82s}
+.dep:nth-child(3){animation-delay:.89s}
+
+.br{animation:barGrow .8s cubic-bezier(.34,.5,.24,1) .5s both;transform-origin:bottom}
+
+.dir{opacity:0;animation:pop .5s cubic-bezier(.34,1.56,.64,1) both}
+.dir:nth-child(1){animation-delay:.55s}
+.dir:nth-child(2){animation-delay:.62s}
+.dir:nth-child(3){animation-delay:.69s}
+.dir:nth-child(4){animation-delay:.76s}
+.dir-photo{transition:transform .25s ease}
+.dir:active .dir-photo{transform:scale(.92)}
+.dir-photo:hover{animation:float 2s ease-in-out infinite}
+
+.expense-bar-fill{animation:progressFill 1.2s cubic-bezier(.34,.5,.24,1) .6s both}
+
+.sec-hd{opacity:0;animation:fadeIn .45s ease .5s both}
+
+.cli-photo,.dep-photo{transition:transform .25s ease}
+.cli-row:active .cli-photo{transform:scale(1.05)}
+.dep:active .dep-photo{transform:scale(1.05)}
+.cli-vn,.dep-days-n,.qs-v,.hero-v{font-variant-numeric:tabular-nums}
+
+.refresh-btn{transition:transform .2s ease}
+.mt{transition:all .18s ease}
+.mt:active{transform:scale(.95)}
+
+/* screen transition on month switch */
+.screen-fade{animation:fadeIn .35s ease}
+
 .month-tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 4px 8px;margin:0 -4px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .month-tabs::-webkit-scrollbar{display:none}
 .mt{flex-shrink:0;background:var(--card);border:1px solid var(--line);padding:8px 14px;border-radius:99px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .18s ease;letter-spacing:-.005em}
@@ -134,6 +195,35 @@ let state = { data: null, activeIdx: 0 };
 function esc(s){ return String(s).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c])); }
 function daysWord(n){ if(n===1) return 'день'; if(n>=2&&n<=4) return 'дня'; return 'дней'; }
 function pickMonth(){ return state.data.months[state.activeIdx] || state.data.months[0]; }
+
+// count up animation: animates innerHTML from 0 to target over duration
+function animateNumber(el, targetText, duration=900){
+  // Extract numeric part (K, M suffix supported), preserve rest
+  const match = String(targetText).match(/(-?\d+(?:\.\d+)?)([^\d].*)?$/);
+  if(!match) { el.textContent = targetText; return; }
+  const target = parseFloat(match[1]);
+  const suffix = match[2] || '';
+  const start = performance.now();
+  const abs = Math.abs(target);
+  const decimals = (String(match[1]).split('.')[1] || '').length;
+  function step(now){
+    const t = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3); // ease-out-cubic
+    const val = target * eased;
+    el.textContent = val.toFixed(decimals) + suffix;
+    if(t < 1) requestAnimationFrame(step);
+    else el.textContent = match[1] + suffix;
+  }
+  requestAnimationFrame(step);
+}
+
+function animateAllNumbers(){
+  // find all .qs-v .hero-v .cli-vn .dep-days-n .price-block-amount and count up
+  document.querySelectorAll('[data-num]').forEach(el => {
+    const txt = el.getAttribute('data-num');
+    animateNumber(el, txt);
+  });
+}
 
 function switchMonth(i){
   state.activeIdx = i;
@@ -200,6 +290,8 @@ function render(){
       </div>
     </div>`).join('');
 
+  const shouldAnimateNumbers = state._firstRender !== false;
+  state._firstRender = false;
   app.innerHTML = `
     <div class="top">
       <div class="top-l"><div class="logo">P</div><div class="brand">Pro Travel</div></div>
@@ -216,15 +308,15 @@ function render(){
       </div>
       <div class="hero-body">
         <div class="hero-l">приход (от клиентов)</div>
-        <div class="hero-v">${esc(m.revenue_fmt)}<small>₽</small></div>
+        <div class="hero-v"><span data-num="${esc(m.revenue_fmt)}">${esc(m.revenue_fmt)}</span><small>₽</small></div>
       </div>
     </div>
 
     <div class="qstats" style="grid-template-columns:1fr 1fr">
-      <div class="qs"><div class="qs-l">мой доход</div><div class="qs-v" style="color:${m.gross_profit<0?'var(--clay)':'var(--olive)'}">${m.gross_profit<0?'-':''}${esc(m.gross_profit_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d">приход − ТО − банк</div></div>
-      <div class="qs"><div class="qs-l">после расх. ИП</div><div class="qs-v" style="color:${m.net_before_tax<0?'var(--clay)':'var(--olive)'}">${m.net_before_tax<0?'-':''}${esc(m.net_before_tax_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d">минус обслуживание</div></div>
-      <div class="qs"><div class="qs-l">налог УСН 3%</div><div class="qs-v" style="color:var(--sea)">${esc(m.tax_fmt)}<small>₽</small></div><div class="qs-d">с прихода</div></div>
-      <div class="qs"><div class="qs-l">на руки</div><div class="qs-v" style="color:${m.net_after_tax<0?'var(--clay)':'var(--olive)'}">${m.net_after_tax<0?'-':''}${esc(m.net_after_tax_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d ${m.net_after_tax<0?'d':''}">${m.margin_pct}% маржа</div></div>
+      <div class="qs"><div class="qs-l">мой доход</div><div class="qs-v" style="color:${m.gross_profit<0?'var(--clay)':'var(--olive)'}">${m.gross_profit<0?'-':''}<span data-num="${esc(m.gross_profit_fmt.replace('-',''))}">${esc(m.gross_profit_fmt.replace('-',''))}</span><small>₽</small></div><div class="qs-d">приход − ТО − банк</div></div>
+      <div class="qs"><div class="qs-l">после расх. ИП</div><div class="qs-v" style="color:${m.net_before_tax<0?'var(--clay)':'var(--olive)'}">${m.net_before_tax<0?'-':''}<span data-num="${esc(m.net_before_tax_fmt.replace('-',''))}">${esc(m.net_before_tax_fmt.replace('-',''))}</span><small>₽</small></div><div class="qs-d">минус обслуживание</div></div>
+      <div class="qs"><div class="qs-l">налог УСН 3%</div><div class="qs-v" style="color:var(--sea)"><span data-num="${esc(m.tax_fmt)}">${esc(m.tax_fmt)}</span><small>₽</small></div><div class="qs-d">с прихода</div></div>
+      <div class="qs"><div class="qs-l">на руки</div><div class="qs-v" style="color:${m.net_after_tax<0?'var(--clay)':'var(--olive)'}">${m.net_after_tax<0?'-':''}<span data-num="${esc(m.net_after_tax_fmt.replace('-',''))}">${esc(m.net_after_tax_fmt.replace('-',''))}</span><small>₽</small></div><div class="qs-d ${m.net_after_tax<0?'d':''}">${m.margin_pct}% маржа</div></div>
     </div>
 
     ${m.expenses > 0 ? `
@@ -285,6 +377,7 @@ function render(){
 
     <div class="foot">обновлено ${esc(d.as_of)} · ${esc(d.source_note)}</div>
   `;
+  if(shouldAnimateNumbers) requestAnimationFrame(animateAllNumbers);
 }
 
 async function load(){
