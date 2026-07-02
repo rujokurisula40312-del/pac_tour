@@ -330,8 +330,8 @@ function render(){
       <div class="dir-pct">${dr.pct}%</div>
     </div>`).join('');
 
-  const cli = (d.top_clients||[]).map(c => `
-    <div class="cli-row">
+  const cli = (d.top_clients||[]).map((c, i) => `
+    <div class="cli-row" onclick="openClient(${i})" style="cursor:pointer">
       <div class="cli-photo" style="background-image:url('${c.photo}')"><div class="cli-photo-flag">${c.flag||'✈️'}</div></div>
       <div class="cli-b">
         <div class="cli-n">${esc(c.name)}${c.vip?' <span class="cli-tag">VIP</span>':''}</div>
@@ -385,20 +385,20 @@ function render(){
       <div class="weekly-hd"><div class="weekly-t">Затраты — куда</div><div class="weekly-c">${esc(m.name_short)}</div></div>
       <div style="display:flex;flex-direction:column;gap:10px;padding:4px 0 4px">
         ${[
-          {label:'Оплата туроператору', val:m.operator_pay, color:'#E86D5A'},
-          {label:'Обслуживание ИП', val:m.ie_overhead, color:'#D4A24A'},
-          {label:'Комиссия банка', val:m.bank_comm, color:'#7A8A5A'},
-          {label:'Прочее', val:m.other_exp, color:'#B8663D'},
+          {label:'Оплата туроператору', val:m.operator_pay, color:'#E86D5A', key:'operator_pay'},
+          {label:'Обслуживание ИП', val:m.ie_overhead, color:'#D4A24A', key:'ie_overhead'},
+          {label:'Комиссия банка', val:m.bank_comm, color:'#7A8A5A', key:'bank_comm'},
+          {label:'Прочее', val:m.other_exp, color:'#B8663D', key:'other'},
         ].filter(x=>x.val>0).map(x => {
           const pct = Math.round(x.val / m.expenses * 100);
           const fmt = x.val >= 1000000 ? (x.val/1000000).toFixed(2)+'M' : Math.round(x.val/1000)+'K';
           return `
-          <div>
+          <div onclick="openExpenseGroup('${x.key}')" style="cursor:pointer">
             <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:13px">
               <span style="font-weight:600">${x.label}</span>
               <span style="font-family:'Fraunces',serif;font-weight:700"><span style="color:var(--text)">${fmt} ₽</span> <span style="color:var(--muted);font-size:11px">${pct}%</span></span>
             </div>
-            <div style="height:8px;background:var(--bg-2);border-radius:99px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${x.color};border-radius:99px"></div></div>
+            <div class="expense-bar-track" style="height:8px;background:var(--bg-2);border-radius:99px;overflow:hidden"><div class="expense-bar-fill" style="height:100%;width:${pct}%;background:${x.color};border-radius:99px"></div></div>
           </div>`;
         }).join('')}
       </div>
@@ -454,6 +454,96 @@ async function load(){
   } catch(e){
     app.innerHTML = `<div class="loading">Не смогла загрузить данные. Попробуй ещё раз через минуту.<br><br><small>${e.message}</small></div>`;
   }
+}
+
+function openClient(idx){
+  const c = state.data.top_clients[idx];
+  if(!c) return;
+  const body = document.getElementById('modal-body');
+  const opsList = (c.operators||[]).map(o => `<span style="display:inline-block;background:var(--card);border:1px solid var(--line);padding:4px 10px;border-radius:99px;font-size:11px;font-weight:600;color:var(--muted);margin:0 4px 4px 0">${esc(o)}</span>`).join('');
+  const destsList = (c.dest_list||[]).map(d => `<span style="display:inline-block;background:var(--card);border:1px solid var(--line);padding:4px 10px;border-radius:99px;font-size:11px;font-weight:600;color:var(--text);margin:0 4px 4px 0">${esc(d)}</span>`).join('');
+  body.innerHTML = `
+    <div class="modal-hero" style="background-image:url('${c.photo}')">
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+      <div class="modal-hero-body">
+        ${c.vip ? '<span class="modal-days-badge" style="background:var(--gold)">VIP клиент</span>' : ''}
+        <div class="modal-hero-name">${esc(c.full_name || c.name)}</div>
+        <div class="modal-hero-sub">${c.trips} поездок с ${esc(c.first_date || '')}</div>
+      </div>
+    </div>
+    <div class="modal-content">
+      <div class="modal-price">
+        <div class="modal-price-lbl">суммарная выручка (LTV)</div>
+        <div class="modal-price-amt">${esc(c.ltv_fmt)}<small>₽</small></div>
+      </div>
+
+      <div class="info-grid2">
+        <div class="info-cell"><div class="info-cell-lbl">Поездок</div><div class="info-cell-val">${c.trips}</div></div>
+        <div class="info-cell"><div class="info-cell-lbl">Средний чек</div><div class="info-cell-val">${esc(c.avg_check_fmt)} ₽</div></div>
+        <div class="info-cell"><div class="info-cell-lbl">Первый заезд</div><div class="info-cell-val" style="font-size:13px">${esc(c.first_date)}</div></div>
+        <div class="info-cell"><div class="info-cell-lbl">Последняя оплата</div><div class="info-cell-val" style="font-size:13px">${esc(c.last_date)}</div></div>
+      </div>
+
+      ${destsList ? `
+      <div class="modal-section">
+        <h4>Направления</h4>
+        <div>${destsList}</div>
+      </div>` : ''}
+
+      ${opsList ? `
+      <div class="modal-section">
+        <h4>Через каких туроператоров</h4>
+        <div>${opsList}</div>
+      </div>` : ''}
+
+      <div class="modal-section">
+        <h4>Заявки</h4>
+        <div class="info-cell" style="font-size:12px;font-family:'Inter',sans-serif;font-weight:500;color:var(--muted);line-height:1.6">${(c.trips_list||[]).join(', ') || '—'}</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('modal').classList.add('active');
+}
+
+function openExpenseGroup(group){
+  const m = pickMonth();
+  const txs = (m.expense_txs || {})[group] || [];
+  const titles = {
+    operator_pay: 'Оплаты туроператорам',
+    ie_overhead: 'Обслуживание ИП',
+    bank_comm: 'Комиссии банка',
+    returns: 'Возвраты',
+    other: 'Прочее',
+  };
+  const total = txs.reduce((s,t)=>s+t.amount, 0);
+  const body = document.getElementById('modal-body');
+  body.innerHTML = `
+    <div style="padding:20px 22px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)">
+      <div>
+        <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:800;letter-spacing:-.02em">${titles[group] || group}</div>
+        <div style="color:var(--muted);font-size:12px;font-weight:600;margin-top:2px">${m.name_short} · ${txs.length} операций</div>
+      </div>
+      <button class="modal-close-btn" style="position:relative;top:0;right:0" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-content">
+      <div class="modal-price" style="text-align:left;padding:14px 18px">
+        <div class="modal-price-lbl">суммарно</div>
+        <div class="modal-price-amt" style="font-size:26px">${total >= 1000000 ? (total/1000000).toFixed(2)+'M' : Math.round(total/1000)+'K'}<small>₽</small></div>
+      </div>
+      ${txs.map(t => `
+        <div class="info-cell" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px">
+          <div style="flex:1;min-width:0">
+            <div style="font-family:'Fraunces',serif;font-size:14px;font-weight:700;letter-spacing:-.01em">${esc(t.article)}</div>
+            <div style="color:var(--muted);font-size:11px;font-weight:500;margin-top:3px;line-height:1.4">${esc(t.comment)}</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:800;color:var(--clay)">${t.amount >= 1000000 ? (t.amount/1000000).toFixed(2)+'M' : Math.round(t.amount/1000)+'K'}<small style="font-size:10px;color:var(--muted);font-weight:600;margin-left:2px;font-family:'Inter',sans-serif">₽</small></div>
+            <div style="color:var(--muted);font-size:10px;font-weight:600;margin-top:2px">${esc(t.date)}</div>
+          </div>
+        </div>`).join('')}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('active');
 }
 
 function openDeparture(idx){
