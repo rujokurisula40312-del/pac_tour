@@ -1,6 +1,6 @@
 {
-  "as_of": "02 July 2026, 21:46 МСК",
-  "as_of_iso": "2026-07-02T21:46:29.963465+03:00",
+  "as_of": "02 July 2026, 21:55 МСК",
+  "as_of_iso": "2026-07-02T21:55:05.707264+03:00",
   "today_str": "2 июля",
   "month": {
     "name": "июль 2026",
@@ -9,9 +9,17 @@
     "revenue_fmt": "60K",
     "expenses": 77866,
     "expenses_fmt": "77K",
-    "net_profit": -17866,
-    "net_profit_fmt": "-17866",
-    "margin_pct": -30,
+    "gross_profit": 4443,
+    "gross_profit_fmt": "4K",
+    "net_before_tax": -17866,
+    "net_before_tax_fmt": "-17866",
+    "tax": 1800,
+    "tax_fmt": "1K",
+    "net_after_tax": -19666,
+    "net_after_tax_fmt": "-19666",
+    "net_profit": -19666,
+    "net_profit_fmt": "-19666",
+    "margin_pct": -33,
     "avg_check": 30000,
     "avg_check_fmt": "30K",
     "payments_count": 2,
@@ -33,10 +41,10 @@
     "name": "июнь",
     "revenue": 1126390,
     "revenue_fmt": "1.13M",
-    "net_profit": -100452,
-    "net_profit_fmt": "-100452"
+    "net_profit": -134244,
+    "net_profit_fmt": "-134244"
   },
-  "commentary": "Первые дни июля. Прошлый июнь закрыла на 1.13M ₽ выручки, -100452 ₽ прибыли.",
+  "commentary": "Первые дни июля. Прошлый июнь закрыла на 1.13M ₽ выручки, -134244 ₽ прибыли.",
   "weekly": [
     {
       "label": "W1",
