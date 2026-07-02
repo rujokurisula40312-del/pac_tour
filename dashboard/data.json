@@ -1,0 +1,105 @@
+{
+  "as_of": "02 July 2026, 21:03 МСК",
+  "as_of_iso": "2026-07-02T21:03:28.831331+03:00",
+  "month": {
+    "name": "июль 2026",
+    "name_short": "июль",
+    "revenue": 590900,
+    "revenue_fmt": "590K",
+    "profit": 45957,
+    "profit_fmt": "45K",
+    "margin_pct": 8,
+    "avg_check": 30000,
+    "avg_check_fmt": "30K",
+    "deals_count": 2,
+    "delta_pct": -62
+  },
+  "prev_month": {
+    "name": "июнь",
+    "revenue": 1566863,
+    "revenue_fmt": "1.57M"
+  },
+  "commentary": "Первые дни июля. Прошлый июнь закрыла на 1.57M ₽.",
+  "weekly": [
+    {
+      "label": "W1",
+      "value": 60000
+    }
+  ],
+  "directions": [
+    {
+      "name": "Италия",
+      "pct": 40,
+      "photo": "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=200&q=80"
+    },
+    {
+      "name": "Эмираты",
+      "pct": 25,
+      "photo": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=200&q=80"
+    },
+    {
+      "name": "Норвегия",
+      "pct": 15,
+      "photo": "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=200&q=80"
+    },
+    {
+      "name": "Прочее",
+      "pct": 20,
+      "photo": "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=200&q=80"
+    }
+  ],
+  "top_clients": [
+    {
+      "name": "Смирнов А.",
+      "trips": 4,
+      "ltv": 1240000,
+      "flag": "🇮🇹",
+      "meta": "4 круиза · Италия, Дубай, Норвегия",
+      "photo": "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=200&q=80",
+      "vip": true
+    },
+    {
+      "name": "Козлова Е.",
+      "trips": 3,
+      "ltv": 890000,
+      "flag": "🇦🇪",
+      "meta": "3 поездки · Эмираты, Мальдивы, Италия",
+      "photo": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=200&q=80"
+    },
+    {
+      "name": "Петров И.",
+      "trips": 2,
+      "ltv": 640000,
+      "flag": "🇬🇷",
+      "meta": "2 круиза · Греция, Испания",
+      "photo": "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=200&q=80"
+    }
+  ],
+  "departures": [
+    {
+      "name": "Иванова М.",
+      "loc": "Барселона · MSC Fantasia",
+      "photo": "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&q=80",
+      "days": 6,
+      "day": "08",
+      "mo": "июл"
+    },
+    {
+      "name": "Смирнов А.",
+      "loc": "Дубай · MSC Bellissima",
+      "photo": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80",
+      "days": 10,
+      "day": "12",
+      "mo": "июл"
+    },
+    {
+      "name": "Козлова Е.",
+      "loc": "Милан · авиа",
+      "photo": "https://images.unsplash.com/photo-1520175480921-4edfa2983e0f?w=400&q=80",
+      "days": 13,
+      "day": "15",
+      "mo": "июл"
+    }
+  ],
+  "source_note": "живая финансовая таблица · U-ON скоро подключу"
+}
