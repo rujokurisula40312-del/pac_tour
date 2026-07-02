@@ -196,10 +196,11 @@ function render(d){
       </div>
     </div>
 
-    <div class="qstats">
-      <div class="qs"><div class="qs-l">затраты</div><div class="qs-v" style="color:${m.expenses>0?'var(--clay)':'var(--text)'}">${esc(m.expenses_fmt)}<small>₽</small></div><div class="qs-d d">все расходы</div></div>
-      <div class="qs"><div class="qs-l">прибыль</div><div class="qs-v" style="color:${m.net_profit<0?'var(--clay)':'var(--olive)'}">${m.net_profit<0?'-':''}${esc(m.net_profit_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d ${m.net_profit<0?'d':''}">маржа ${m.margin_pct}%</div></div>
-      <div class="qs"><div class="qs-l">ср. чек</div><div class="qs-v">${esc(m.avg_check_fmt)}<small>₽</small></div><div class="qs-d">${m.payments_count} платежей</div></div>
+    <div class="qstats" style="grid-template-columns:1fr 1fr">
+      <div class="qs"><div class="qs-l">валовая прибыль</div><div class="qs-v" style="color:${m.gross_profit<0?'var(--clay)':'var(--olive)'}">${m.gross_profit<0?'-':''}${esc(m.gross_profit_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d">приход − ТО − банк</div></div>
+      <div class="qs"><div class="qs-l">чистая (до налога)</div><div class="qs-v" style="color:${m.net_before_tax<0?'var(--clay)':'var(--olive)'}">${m.net_before_tax<0?'-':''}${esc(m.net_before_tax_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d">минус ИП-обслуживание</div></div>
+      <div class="qs"><div class="qs-l">налог УСН 3%</div><div class="qs-v" style="color:var(--sea)">${esc(m.tax_fmt)}<small>₽</small></div><div class="qs-d">с ${esc(m.revenue_fmt)} дохода</div></div>
+      <div class="qs"><div class="qs-l">на руки</div><div class="qs-v" style="color:${m.net_after_tax<0?'var(--clay)':'var(--olive)'}">${m.net_after_tax<0?'-':''}${esc(m.net_after_tax_fmt.replace('-',''))}<small>₽</small></div><div class="qs-d ${m.net_after_tax<0?'d':''}">${m.margin_pct}% маржа</div></div>
     </div>
 
     ${m.expenses > 0 ? `
