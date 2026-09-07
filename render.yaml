@@ -14,5 +14,9 @@ services:
         value: https://rujokurisula40312-del.github.io/pac_tour/
       - key: MANAGER_USERNAME
         sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: AI_MODEL
+        value: claude-haiku-4-5
       - key: OWNER_USER_ID
         value: "469985712"
