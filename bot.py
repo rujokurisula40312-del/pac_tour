@@ -1,4 +1,5 @@
 import asyncio
+import html
 import json
 import logging
 import os
@@ -6,6 +7,7 @@ from collections import defaultdict
 from typing import Any
 
 from aiogram import Bot, Dispatcher, F
+from aiogram.enums import ParseMode
 from aiogram.filters import Command, CommandStart
 from aiogram.types import (
     InlineKeyboardButton,
@@ -26,9 +28,33 @@ ANTHROPIC_API_KEY = os.environ["ANTHROPIC_API_KEY"]
 AI_MODEL = os.getenv("AI_MODEL", "claude-haiku-4-5")
 PORT = int(os.environ.get("PORT", "0"))
 
+
+def _parse_ids(raw: str) -> list[int]:
+    out: list[int] = []
+    for part in raw.replace(";", ",").split(","):
+        part = part.strip()
+        if not part:
+            continue
+        try:
+            out.append(int(part))
+        except ValueError:
+            logging.warning("Skipping non-integer chat id: %r", part)
+    return out
+
+
+MANAGERS_CHAT_IDS: list[int] = _parse_ids(os.getenv("MANAGERS_CHAT_IDS", ""))
+if not MANAGERS_CHAT_IDS:
+    MANAGERS_CHAT_IDS = _parse_ids(os.getenv("OWNER_USER_ID", ""))
+
 MAX_HISTORY = 20
 
 logging.basicConfig(level=logging.INFO)
+
+if not MANAGERS_CHAT_IDS:
+    logging.warning(
+        "MANAGERS_CHAT_IDS not configured — leads will NOT be auto-forwarded. "
+        "Set MANAGERS_CHAT_IDS or OWNER_USER_ID to a chat/group id.",
+    )
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -36,6 +62,7 @@ ai = AsyncAnthropic(api_key=ANTHROPIC_API_KEY)
 
 histories: dict[int, list[dict[str, Any]]] = defaultdict(list)
 forms: dict[int, dict[str, str]] = defaultdict(dict)
+notified: dict[int, bool] = defaultdict(bool)
 
 
 SYSTEM_PROMPT = """Ты — Зенди, дружелюбный AI-консьерж турагентства Pac Tour \
@@ -173,6 +200,62 @@ def format_form(form: dict[str, str]) -> str:
     return "\n".join(lines)
 
 
+def _client_block(message: Message) -> str:
+    user = message.from_user
+    if user is None:
+        return "неизвестный клиент"
+    parts: list[str] = []
+    full_name = " ".join(p for p in (user.first_name, user.last_name) if p).strip()
+    if full_name:
+        parts.append(f"<b>{html.escape(full_name)}</b>")
+    if user.username:
+        parts.append(f"@{html.escape(user.username)}")
+    parts.append(
+        f'<a href="tg://user?id={user.id}">открыть чат</a> · '
+        f"id <code>{user.id}</code>"
+    )
+    return "\n".join(parts)
+
+
+async def notify_managers(message: Message, form: dict[str, str]) -> bool:
+    """Post the collected lead to every configured manager destination.
+
+    Returns True if at least one delivery succeeded. Marks the client as
+    already-notified so subsequent saves are labelled as updates instead of
+    new leads.
+    """
+    if not MANAGERS_CHAT_IDS:
+        return False
+
+    chat_id = message.chat.id
+    is_update = notified[chat_id]
+    header = "🔄 <b>Обновление заявки</b>" if is_update else "🆕 <b>Новая заявка</b>"
+    summary = format_form(form) or "(поля пока пусты)"
+
+    text = (
+        f"{header}\n\n"
+        f"👤 <b>Клиент</b>\n{_client_block(message)}\n\n"
+        f"📋 <b>Пожелания</b>\n{html.escape(summary)}"
+    )
+
+    any_ok = False
+    for manager_id in MANAGERS_CHAT_IDS:
+        try:
+            await bot.send_message(
+                manager_id,
+                text,
+                parse_mode=ParseMode.HTML,
+                disable_web_page_preview=True,
+            )
+            any_ok = True
+        except Exception as exc:
+            logging.warning("Notify manager %s failed: %s", manager_id, exc)
+
+    if any_ok:
+        notified[chat_id] = True
+    return any_ok
+
+
 async def ask_agent(
     chat_id: int, user_text: str
 ) -> tuple[str, dict[str, str] | None]:
@@ -254,6 +337,7 @@ async def on_start(message: Message) -> None:
     chat_id = message.chat.id
     histories[chat_id].clear()
     forms[chat_id].clear()
+    notified[chat_id] = False
     await message.answer(
         "Привет! Я Зенди 🚢 — AI-консьерж Pac Tour.\n\n"
         "Расскажите пару слов о желаемом отдыхе — куда, когда, на сколько ночей "
@@ -269,9 +353,24 @@ async def on_reset(message: Message) -> None:
     chat_id = message.chat.id
     histories[chat_id].clear()
     forms[chat_id].clear()
+    notified[chat_id] = False
     await message.answer(
         "Диалог сброшен. Расскажите заново, какой отдых ищете 🌴",
         reply_markup=action_kb(),
+    )
+
+
+@dp.message(Command("chatid"))
+async def on_chatid(message: Message) -> None:
+    """Show current chat id and user id — for MANAGERS_CHAT_IDS setup."""
+    user_id = message.from_user.id if message.from_user else "—"
+    await message.answer(
+        f"chat_id: <code>{message.chat.id}</code>\n"
+        f"your user id: <code>{user_id}</code>\n\n"
+        "Скопируйте нужный ID в переменную <code>MANAGERS_CHAT_IDS</code> "
+        "в Render — сюда бот будет присылать заявки. Для группы: "
+        "добавьте бота в группу и вызовите /chatid там (id будет отрицательным).",
+        parse_mode=ParseMode.HTML,
     )
 
 
@@ -335,10 +434,23 @@ async def on_text(message: Message) -> None:
         summary = format_form(forms[chat_id])
         if summary:
             reply += f"\n\n📋 Ваши пожелания:\n{summary}"
-        reply += (
-            "\n\nМогу передать это менеджеру — нажмите «Написать менеджеру». "
-            "Или откройте точный поиск в WebApp."
-        )
+
+        was_update = notified[chat_id]
+        delivered = await notify_managers(message, forms[chat_id])
+        if delivered:
+            if was_update:
+                reply += (
+                    "\n\n🔄 Обновление отправила менеджеру — он в курсе."
+                )
+            else:
+                reply += (
+                    "\n\n✅ Заявка ушла нашему менеджеру — он свяжется с вами "
+                    "в ближайшее время. Пока можно уточнить детали в WebApp."
+                )
+        else:
+            reply += (
+                "\n\nМожете нажать «Написать менеджеру», чтобы он всё уточнил."
+            )
 
     await message.answer(reply, reply_markup=action_kb())
 
